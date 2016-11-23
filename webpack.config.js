@@ -1,8 +1,8 @@
 const webpack = require('atool-build/lib/webpack');
 
-module.exports = function(webpackConfig, env) {
+module.exports = function (webpackConfig, env) {
   webpackConfig.babel.plugins.push('transform-runtime');
-
+  webpackConfig.babel.plugins.push(['import', [{ libraryName: 'antd', style: true }]]);
   // Support hmr
   if (env === 'development') {
     webpackConfig.devtool = '#eval';
@@ -12,13 +12,19 @@ module.exports = function(webpackConfig, env) {
   }
 
   // Don't extract common.js and common.css
-  webpackConfig.plugins = webpackConfig.plugins.filter(function(plugin) {
+  webpackConfig.plugins = webpackConfig.plugins.filter(function (plugin) {
     return !(plugin instanceof webpack.optimize.CommonsChunkPlugin);
   });
 
+  //鲁大师加入全局
+  webpackConfig.plugins.push(
+    new webpack.ProvidePlugin({
+      _: 'lodash'
+    }));
+
   // Support CSS Modules
   // Parse all less files as css module.
-  webpackConfig.module.loaders.forEach(function(loader, index) {
+  webpackConfig.module.loaders.forEach(function (loader, index) {
     if (typeof loader.test === 'function' && loader.test.toString().indexOf('\\.less$') > -1) {
       loader.include = /node_modules/;
       loader.test = /\.less$/;

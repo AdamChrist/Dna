@@ -1,13 +1,28 @@
 import './index.html';
-import './index.css';
+import './index.less';
 import dva from 'dva';
+import createLoading from 'dva-loading';
+import {notification} from 'antd';
+import FetchError from '../utils/fetchError';
 
 // 1. Initialize
 const app = dva();
 
 // 2. Plugins
-//app.use({});
-
+app.use(createLoading());
+app.use({
+  onError(error) {
+    console.error('err', error);
+    if (error instanceof Error) {
+      notification.error({ message: error.message })
+    } else if (error instanceof FetchError) {
+      error.showError();
+    }
+    else {
+      notification.error({ message: error })
+    }
+  }
+});
 // 3. Model
 //app.model(require('./models/example'));
 
