@@ -1,5 +1,5 @@
 import React, {Component, PropTypes} from 'react';
-import {Icon, Menu, Breadcrumb} from 'antd';
+import {Icon, Menu, Row, Col} from 'antd';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -7,25 +7,14 @@ const MenuItemGroup = Menu.ItemGroup;
 class MainLayout extends Component {
   constructor(props, context) {
     super(props, context);
-    this.state = {
-      collapse: true
-    }
-  }
-
-  onCollapseChange = () => {
-    this.setState({
-      collapse: !this.state.collapse,
-    })
   }
 
   render() {
-    const collapse = this.state.collapse;
     return (
-      <div className="ant-layout-aside">
+      <div className="ant-layout">
         <aside className="ant-layout-sider">
           <div className="ant-layout-logo"></div>
-          <Menu mode="inline" theme="dark"
-                defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
+          <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
             <SubMenu key="sub1" title={<span><Icon type="user" />导航一</span>}>
               <Menu.Item key="1">选项1</Menu.Item>
               <Menu.Item key="2">选项2</Menu.Item>
@@ -47,7 +36,11 @@ class MainLayout extends Component {
           </Menu>
         </aside>
         <div className="ant-layout-main">
-          <div className="ant-layout-header"></div>
+          <div className="ant-layout-header">
+            <div className="ant-layout-info">
+              欢迎XXXX
+            </div>
+          </div>
           <div className="ant-layout-container">
             <div className="ant-layout-content">
               <div style={{ height: 590 }}>
