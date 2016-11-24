@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react';
-import {Icon, Menu, Row, Col} from 'antd';
+import {Icon, Menu, Spin} from 'antd';
 
 const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
 class MainLayout extends Component {
   constructor(props, context) {
@@ -10,10 +9,14 @@ class MainLayout extends Component {
   }
 
   render() {
+    const { children, ...childrenPros } = this.props;
+
     return (
       <div className="ant-layout">
         <aside className="ant-layout-sider">
-          <div className="ant-layout-logo"></div>
+          <div className="ant-layout-logo">
+            <div className="ant-layout-logo-img"></div>
+          </div>
           <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
             <SubMenu key="sub1" title={<span><Icon type="user" />导航一</span>}>
               <Menu.Item key="1">选项1</Menu.Item>
@@ -43,9 +46,9 @@ class MainLayout extends Component {
           </div>
           <div className="ant-layout-container">
             <div className="ant-layout-content">
-              <div style={{ height: 590 }}>
-                内容区域
-              </div>
+              <Spin size="large" spinning={childrenPros.loading.global}>
+                {React.cloneElement(React.Children.only(children), childrenPros)}
+              </Spin>
             </div>
           </div>
         </div>

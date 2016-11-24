@@ -4,11 +4,11 @@ import MainLayout from './Layout/MainLayout';
 
 const IndexPage = ({ children, ...props }) => {
   return (
-    <MainLayout>
-      {/*{React.cloneElement(React.Children.only(children), props) }*/}
+    <MainLayout {...props}>
+      {children}
     </MainLayout>
   );
-}
+};
 
 IndexPage.propTypes = {};
 

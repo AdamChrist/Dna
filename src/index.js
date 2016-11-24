@@ -23,8 +23,9 @@ app.use({
     }
   }
 });
+
 // 3. Model
-//app.model(require('./models/example'));
+require('./models').forEach(m => app.model(m));
 
 // 4. Router
 app.router(require('./router'));

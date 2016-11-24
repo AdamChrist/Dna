@@ -1,9 +1,10 @@
-
 export default {
 
   namespace: 'example',
 
-  state: {},
+  state: {
+    testPros: true
+  },
 
   subscriptions: {
     setup({ dispatch, history }) {
