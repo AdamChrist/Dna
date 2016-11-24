@@ -1,20 +1,30 @@
 import React, {Component, PropTypes} from 'react';
-import {Icon, Menu, Spin} from 'antd';
+import {Icon, Menu, Spin, Tooltip} from 'antd';
 
 const SubMenu = Menu.SubMenu;
 
 class MainLayout extends Component {
   constructor(props, context) {
     super(props, context);
+    this.state = {
+      collapse: false
+    }
   }
+
+  handleClick = () => {
+    this.setState({
+      collapse: !this.state.collapse,
+    })
+  };
 
   render() {
     const { children, ...childrenPros } = this.props;
 
     return (
       <div className="ant-layout">
-        <aside className="ant-layout-sider">
+        <aside className={this.state.collapse ? "ant-layout-aside ant-layout-aside-collapse" : "ant-layout-sider"}>
           <div className="ant-layout-logo">
+            {/*DNA 后台管理系统*/}
             <div className="ant-layout-logo-img"></div>
           </div>
           <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
@@ -40,6 +50,9 @@ class MainLayout extends Component {
         </aside>
         <div className="ant-layout-main">
           <div className="ant-layout-header">
+            <div className="ant-layout-action" onClick={this.handleClick}>
+              <Icon type="bars" />
+            </div>
             <div className="ant-layout-info">
               欢迎XXXX
             </div>
