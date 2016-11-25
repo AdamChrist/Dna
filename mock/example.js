@@ -9,5 +9,5 @@ module.exports = {
       });
     }, 500);
   },
-  '/api/*': 'http://localhost:3100/', //api请求代理到服务器
+  '/api/*': 'http://localhost:9000/', //api请求代理到服务器
 };
