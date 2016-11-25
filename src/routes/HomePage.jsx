@@ -1,7 +1,6 @@
-import React, {Component, PropTypes} from 'react';
+import React from 'react';
 
 const HomePage = (props) => {
-  console.log(props, 'home');
   return (
     <div>
       Home

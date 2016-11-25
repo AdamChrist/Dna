@@ -1,8 +1,9 @@
 import {Form, Input, Button} from 'antd';
 import React, {Component, PropTypes} from 'react';
 import {hashHistory} from 'dva/router';
-
+import {connect} from 'dva';
 import styles from './LoginForm.less'
+import md5 from 'js-md5';
 
 const FormItem = Form.Item;
 const createForm = Form.create;
@@ -15,7 +16,14 @@ class LoginForm extends Component {
       if (!err) {
         console.log('Received values of form: ', values);
       }
-      hashHistory.push('/app')
+
+      this.props.dispatch({
+        type: 'common/login', payload: {
+          account: values.userName,
+          password: md5(values.password),
+        }
+      });
+
     });
   }
 
@@ -51,4 +59,7 @@ LoginForm.propTypes = {};
 LoginForm.defaultProps = {};
 LoginForm = createForm({})(LoginForm);
 
-export default LoginForm;
+function mapStateToProps({ common }) {
+  return { common };
+}
+export default connect(mapStateToProps)(LoginForm);
