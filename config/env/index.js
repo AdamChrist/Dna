@@ -8,7 +8,7 @@ const fs = require('fs');
 
 const all = {
   env: process.env.NODE_ENV || 'development',
-  root: path.normalize(__dirname + '/../../..'),
+  root: path.normalize(__dirname + '/../../'),
   port: process.env.PORT || 9000,
   secret: 'dna',
   // MySQL 配置
