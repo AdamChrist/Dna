@@ -14,5 +14,6 @@ const LoginPage = () => {
 
     </div>
   );
-}
+};
+
 export default connect()(LoginPage);

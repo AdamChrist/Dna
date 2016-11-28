@@ -8,6 +8,8 @@ import HomePage from './routes/HomePage';
 
 import Example from './components/Example';
 
+import UserPage from './routes/UserPage';
+
 
 export default function ({ history }) {
   return (
@@ -17,6 +19,7 @@ export default function ({ history }) {
         <Route path='app' component={IndexPage}>
           <IndexRedirect to='home' />
           <Route path='home' component={HomePage} />
+          <Route path='user' component={UserPage} />
         </Route>
         <Route path='/login' component={LoginPage} />
       </Route>
