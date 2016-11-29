@@ -1,4 +1,14 @@
 :global {
+  /*************** 覆盖 ant design 的样式 ***************/
+
+  .ant-table-body {
+    border: 1px solid #e9e9e9;
+    border-radius: 6px;
+    border-collapse: separate;
+  }
+
+  /*************** 覆盖 ant design 的样式 ***************/
+
   html, body, #root {
     height: 100%;
     margin: 0;
@@ -88,5 +98,20 @@
     border-radius: 4px;
     background: #fff;
     padding: 24px;
+  }
+
+  .ant-advanced-search-form {
+    padding: 24px;
+    background: #fbfbfb;
+    border: 1px solid #d9d9d9;
+    border-radius: 6px;
+    margin-bottom: 20px;
+  }
+  .ant-advanced-search-form .form-item-show {
+    height: 100%;
+  }
+  .ant-advanced-search-form .form-item-hide {
+    overflow: hidden;
+    height: 96px;
   }
 }

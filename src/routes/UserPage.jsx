@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 
-import {UserList} from '../components/User';
+import {UserList, UserSearch} from '../components/User';
 
 const UserPage = ({ user, dispatch }) => {
 
@@ -8,6 +8,7 @@ const UserPage = ({ user, dispatch }) => {
 
   return (
     <div>
+      <UserSearch />
       <UserList {...userListProps} />
     </div>
   );

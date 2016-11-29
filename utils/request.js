@@ -48,6 +48,8 @@ function jsonParse(res) {
         }
       }
       return null;
+    }).catch(error => {
+      throw new FetchError(0, '返回数据格式错误!');
     });
   }
   else {
@@ -73,7 +75,7 @@ const request = (url, options) => {
         throw error;
       }
       else {
-        throw new FetchError()
+        throw new FetchError(0, _.isString(error) ? error : error.toString());
       }
     })
 };
