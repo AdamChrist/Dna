@@ -1,11 +1,13 @@
 /**
  * Created by haojiachen on 2016/11/29.
- * 高级搜索组件,需要指定onSearch的查询回调和formItems的表单组件
+ * 高级搜索组件,需要指定 onSearch 的查询回调和formItems的表单组件
  */
 import React, {Component, PropTypes} from 'react';
-import {Form, Row, Col, Input, Button, Icon} from 'antd';
+import {Form, Row, Col, Button, Icon} from 'antd';
+import {formatQuery} from '../../utils/queryUtil';
 
 class AdvancedSearchForm extends Component {
+
   constructor(props, context) {
     super(props, context);
     this.state = { expand: false }
@@ -19,7 +21,7 @@ class AdvancedSearchForm extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       //触发搜索的回调函数
-      this.props.onSearch(values);
+      this.props.onSearch(formatQuery(values));
     });
   };
 
@@ -27,6 +29,7 @@ class AdvancedSearchForm extends Component {
    * 重置
    */
   handleReset = () => {
+    //重置表单
     this.props.form.resetFields();
   };
 
@@ -43,14 +46,12 @@ class AdvancedSearchForm extends Component {
     const { getFieldDecorator } = form;
 
     const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 18 },
+      labelCol: { span: 5 },
+      wrapperCol: { span: 19 },
     };
 
-    console.log(formItems);
-
     const expand = this.state.expand;
-    const showExpand = formItems.length > 6;
+    const showExpand = formItems.length > 3;
 
     return (
       <Form
@@ -58,14 +59,14 @@ class AdvancedSearchForm extends Component {
         className="advanced-search-form"
         onSubmit={this.handleSearch}
       >
-        <Row gutter={40} className={expand ? "form-item-show" : "form-item-hide"}>
+        <Row className={expand ? "form-item-show" : "form-item-hide"} type="flex" justify="space-around">
           {
             formItems.map((item, i) => {
               return (
-                <Col span={8} key={i}>
+                <Col span={6} key={i}>
                   <Form.Item {...formItemLayout} label={item.label}>
                     {getFieldDecorator(item.fieldName)(
-                      item.render
+                      React.cloneElement(item.render, { size: 'default' })
                     )}
                   </Form.Item>
                 </Col>
