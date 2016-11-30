@@ -3,7 +3,7 @@ import './index.less';
 import dva from 'dva';
 import createLoading from 'dva-loading';
 import {notification} from 'antd';
-import FetchError from '../utils/fetchError';
+import FetchError from './utils/fetchError';
 
 // 1. Initialize
 const app = dva();

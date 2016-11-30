@@ -10,8 +10,8 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 const methodOverride = require('method-override');
 const cookieParser = require('cookie-parser');
-const auth = require('./util/auth');
-const extendExpress = require('./util/extendExpress');
+const auth = require('./utils/auth');
+const extendExpress = require('./utils/extendExpress');
 
 module.exports = function (app) {
   const options = {

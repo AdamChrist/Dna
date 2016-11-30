@@ -5,7 +5,7 @@
 
 const Sequelize = require('sequelize');
 const config = require('../../config/env');
-const Filter = require('../util/queryFilter');
+const Filter = require('./queryFilter');
 
 const sequelize = new Sequelize(config.mysql.database, config.mysql.username, config.mysql.password, { host: config.mysql.host, dialect: 'mysql' });
 const db = {};

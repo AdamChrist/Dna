@@ -18,14 +18,14 @@ module.exports = (req, res, next) => {
    * @param message
    */
   res.success = (data, message) => {
-    res.json({ data: data, message: message, code: CODE_SUCCESS, isError: false })
+    res.json({ data: data, message: message, code: CODE_SUCCESS, success: true })
   };
   /**
    * 失败
    * @param message
    */
   res.error = (message) => {
-    res.json({ message: message, code: CODE_SUCCESS, isError: true })
+    res.json({ message: message, code: CODE_SUCCESS, success: false })
   };
   /**
    * json重定向
@@ -34,14 +34,14 @@ module.exports = (req, res, next) => {
    * @param timeOut
    */
   res.jsonRedirect = (url, message, timeOut) => {
-    res.json({ data: { __url: url, __timeOut: timeOut || 0 }, message: message, code: CODE_REDIRECT, isError: false })
+    res.json({ data: { __url: url, __timeOut: timeOut || 0 }, message: message, code: CODE_REDIRECT, success: true })
   };
   /**
    * 判断是否为null或Undefined方法
    * @param obj
    * @returns {*}
    */
-  req.isEmpty = (obj)=> {
+  req.isEmpty = (obj) => {
     return Object.prototype.toString.call(obj) === '[object Null]' || Object.prototype.toString.call(obj) === '[object Undefined]' || obj === '';
   };
 

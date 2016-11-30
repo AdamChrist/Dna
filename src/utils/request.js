@@ -41,10 +41,10 @@ function jsonParse(res) {
   if (res.status >= 200 && res.status < 300) {
     return res.json().then(result => {
       if (result) {
-        if (result.isError) {
-          return Promise.reject(new FetchError(0, result.message));
-        } else {
+        if (result.success === true) {
           return result.data;
+        } else {
+          return Promise.reject(new FetchError(0, result.message));
         }
       }
       return null;
