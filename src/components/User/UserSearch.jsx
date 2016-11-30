@@ -1,41 +1,22 @@
-import React, {Component} from 'react';
-import {Form, Row, Col, Input, Button, Select, DatePicker} from 'antd';
+import React from 'react';
+import {Form, Input} from 'antd';
+import AdvancedSearchForm from '../Common/AdvancedSearchForm';
 
-import  AdvancedSearchForm from '../Common/AdvancedSearchForm';
+const UserSearch = ({ onSearch }) => {
 
-class UserSearch extends Component {
+  const searchFormProps = {
+    formItems: [
+      { label: '姓名', fieldName: 'name.$like', render: <Input placeholder="请输入用户姓名" /> },
+      { label: '手机号', fieldName: 'mobile.$like', render: <Input placeholder="请输入用户手机号" /> },
+      { label: '账号', fieldName: 'account.$like', render: <Input placeholder="请输入用户账号" /> },
+    ],
+    onSearch
+  };
 
-  render() {
-
-    const searchFormProps = {
-      formItems: [
-        { label: 'label1', fieldName: 'label1', render: <Input placeholder="placeholder" /> },
-        { label: 'label2', fieldName: 'label2', render: <Input placeholder="placeholder" /> },
-        { label: 'label3', fieldName: 'label3', render: <Input placeholder="placeholder" /> },
-        { label: 'label4', fieldName: 'label4', render: <DatePicker.RangePicker /> },
-        {
-          label: 'label5', fieldName: 'label5',
-          render: (
-            <Select placeholder="Please select a country">
-              <Select.Option value="china">China</Select.Option>
-              <Select.Option value="use">U.S.A</Select.Option>
-            </Select>
-          )
-        },
-        { label: 'label6', fieldName: 'label6', render: <DatePicker /> },
-        { label: 'label7', fieldName: 'label7', render: <Input placeholder="placeholder" /> },
-        { label: 'label8', fieldName: 'label8', render: <Input placeholder="placeholder" /> },
-      ],
-      onSearch: (values) => {
-        console.log(values, 'onSearch')
-      }
-    };
-
-    return (
-      <AdvancedSearchForm {...searchFormProps} />
-    );
-  }
-}
+  return (
+    <AdvancedSearchForm {...searchFormProps} />
+  );
+};
 
 UserSearch.propTypes = {};
 UserSearch.defaultProps = {};

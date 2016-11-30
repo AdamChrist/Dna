@@ -4,11 +4,44 @@ import {UserList, UserSearch} from '../components/User';
 
 const UserPage = ({ user, dispatch }) => {
 
-  const userListProps = {};
+  console.log(user);
+
+  const userListProps = {
+    dataSource: user.userList,
+    onDelete(id) {
+      dispatch({
+        type: 'users/del',
+        payload: id
+      });
+    },
+    onEdit(formData) {
+      dispatch({
+        type: 'users/showModal',
+        payload: {
+          modalType: 'update',
+          formData
+        }
+      });
+    },
+    onAdd(){
+      dispatch({
+        type: 'users/showModal',
+        payload: {
+          modalType: 'create'
+        }
+      });
+    }
+  };
+
+  const userSearchProps = {
+    onSearch(values){
+      console.log(values);
+    }
+  };
 
   return (
     <div>
-      <UserSearch />
+      <UserSearch {...userSearchProps} />
       <UserList {...userListProps} />
     </div>
   );
