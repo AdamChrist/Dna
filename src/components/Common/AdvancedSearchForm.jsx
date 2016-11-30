@@ -47,13 +47,15 @@ class AdvancedSearchForm extends Component {
       wrapperCol: { span: 18 },
     };
 
+    console.log(formItems);
+
     const expand = this.state.expand;
     const showExpand = formItems.length > 6;
 
     return (
       <Form
         horizontal
-        className="ant-advanced-search-form"
+        className="advanced-search-form"
         onSubmit={this.handleSearch}
       >
         <Row gutter={40} className={expand ? "form-item-show" : "form-item-hide"}>
