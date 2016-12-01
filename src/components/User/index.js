@@ -3,5 +3,6 @@
  */
 import UserList from './UserList';
 import UserSearch from './UserSearch';
+import UserModal from './UserModal';
 
-export {UserList, UserSearch};
+export {UserList, UserSearch, UserModal};

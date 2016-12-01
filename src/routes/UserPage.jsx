@@ -1,38 +1,37 @@
 import React, {PropTypes} from 'react';
 
-import {UserList, UserSearch} from '../components/User';
+import {UserList, UserSearch, UserModal} from '../components/User';
 
 const UserPage = ({ user, dispatch }) => {
-
-  console.log(user);
-
+  const { userList, visible, isAdd, item } = user;
+  //用户列表属性
   const userListProps = {
-    dataSource: user.userList,
+    dataSource: userList,
     onDelete(id) {
       dispatch({
         type: 'users/del',
         payload: id
       });
     },
-    onEdit(formData) {
+    onEdit(data) {
       dispatch({
-        type: 'users/showModal',
+        type: 'user/showModal',
         payload: {
-          modalType: 'update',
-          formData
+          isAdd: false,
+          item: data
         }
       });
     },
     onAdd(){
       dispatch({
-        type: 'users/showModal',
+        type: 'user/showModal',
         payload: {
-          modalType: 'create'
+          isAdd: true
         }
       });
     }
   };
-
+  //用户搜索属性
   const userSearchProps = {
     onSearch(values){
       dispatch({
@@ -42,10 +41,34 @@ const UserPage = ({ user, dispatch }) => {
     }
   };
 
+  //用户modal的属性
+  const userModalProps = {
+    item,
+    isAdd,
+    visible,
+    onOk(data) {
+      dispatch({
+        type: `user/save`,
+        payload: data
+      });
+    },
+    onCancel() {
+      dispatch({
+        type: 'user/hideModal'
+      });
+    },
+  };
+
+  // 解决 Form.create initialValue 的问题
+  // 每次创建一个全新的组件, 而不做diff
+  const UserModalGen = () =>
+    <UserModal {...userModalProps} />;
+
   return (
     <div>
       <UserSearch {...userSearchProps} />
       <UserList {...userListProps} />
+      <UserModalGen {...userModalProps} />
     </div>
   );
 };

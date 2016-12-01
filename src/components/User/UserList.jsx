@@ -2,56 +2,6 @@ import React, {Component} from 'react';
 import {Table, Button, Popconfirm} from 'antd';
 
 const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource, paginationPros }) => {
-  dataSource = [{
-    name: '胡彦斌',
-    account: 'huyanbin',
-    mobile: '13900000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }, {
-    name: '胡彦祖',
-    account: 'wuyanzu',
-    mobile: '13800000000'
-  }
-  ];
 
   const columns = [
     {

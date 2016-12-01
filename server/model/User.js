@@ -11,7 +11,8 @@ module.exports = (sequelize, DataTypes) => {
     email: DataTypes.STRING,
     name: DataTypes.STRING,
   }, {
+    paranoid: true,
     tableName: 'sys_user'
   });
   return User;
-}
+};

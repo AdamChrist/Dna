@@ -10,31 +10,41 @@ export default {
 
   state: {
     userList: [],
+    item: {},
+    visible: false,
+    isAdd: false,
   },
 
   effects: {
     *query ({ payload }, { call, put }){
-      const userList = yield call(userService.query, payload);
-      if (userList)
-        yield put({ type: 'querySuccess', payload: { userList } });
+      const data = yield call(userService.query, payload);
+      if (data)
+        yield put({ type: 'querySuccess', payload: { userList: data.rows } });
     },
     *save ({ payload }, { call, put }){
+      yield put({ type: 'hideModal' });
       yield call(userService.save, payload);
-      const userList = yield call(userService.query);
-      if (userList)
-        yield put({ type: 'querySuccess', payload: { userList } });
+      const data = yield call(userService.query);
+      if (data)
+        yield put({ type: 'querySuccess', payload: { userList: data.rows } });
     },
     *del ({ payload }, { call, put }){
       yield call(userService.del, payload);
-      const userList = yield call(userService.query);
-      if (userList)
-        yield put({ type: 'querySuccess', payload: { userList } });
+      const data = yield call(userService.query);
+      if (data)
+        yield put({ type: 'querySuccess', payload: { userList: data.rows } });
     },
   },
 
   reducers: {
     querySuccess(state, { payload }) {
       return { ...state, ...payload };
+    },
+    showModal(state, { payload }) {
+      return { ...state, ...payload, visible: true };
+    },
+    hideModal(state) {
+      return { ...state, visible: false };
     },
   },
 
