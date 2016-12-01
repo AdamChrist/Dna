@@ -4,7 +4,7 @@
 import request from '../utils/request';
 
 export async function query(params) {
-  return request.get('api/user', params);
+  return request.post('api/user/query', params);
 }
 
 export async function save(params) {

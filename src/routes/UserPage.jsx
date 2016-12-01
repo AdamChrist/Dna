@@ -35,7 +35,10 @@ const UserPage = ({ user, dispatch }) => {
 
   const userSearchProps = {
     onSearch(values){
-      console.log(values);
+      dispatch({
+        type: 'user/query',
+        payload: values
+      });
     }
   };
 

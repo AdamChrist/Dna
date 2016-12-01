@@ -12,7 +12,7 @@ const app = dva();
 app.use(createLoading());
 app.use({
   onError(error) {
-    console.error('err', error);
+    console.error('onError', error);
     if (error instanceof Error) {
       notification.error({ message: error.message })
     } else if (error instanceof FetchError) {
