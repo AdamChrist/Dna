@@ -3,7 +3,7 @@ const db = require('../model');
 const md5 = require('js-md5');
 const jwt = require('jsonwebtoken');
 const config = require('../../config/env');
-const redis = require('./redis');
+const redis = require('../utils/redis');
 
 //内置管理员账号
 const ADMIN_ACCOUNT = config.auth.adminAccount;

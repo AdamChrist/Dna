@@ -5,7 +5,6 @@
 
 const Sequelize = require('sequelize');
 const config = require('../../config/env');
-const Filter = require('./queryFilter');
 
 const sequelize = new Sequelize(config.mysql.database, config.mysql.username, config.mysql.password, { host: config.mysql.host, dialect: 'mysql' });
 const db = {};
@@ -26,7 +25,6 @@ Object.keys(db).forEach((modelName) => {
 
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
-db.Filter = Filter;
 
 module.exports = db;
 
