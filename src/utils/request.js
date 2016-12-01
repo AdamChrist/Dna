@@ -5,9 +5,7 @@ import  querystring  from 'querystring';
 import FetchError from './fetchError';
 import {signOut} from './authUtil';
 
-const errorMessages = (res) => {
-  new FetchError(res.status, res.statusText);
-};
+const errorMessages = (res) => new FetchError(res.status, `${res.statusText}`, `${res.status} 错误`);
 
 //格式化json数据
 const formatJson = (k, v) => {
@@ -48,9 +46,7 @@ function jsonParse(res) {
         }
       }
       return null;
-    }).catch(error => {
-      throw new FetchError(0, '返回数据格式错误!');
-    });
+    })
   }
   else {
     return Promise.reject(errorMessages(res));
@@ -75,7 +71,7 @@ const request = (url, options) => {
         throw error;
       }
       else {
-        throw new FetchError(0, _.isString(error) ? error : error.toString());
+        throw new FetchError(0, _.isString(error) ? error : error.message);
       }
     })
 };
@@ -122,6 +118,7 @@ function patch(url, data = {}, options) {
 /**
  * get请求 从服务器取出资源（一项或多项）。
  * @param url
+ * @param data
  * @param options
  */
 function get(url, data, options) {
