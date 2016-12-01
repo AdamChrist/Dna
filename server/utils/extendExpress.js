@@ -45,5 +45,26 @@ module.exports = (req, res, next) => {
     return Object.prototype.toString.call(obj) === '[object Null]' || Object.prototype.toString.call(obj) === '[object Undefined]' || obj === '';
   };
 
+  /**
+   * 构造分页查询
+   * @param pageIndex 初始页
+   * @param pageSize 每页条数 默认为0 不分页
+   * @param orderBy 排序列
+   * @param asc 升序or降序
+   * @param condition 查询条件
+   * @returns {{where: (*|{}), order: string}}
+   */
+  req.queryFilter = ({ pageIndex = 1, pageSize = 0, orderBy = 'createdAt', asc = false, ...condition }) => {
+    const filter = {
+      where: condition || {},
+      order: `${orderBy} ${asc ? 'ASC' : 'DESC'}`
+    };
+    if (pageSize && pageSize > 0) {
+      filter.offset = (pageIndex - 1) * pageSize;
+      filter.limit = pageSize;
+    }
+    return filter;
+  };
+
   next();
 };
