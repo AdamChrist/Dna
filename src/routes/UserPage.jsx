@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
-
-import {UserList, UserSearch, UserModal} from '../components/User';
+import {Input} from 'antd';
+import AdvancedSearchForm from '../components/Common/AdvancedSearchForm';
+import {UserList, UserModal} from '../components/User';
 
 const UserPage = ({ user, dispatch }) => {
   const { userList, visible, isAdd, item } = user;
@@ -9,7 +10,7 @@ const UserPage = ({ user, dispatch }) => {
     dataSource: userList,
     onDelete(id) {
       dispatch({
-        type: 'users/del',
+        type: 'user/del',
         payload: id
       });
     },
@@ -33,17 +34,23 @@ const UserPage = ({ user, dispatch }) => {
   };
   //用户搜索属性
   const userSearchProps = {
+    user,
     onSearch(values){
       dispatch({
         type: 'user/query',
         payload: values
       });
-    }
+    },
+    formItems: [
+      { label: '姓名', fieldName: 'name.$like', render: <Input placeholder="用户姓名" /> },
+      { label: '账号', fieldName: 'account.$like', render: <Input placeholder="用户账号" /> },
+      { label: '手机号', fieldName: 'mobile.$like', render: <Input placeholder="用户手机号" /> },
+    ]
   };
 
   //用户modal的属性
   const userModalProps = {
-    item,
+    item: isAdd ? {} : item,
     isAdd,
     visible,
     onOk(data) {
@@ -66,7 +73,7 @@ const UserPage = ({ user, dispatch }) => {
 
   return (
     <div>
-      <UserSearch {...userSearchProps} />
+      <AdvancedSearchForm {...userSearchProps} />
       <UserList {...userListProps} />
       <UserModalGen {...userModalProps} />
     </div>

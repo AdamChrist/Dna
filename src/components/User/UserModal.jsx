@@ -1,5 +1,6 @@
 import React from 'react';
 import {Form, Input, Modal} from 'antd';
+import {isUserExists} from '../../services/user';
 const FormItem = Form.Item;
 
 const formItemLayout = {
@@ -11,7 +12,7 @@ const formItemLayout = {
   }
 };
 
-const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel, }) => {
+const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
 
   const { getFieldDecorator, validateFields, getFieldsValue, } = form;
 
@@ -20,9 +21,10 @@ const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel, }) => {
       if (errors) {
         return;
       }
-      onOk(getFieldsValue());
+      const data = { ...item, ...getFieldsValue() };
+      onOk(data);
     });
-  }
+  };
 
   const modalOpts = {
     maskClosable: false,
@@ -30,6 +32,26 @@ const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel, }) => {
     visible,
     onOk: handleOk,
     onCancel,
+  };
+
+  /**
+   * 检测用户是否重复
+   * @param rule
+   * @param value
+   * @param callback
+   * @param source
+   */
+  const checkAccount = (rule, value, callback, source) => {
+    if (!value) {
+      callback();
+    } else {
+      if (!isAdd) {
+        source.id = item.id;
+      }
+      isUserExists(source).then(data => {
+        data ? callback([new Error('抱歉，该用户名已被占用。')]) : callback();
+      });
+    }
   };
 
   return (
@@ -50,6 +72,7 @@ const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel, }) => {
             initialValue: item.account,
             rules: [
               { required: true, message: '不能为空' },
+              { validator: checkAccount }
             ],
           })(
             <Input type="address" />

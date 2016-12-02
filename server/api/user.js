@@ -3,14 +3,15 @@
  */
 const router = require('express').Router();
 const db = require('../model');
-
+const md5 = require('js-md5');
+//初始密码
+const DEFAULT_PWD = md5('123');
 /**
  * 查询所有用户
  */
 router.post('/query', async(req, res) => {
   try {
     const queryFilter = req.queryFilter(req.body);
-    console.log(queryFilter);
     const result = await db.User.findAndCountAll(queryFilter);
     return res.success(result);
   } catch (error) {
@@ -27,6 +28,7 @@ router.post('/', async(req, res) => {
     if (req.isEmpty(model)) return res.error('缺少参数');
     let result = {};
     if (req.isEmpty(model.id)) {
+      model.password = DEFAULT_PWD;
       result = await db.User.create(model);
     }
     else {
