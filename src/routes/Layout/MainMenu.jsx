@@ -5,20 +5,20 @@ import {Link} from 'dva/router';
 class MainMenu extends Component {
   render() {
     return (
-      <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
-        <Menu.SubMenu key="sub1" title={<span><Icon type="user" />导航一</span>}>
-          <Menu.Item key="1"><Link to="/app/user">用户管理</Link></Menu.Item>
-          <Menu.Item key="2">选项2</Menu.Item>
-          <Menu.Item key="3">选项3</Menu.Item>
-          <Menu.Item key="4">选项4</Menu.Item>
+      <Menu mode="inline" theme="dark" defaultOpenKeys={['sys']}>
+        <Menu.SubMenu key="sys" title={<span><Icon type="desktop"/>系统管理</span>}>
+          <Menu.Item key="user"><Link to="/app/user">用户管理</Link></Menu.Item>
+          <Menu.Item key="role">角色管理</Menu.Item>
+          <Menu.Item key="menu">菜单管理</Menu.Item>
+          <Menu.Item key="auth">权限管理</Menu.Item>
         </Menu.SubMenu>
-        <Menu.SubMenu key="sub2" title={<span><Icon type="laptop" />导航二</span>}>
+        <Menu.SubMenu key="sub2" title={<span><Icon type="laptop"/>导航二</span>}>
           <Menu.Item key="5">选项5</Menu.Item>
           <Menu.Item key="6">选项6</Menu.Item>
           <Menu.Item key="7">选项7</Menu.Item>
           <Menu.Item key="8">选项8</Menu.Item>
         </Menu.SubMenu>
-        <Menu.SubMenu key="sub3" title={<span><Icon type="notification" />导航三</span>}>
+        <Menu.SubMenu key="sub3" title={<span><Icon type="notification"/>导航三</span>}>
           <Menu.Item key="9">选项9</Menu.Item>
           <Menu.Item key="10">选项10</Menu.Item>
           <Menu.Item key="11">选项11</Menu.Item>

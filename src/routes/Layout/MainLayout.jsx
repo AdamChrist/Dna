@@ -18,7 +18,7 @@ class MainLayout extends Component {
   };
 
   render() {
-    const { children, ...childrenPros } = this.props;
+    const {children, ...childrenPros} = this.props;
 
     return (
       <div className="ant-layout">
@@ -32,7 +32,7 @@ class MainLayout extends Component {
         <div className="ant-layout-main">
           <div className="ant-layout-header">
             <div className="ant-layout-action" onClick={this.handleClick}>
-              <Icon type="bars" />
+              <Icon type="bars"/>
             </div>
             <div className="ant-layout-info">
               欢迎XXXX
