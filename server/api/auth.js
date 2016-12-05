@@ -34,6 +34,8 @@ const saveToken = (id, expireTime) => {
   return token;
 };
 
+const getToken = (req) => req.cookies.token || req.headers['x-auth-token'];
+
 /**
  * 登录
  */
@@ -74,9 +76,9 @@ router.post('/login', async function (req, res, next) {
 /**
  * 验证token有效性
  */
-router.post('/checkToken', (req, res, next) => {
+router.post('/checkToken', async(req, res, next) => {
   // 获取token
-  const token = req.cookies.token || req.headers['x-auth-token'];
+  const token = getToken(req);
 
   if (token) {
     // 验证token是否过期
@@ -88,68 +90,40 @@ router.post('/checkToken', (req, res, next) => {
     if (Date.now() >= expireTime) {
       // redis key 过期
       redis.expire(token, 1);
-      res.clearCookie('token');
-      return res.error('token过期');
     }
-    // 验证token是否存在
-    redis.get(userId, function (err, reply) {
-      // 如果redis报错.返回 500
-      if (err) {
-        res.clearCookie('token');
-        return res.error('redis读取失败')
-      }
-      // 验证成功
-      if (reply) {
-        if (reply === token) {
-          return res.success();
-        }
-        else {
-          res.clearCookie('token');
-          return res.error('token验证失败!')
-        }
-      }
-      // 如果找不到返回401
-      else {
-        res.clearCookie('token');
-        return res.error('token验证失败!')
-      }
-    });
-
-  } else {
-    // token验证失败
-    res.clearCookie('token');
-    return res.error('token验证失败!')
+    const result = await redis.get(userId);
+    if (result === token) {
+      return res.success(true);
+    }
   }
+  res.clearCookie('token');
+  return res.success(false);
 });
 
 
-// /**
-//  * 登出
-//  */
-// router.post('/logout', (req, res) => {
-//   const token = req.headers['x-auth-token'];
-//
-//   if (token) {
-//     const decoded = jwt.verify(token, config.secret);
-//     if (decoded) {
-//       const userId = decoded.userId;
-//       // 验证token是否存在
-//       redis.get(userId, (err, reply) => {
-//         if (reply && reply === token) {
-//           redis.del(userId);
-//           return res.success('', '成功登出!');
-//         } else {
-//           res.error('权限已经失效!');
-//         }
-//       });
-//     } else {
-//       res.error('权限已经失效!');
-//     }
-//   }
-//   else {
-//     res.error('权限已经失效!');
-//   }
-// });
+/**
+ * 登出
+ */
+router.post('/logout', async(req, res) => {
+  // 获取token
+  const token = getToken(req);
+
+  if (token) {
+    const decoded = jwt.verify(token, config.secret);
+    if (decoded) {
+      const userId = decoded.userId;
+      // 验证token是否存在
+      const result = await redis.get(userId);
+      if (result === token) {
+        redis.del(userId);
+        res.clearCookie('token');
+        return res.success('', '成功登出!');
+      }
+    }
+  }
+  res.error('权限已经失效!');
+});
+
 //
 //
 // router.post('/changepwd', async function (req, res) {

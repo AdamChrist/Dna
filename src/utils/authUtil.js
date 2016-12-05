@@ -4,11 +4,10 @@
 import request from './request';
 
 
-const checkToken = async() => {
+const checkToken = () => {
   //向服务器验证token有效性
-  const isValid = await request.post(`api/auth/checkToken`);
-  return isValid;
-}
+  return request.post('api/auth/checkToken');
+};
 
 
 /**
@@ -17,22 +16,21 @@ const checkToken = async() => {
  * @param replace
  * @param callback
  */
-const requireAuth = (next, replace, callback) => {
-  request.post(`api/auth/checkToken`).then(() => {
-    callback();
-  }).catch(() => {
+const requireAuth = async(next, replace, callback) => {
+  const result = await checkToken();
+  if (result !== true) {
     replace('/login');
-    callback();
-  });
+  }
+  callback();
 };
 
-const autoLogin = (next, replace, callback) => {
-  request.post(`api/auth/checkToken`).then(() => {
+const autoLogin = async(next, replace, callback) => {
+
+  const result = await checkToken();
+  if (result === true) {
     replace('/app');
-    callback();
-  }).catch(() => {
-    callback();
-  });
+  }
+  callback();
 };
 
 export {requireAuth, autoLogin}
