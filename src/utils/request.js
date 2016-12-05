@@ -1,9 +1,7 @@
 import fetch from 'dva/fetch';
-import {hashHistory}  from 'dva/router';
-import  querystring  from 'querystring';
-
+import {hashHistory} from 'dva/router';
+import querystring from 'querystring';
 import FetchError from './fetchError';
-import {signOut} from './authUtil';
 
 const errorMessages = (res) => new FetchError(res.status, `${res.statusText}`, `${res.status} 错误`);
 
@@ -18,7 +16,6 @@ const formatJson = (k, v) => {
 //检查401错误,跳转首页,清空cookie信息
 const check401 = (res) => {
   if (res.status === 401) {
-    signOut();
     return Promise.reject(
       new FetchError(401, '身份信息已过期!4秒后自动跳转..', '无权访问',
         () => {

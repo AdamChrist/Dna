@@ -41,6 +41,7 @@ module.exports = {
         //redis key 过期
         redis.del(userId);
         console.log('token过期!');
+        res.clearCookie('token');
         return res.sendStatus(401);
       }
       try {
@@ -50,6 +51,7 @@ module.exports = {
           return next();
         }
         else {
+          res.clearCookie('token');
           return res.sendStatus(401);
         }
       }

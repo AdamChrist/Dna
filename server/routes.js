@@ -5,8 +5,8 @@
 // 路由
 module.exports = function (app) {
 
-  // 用户管理
   app.use('/api/user', require('./api/user'));
+  app.use('/api/role', require('./api/role'));
   app.use('/api/auth', require('./api/auth'));
   app.use('/api/dic', require('./api/dictionary'));
 
