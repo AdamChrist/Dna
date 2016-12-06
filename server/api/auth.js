@@ -88,12 +88,13 @@ router.post('/checkToken', async(req, res, next) => {
 
     // 如果已过期,返回401
     if (Date.now() >= expireTime) {
-      // redis key 过期
-      redis.expire(token, 1);
-    }
-    const result = await redis.get(userId);
-    if (result === token) {
-      return res.success(true);
+      // 删除 token
+      await redis.del(userId);
+    } else {
+      const result = await redis.get(userId);
+      if (result === token) {
+        return res.success(true);
+      }
     }
   }
   res.clearCookie('token');

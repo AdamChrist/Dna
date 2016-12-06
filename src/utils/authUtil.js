@@ -3,7 +3,6 @@
  */
 import request from './request';
 
-
 const checkToken = () => {
   //向服务器验证token有效性
   return request.post('api/auth/checkToken');
