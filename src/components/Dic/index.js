@@ -3,5 +3,6 @@
  */
 import DicTree from './DicTree';
 import DicModal from './DicModal';
+import DicList from './DicList';
 
-export {DicTree, DicModal};
+export {DicTree, DicModal, DicList};

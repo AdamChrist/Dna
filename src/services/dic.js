@@ -18,3 +18,18 @@ export async function delDic(id) {
 export async function isDicCodeExists(params) {
   return request.post('api/dic/exist', params);
 }
+
+export async function queryDicMx(id) {
+  return request.get(`api/dic/${id}/mx`);
+}
+
+export async function saveDicMx(params) {
+  return request.post('api/dic/mx', params);
+}
+
+export async function delDicMx(id) {
+  return request.del(`api/dic/mx/${id}`);
+}
+export async function isDicMxCodeExists(params) {
+  return request.post('api/dic/mx/exist', params);
+}

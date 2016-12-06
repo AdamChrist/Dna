@@ -1,5 +1,6 @@
 import React from 'react';
-import {DicTree, DicModal} from '../components/Dic';
+import {DicTree, DicModal, DicList} from '../components/Dic';
+import {Row, Col} from 'antd';
 
 const DicPage = ({ dic, dispatch }) => {
 
@@ -50,8 +51,9 @@ const DicPage = ({ dic, dispatch }) => {
     <DicModal {...dicModalPros} />;
 
   return (
-    <div>
+    <div >
       <DicTree {...dicTreePros} />
+      <DicList />
       <DicModalGen />
     </div>
   );
