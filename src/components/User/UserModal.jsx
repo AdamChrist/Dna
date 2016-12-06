@@ -51,6 +51,8 @@ const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
       //查询当前用户
       isUserExists(source).then(result => {
         result ? callback([new Error('抱歉，该用户名已被占用。')]) : callback();
+      }).catch((error) => {
+        error.showError && error.showError();
       });
     }
   };
