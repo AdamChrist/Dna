@@ -9,10 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       field: 'id'
     },
-    code: {
-      type: DataTypes.STRING,
-      unique: true
-    },
+    code: DataTypes.STRING,
     name: DataTypes.STRING
   }, {
     paranoid: true,

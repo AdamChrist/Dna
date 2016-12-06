@@ -48,8 +48,11 @@ const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
       if (!isAdd) {
         source.id = item.id;
       }
-      isUserExists(source).then(data => {
-        data ? callback([new Error('抱歉，该用户名已被占用。')]) : callback();
+      //查询当前用户
+      isUserExists(source).then(result => {
+        result ? callback([new Error('抱歉，该用户名已被占用。')]) : callback();
+      }).catch((error) => {
+        error.showError && error.showError();
       });
     }
   };
@@ -75,21 +78,21 @@ const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
               { validator: checkAccount }
             ],
           })(
-            <Input type="address" />
+            <Input type="text" />
           )}
         </FormItem>
         <FormItem label="手机号：" hasFeedback {...formItemLayout} >
           {getFieldDecorator('mobile', {
             initialValue: item.mobile
           })(
-            <Input type="address" />
+            <Input type="text" />
           )}
         </FormItem>
         <FormItem label="email：" hasFeedback {...formItemLayout} >
           {getFieldDecorator('email', {
             initialValue: item.email
           })(
-            <Input type="address" />
+            <Input type="text" />
           )}
         </FormItem>
       </Form>

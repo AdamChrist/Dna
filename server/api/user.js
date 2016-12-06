@@ -81,15 +81,19 @@ router.post('/pwd', async(req, res) => {
  */
 router.post('/exist', async(req, res) => {
   try {
-    const model = req.body;
-    if (req.isEmpty(model)) return res.error('参数不能为空');
-    const result = await db.User.findOne({ where: { account: model.account } });
-    if (result) {
-      return res.success((req.isEmpty(req.body.id) || model.id !== result.id));
+    let model = req.body;
+    if (!req.isEmpty(model.id)) {
+      model.id = { '$ne': model.id }
+    }
+    const dic = await db.User.findOne({ where: model });
+    if (dic) {
+      return res.success(true);
     }
     return res.success(false);
-  } catch (error) {
-    return res.error(error);
+
+  } catch
+    (error) {
+    return res.error(error.message);
   }
 });
 

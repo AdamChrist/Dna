@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Table, Button, Popconfirm} from 'antd';
 
-const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource, paginationPros }) => {
+const DicList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource }) => {
 
   const columns = [
     {
@@ -38,22 +38,20 @@ const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource, pagination
     }];
 
   return (
-    <div>
-      <Table
-        dataSource={dataSource}
-        columns={columns}
-        title={() =>
-          (
-            <div >
-              <Button type="primary" onClick={() => onAdd()}>新增</Button>
-            </div>
-          )}
-      />
-    </div>
+    <Table
+      dataSource={dataSource}
+      columns={columns}
+      title={() =>
+        (
+          <div >
+            <Button type="primary" onClick={() => onAdd()}>新增</Button>
+          </div>
+        )}
+    />
   );
-}
+};
 
-UserList.propTypes = {};
-UserList.defaultProps = {};
+DicList.propTypes = {};
+DicList.defaultProps = {};
 
-export default UserList;
+export default DicList;

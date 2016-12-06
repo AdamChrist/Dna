@@ -27,7 +27,8 @@ const UserPage = ({ user, dispatch }) => {
       dispatch({
         type: 'user/showModal',
         payload: {
-          isAdd: true
+          isAdd: true,
+          item: {}
         }
       });
     }
@@ -50,12 +51,12 @@ const UserPage = ({ user, dispatch }) => {
 
   //用户modal的属性
   const userModalProps = {
-    item: isAdd ? {} : item,
+    item,
     isAdd,
     visible,
     onOk(data) {
       dispatch({
-        type: `user/save`,
+        type: 'user/save',
         payload: data
       });
     },
@@ -75,7 +76,7 @@ const UserPage = ({ user, dispatch }) => {
     <div>
       <AdvancedSearchForm {...userSearchProps} />
       <UserList {...userListProps} />
-      <UserModalGen {...userModalProps} />
+      <UserModalGen />
     </div>
   );
 };

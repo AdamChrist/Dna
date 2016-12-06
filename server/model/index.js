@@ -11,6 +11,7 @@ const db = {};
 
 // system
 db.User = require('./User')(sequelize, Sequelize);
+db.Role = require('./Role')(sequelize, Sequelize);
 db.Dictionary = require('./Dictionary')(sequelize, Sequelize);
 db.DictionaryMx = require('./DictionaryMx')(sequelize, Sequelize);
 db.Sequences = require('./Sequences')(sequelize, Sequelize);
