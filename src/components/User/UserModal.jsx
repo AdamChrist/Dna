@@ -78,21 +78,21 @@ const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
               { validator: checkAccount }
             ],
           })(
-            <Input type="address" />
+            <Input type="text" />
           )}
         </FormItem>
         <FormItem label="手机号：" hasFeedback {...formItemLayout} >
           {getFieldDecorator('mobile', {
             initialValue: item.mobile
           })(
-            <Input type="address" />
+            <Input type="text" />
           )}
         </FormItem>
         <FormItem label="email：" hasFeedback {...formItemLayout} >
           {getFieldDecorator('email', {
             initialValue: item.email
           })(
-            <Input type="address" />
+            <Input type="text" />
           )}
         </FormItem>
       </Form>

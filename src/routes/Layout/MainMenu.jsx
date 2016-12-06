@@ -5,12 +5,13 @@ import {Link} from 'dva/router';
 class MainMenu extends Component {
   render() {
     return (
-      <Menu mode="inline" theme="dark" defaultSelectedKeys={['1']} defaultOpenKeys={['sub1']}>
-        <Menu.SubMenu key="sub1" title={<span><Icon type="user" />导航一</span>}>
-          <Menu.Item key="1"><Link to="/app/user">用户管理</Link></Menu.Item>
-          <Menu.Item key="2">选项2</Menu.Item>
-          <Menu.Item key="3">选项3</Menu.Item>
-          <Menu.Item key="4">选项4</Menu.Item>
+      <Menu mode="inline" theme="dark" defaultOpenKeys={['sys']}>
+        <Menu.SubMenu key="sys" title={<span><Icon type="desktop" />系统管理</span>}>
+          <Menu.Item key="user"><Link to="/app/user">用户管理</Link></Menu.Item>
+          <Menu.Item key="role"><Link to="/app/role">角色管理</Link></Menu.Item>
+          <Menu.Item key="menu"><Link to="/app/menu">菜单管理</Link></Menu.Item>
+          <Menu.Item key="auth"><Link to="/app/auth">权限管理</Link></Menu.Item>
+          <Menu.Item key="dic"><Link to="/app/dic">数据字典</Link></Menu.Item>
         </Menu.SubMenu>
         <Menu.SubMenu key="sub2" title={<span><Icon type="laptop" />导航二</span>}>
           <Menu.Item key="5">选项5</Menu.Item>
