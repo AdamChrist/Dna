@@ -9,7 +9,7 @@ const db = require('../model');
 router.post('/query', async(req, res) => {
   try {
     const queryFilter = req.queryFilter(req.body);
-    const result = await db.User.findAndCountAll(queryFilter);
+    const result = await db.Role.findAndCountAll(queryFilter);
     return res.success(result);
   } catch (error) {
     return res.error(error.message);
@@ -25,10 +25,10 @@ router.post('/', async(req, res) => {
     if (req.isEmpty(model)) return res.error('缺少参数');
     let result = {};
     if (req.isEmpty(model.id)) {
-      result = await db.User.create(model);
+      result = await db.Role.create(model);
     }
     else {
-      result = await db.User.update(model, { where: { id: model.id } }, { fields: ['name', 'remark'] });
+      result = await db.Role.update(model, { where: { id: model.id } }, { fields: ['name', 'remark'] });
     }
     return res.success(result);
   } catch (error) {
@@ -43,7 +43,7 @@ router.delete('/:id', async(req, res) => {
   try {
     const id = req.params.id;
     if (req.isEmpty(id)) return res.error('参数不能为空');
-    const result = await db.User.destroy({ where: { id: id } });
+    const result = await db.Role.destroy({ where: { id: id } });
     return res.success(result);
   } catch (error) {
     return res.error(error);

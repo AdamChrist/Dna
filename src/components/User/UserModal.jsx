@@ -48,8 +48,9 @@ const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
       if (!isAdd) {
         source.id = item.id;
       }
-      isUserExists(source).then(data => {
-        data ? callback([new Error('抱歉，该用户名已被占用。')]) : callback();
+      //查询当前用户
+      isUserExists(source).then(result => {
+        result ? callback([new Error('抱歉，该用户名已被占用。')]) : callback();
       });
     }
   };
