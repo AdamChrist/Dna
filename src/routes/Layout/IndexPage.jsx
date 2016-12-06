@@ -1,6 +1,6 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'dva';
-import MainLayout from './Layout/MainLayout';
+import MainLayout from '../Layout/MainLayout';
 
 const IndexPage = ({ children, ...props }) => {
   return (

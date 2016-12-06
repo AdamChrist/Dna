@@ -1,16 +1,15 @@
 import React from 'react';
-import {DicTree, DicModal, DicList} from '../components/Dic';
-import {Row, Col} from 'antd';
+import {DicTree, DicModal, DicList} from '../../components/Dic';
 
-const DicPage = ({ dic, dispatch }) => {
+const DicPage = ({dic, dispatch}) => {
 
-  const { dicList, dicModal, dicSelectKeys } = dic;
+  const {dicList, dicModal, dicSelectKeys} = dic;
 
   const dicTreePros = {
     dicList,
     dicSelectKeys,
     onSelect(dicSelectKeys){
-      dispatch({ type: 'dic/selectDic', payload: { dicSelectKeys } })
+      dispatch({type: 'dic/selectDic', payload: {dicSelectKeys}})
     },
     onDelete(id) {
       dispatch({
@@ -21,13 +20,13 @@ const DicPage = ({ dic, dispatch }) => {
     onEdit(id) {
       dispatch({
         type: 'dic/showDicModal',
-        payload: { isAdd: false, id }
+        payload: {isAdd: false, id}
       });
     },
     onAdd(){
       dispatch({
         type: 'dic/showDicModal',
-        payload: { isAdd: true }
+        payload: {isAdd: true}
       });
     }
   };

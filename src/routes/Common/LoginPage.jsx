@@ -2,7 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'dva';
 import styles from './LoginPage.less';
 
-import {LoginForm} from '../components/Login';
+import {LoginForm} from '../../components/Login';
 
 const LoginPage = () => {
   return (
