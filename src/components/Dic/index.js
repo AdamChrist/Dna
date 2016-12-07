@@ -4,5 +4,6 @@
 import DicTree from './DicTree';
 import DicModal from './DicModal';
 import DicList from './DicList';
+import DicMxModal from './DicMxModal';
 
-export {DicTree, DicModal, DicList};
+export {DicTree, DicModal, DicList, DicMxModal};
