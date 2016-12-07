@@ -7,7 +7,8 @@ module.exports = (sequelize, DataTypes) => sequelize.define('role', {
     defaultValue: DataTypes.UUIDV1,
     primaryKey: true,
   },
-  name: DataTypes.STRING
+  name: DataTypes.STRING,
+  remark: DataTypes.STRING
 }, {
   paranoid: true,
   tableName: 'role'

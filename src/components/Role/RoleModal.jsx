@@ -1,6 +1,6 @@
 import React from 'react';
 import {Form, Input, Modal} from 'antd';
-import {isUserExists} from '../../services/user';
+import {isRoleExists} from '../../services/role';
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -12,8 +12,7 @@ const formItemLayout = {
   }
 };
 
-const UserModal = ({ form, visible, item = {}, onOk, onCancel }) => {
-
+const RoleModal = ({ form, visible, item = {}, onOk, onCancel }) => {
   const { getFieldDecorator, validateFields, getFieldsValue, } = form;
 
   const handleOk = () => {
@@ -48,9 +47,9 @@ const UserModal = ({ form, visible, item = {}, onOk, onCancel }) => {
       if (item.id) {
         source.id = item.id;
       }
-      //查询当前用户
-      isUserExists(source).then(result => {
-        result ? callback([new Error('抱歉，该用户名已被占用。')]) : callback();
+      //校验唯一
+      isRoleExists(source).then(result => {
+        result ? callback([new Error('抱歉，该名称已存在!')]) : callback();
       }).catch((error) => {
         error.showError && error.showError();
       });
@@ -60,37 +59,20 @@ const UserModal = ({ form, visible, item = {}, onOk, onCancel }) => {
   return (
     <Modal {...modalOpts}>
       <Form horizontal>
-        <FormItem label="姓名：" hasFeedback {...formItemLayout} >
+        <FormItem label="名称：" hasFeedback {...formItemLayout} >
           {getFieldDecorator('name', {
             initialValue: item.name,
             rules: [
               { required: true, message: '名称未填写' },
-            ],
-          })(
-            <Input type="text" />
-          )}
-        </FormItem>
-        <FormItem label="账号：" hasFeedback {...formItemLayout} >
-          {getFieldDecorator('account', {
-            initialValue: item.account,
-            rules: [
-              { required: true, message: '不能为空' },
               { validator: checkAccount }
             ],
           })(
             <Input type="text" />
           )}
         </FormItem>
-        <FormItem label="手机号：" hasFeedback {...formItemLayout} >
-          {getFieldDecorator('mobile', {
-            initialValue: item.mobile
-          })(
-            <Input type="text" />
-          )}
-        </FormItem>
-        <FormItem label="email：" hasFeedback {...formItemLayout} >
-          {getFieldDecorator('email', {
-            initialValue: item.email
+        <FormItem label="备注：" hasFeedback {...formItemLayout} >
+          {getFieldDecorator('remark', {
+            initialValue: item.remark
           })(
             <Input type="text" />
           )}
@@ -100,7 +82,7 @@ const UserModal = ({ form, visible, item = {}, onOk, onCancel }) => {
   );
 };
 
-UserModal.propTypes = {};
-UserModal.defaultProps = {};
+RoleModal.propTypes = {};
+RoleModal.defaultProps = {};
 
-export default Form.create()(UserModal);
+export default Form.create()(RoleModal);

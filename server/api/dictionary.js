@@ -107,12 +107,8 @@ router.post('/exist', async(req, res) => {
     if (!req.isEmpty(model.id)) {
       model.id = { '$ne': model.id }
     }
-    const dic = await db.Dictionary.findOne({ where: model });
-    if (dic) {
-      return res.success(true);
-    }
-    return res.success(false);
-
+    const result = await db.Dictionary.findOne({ where: model });
+    return res.success(result !== null);
   } catch (error) {
     return res.error(error.message);
   }
@@ -124,12 +120,8 @@ router.post('/mx/exist', async(req, res) => {
     if (!req.isEmpty(model.id)) {
       model.id = { '$ne': model.id }
     }
-    const dic = await db.DictionaryMx.findOne({ where: model });
-    if (dic) {
-      return res.success(true);
-    }
-    return res.success(false);
-
+    const result = await db.DictionaryMx.findOne({ where: model });
+    return res.success(result !== null);
   } catch
     (error) {
     return res.error(error.message);

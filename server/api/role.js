@@ -50,4 +50,18 @@ router.delete('/:id', async(req, res) => {
   }
 });
 
+router.post('/exist', async(req, res) => {
+  try {
+    let model = req.body;
+    if (!req.isEmpty(model.id)) {
+      model.id = { '$ne': model.id }
+    }
+    const result = await db.Role.findOne({ where: model });
+    return res.success(result !== null);
+  } catch
+    (error) {
+    return res.error(error.message);
+  }
+});
+
 module.exports = router;

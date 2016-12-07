@@ -85,11 +85,8 @@ router.post('/exist', async(req, res) => {
     if (!req.isEmpty(model.id)) {
       model.id = { '$ne': model.id }
     }
-    const dic = await db.User.findOne({ where: model });
-    if (dic) {
-      return res.success(true);
-    }
-    return res.success(false);
+    const result = await db.User.findOne({ where: model });
+    return res.success(result !== null);
 
   } catch
     (error) {
