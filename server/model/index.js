@@ -9,14 +9,24 @@ const config = require('../../config/env');
 const sequelize = new Sequelize(config.mysql.database, config.mysql.username, config.mysql.password, { host: config.mysql.host, dialect: 'mysql' });
 const db = {};
 
-// system
-db.User = require('./User')(sequelize, Sequelize);
-db.Role = require('./Role')(sequelize, Sequelize);
-db.Dictionary = require('./Dictionary')(sequelize, Sequelize);
-db.DictionaryMx = require('./DictionaryMx')(sequelize, Sequelize);
-db.Sequences = require('./Sequences')(sequelize, Sequelize);
+const modalNames = [
+  'User',
+  'Role',
+  'UserRole',
+  'Dictionary',
+  'DictionaryMx',
+  'Sequences'
+];
 
-// business
+modalNames.forEach(name => {
+  db[name] = require(`./${name}`)(sequelize, Sequelize);
+});
+// db.User = require('./User')(sequelize, Sequelize);
+// db.Role = require('./Role')(sequelize, Sequelize);
+// db.UserRoleRe = require('./UserRoleRe')(sequelize, Sequelize);
+// db.Dictionary = require('./Dictionary')(sequelize, Sequelize);
+// db.DictionaryMx = require('./DictionaryMx')(sequelize, Sequelize);
+// db.Sequences = require('./Sequences')(sequelize, Sequelize);
 
 Object.keys(db).forEach((modelName) => {
   if ('associate' in db[modelName]) {

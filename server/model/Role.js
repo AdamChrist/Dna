@@ -11,5 +11,12 @@ module.exports = (sequelize, DataTypes) => sequelize.define('role', {
   remark: DataTypes.STRING
 }, {
   paranoid: true,
-  tableName: 'role'
+  tableName: 'sys_role',
+  classMethods: {
+    associate: (models) => {
+      const { User, Role, UserRole } = models;
+      Role.belongsToMany(User, { 'through': UserRole });
+    }
+  }
 });
+

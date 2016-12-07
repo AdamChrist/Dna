@@ -1,6 +1,6 @@
 const moment = require('moment');
 module.exports = (sequelize, DataTypes) => {
-  const Sequences = sequelize.define('Sequences',
+  const Sequences = sequelize.define('sequences',
     {
       id: {
         type: DataTypes.INTEGER,
