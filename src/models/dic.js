@@ -13,12 +13,10 @@ export default {
     dicMxList: [],
     dicModal: {
       visible: false,
-      isAdd: false,
       item: {}
     },
     dicMxModal: {
       visible: false,
-      isAdd: false,
       item: {}
     },
   },
@@ -71,12 +69,11 @@ export default {
       return { ...state, ...payload };
     },
     showDicModal(state, { payload }) {
-      const { isAdd, id } = payload;
-      if (isAdd) {
-        return { ...state, dicModal: { ...state.dicModal, isAdd, item: {}, visible: true } };
+      if (payload && payload.id) {
+        const item = _.find(state.dicList, { 'id': payload.id });
+        return { ...state, dicModal: { ...state.dicModal, item, visible: true } };
       } else {
-        const item = _.find(state.dicList, { 'id': id });
-        return { ...state, dicModal: { ...state.dicModal, isAdd, item, visible: true } };
+        return { ...state, dicModal: { ...state.dicModal, item: {}, visible: true } };
       }
     },
     hideDicModal(state) {

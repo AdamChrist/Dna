@@ -12,7 +12,7 @@ const formItemLayout = {
   }
 };
 
-const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
+const UserModal = ({ form, visible, item = {}, onOk, onCancel }) => {
 
   const { getFieldDecorator, validateFields, getFieldsValue, } = form;
 
@@ -28,7 +28,7 @@ const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
 
   const modalOpts = {
     maskClosable: false,
-    title: `${isAdd ? '新增' : '修改'}用户`,
+    title: `${!item.id ? '新增' : '修改'}用户`,
     visible,
     onOk: handleOk,
     onCancel,
@@ -42,10 +42,10 @@ const UserModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
    * @param source
    */
   const checkAccount = (rule, value, callback, source) => {
-    if (!value) {
+    if (!value || value === item.account) {
       callback();
     } else {
-      if (!isAdd) {
+      if (item.id) {
         source.id = item.id;
       }
       //查询当前用户

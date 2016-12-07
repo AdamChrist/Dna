@@ -20,13 +20,12 @@ const DicPage = ({ dic, dispatch }) => {
     onEdit(id) {
       dispatch({
         type: 'dic/showDicModal',
-        payload: { isAdd: false, id }
+        payload: { id }
       });
     },
     onAdd(){
       dispatch({
-        type: 'dic/showDicModal',
-        payload: { isAdd: true }
+        type: 'dic/showDicModal'
       });
     }
   };
@@ -58,7 +57,6 @@ const DicPage = ({ dic, dispatch }) => {
       dispatch({
         type: 'dic/showDicMxModal',
         payload: {
-          isAdd: false,
           item: data
         }
       });
@@ -67,7 +65,6 @@ const DicPage = ({ dic, dispatch }) => {
       dispatch({
         type: 'dic/showDicMxModal',
         payload: {
-          isAdd: true,
           item: { dictionaryId: dicSelectKey }
         }
       });

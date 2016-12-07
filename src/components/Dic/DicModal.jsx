@@ -13,7 +13,7 @@ const formItemLayout = {
   }
 };
 
-const DicModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
+const DicModal = ({ form, visible, item = {}, onOk, onCancel }) => {
 
   const { getFieldDecorator, validateFields, getFieldsValue, } = form;
 
@@ -29,7 +29,7 @@ const DicModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
 
   const modalOpts = {
     maskClosable: false,
-    title: `${isAdd ? '新增' : '修改'}数据字典类别`,
+    title: `${item.id ? '新增' : '修改'}数据字典类别`,
     visible,
     onOk: handleOk,
     onCancel,
@@ -43,10 +43,10 @@ const DicModal = ({ form, visible, isAdd, item = {}, onOk, onCancel }) => {
    * @param source
    */
   const isExist = (rule, value, callback, source) => {
-    if (!value) {
+    if (!value || value === item.code) {
       callback();
     } else {
-      if (!isAdd) {
+      if (item.id) {
         source.id = item.id;
       }
       //查询当前用户

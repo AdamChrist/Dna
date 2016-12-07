@@ -3,8 +3,8 @@ import {Input} from 'antd';
 import AdvancedSearchForm from '../../components/Common/AdvancedSearchForm';
 import {UserList, UserModal} from '../../components/User';
 
-const UserPage = ({user, dispatch}) => {
-  const {userList, visible, isAdd, item} = user;
+const UserPage = ({ user, dispatch }) => {
+  const { userList, visible, item } = user;
   //用户列表属性
   const userListProps = {
     dataSource: userList,
@@ -18,7 +18,6 @@ const UserPage = ({user, dispatch}) => {
       dispatch({
         type: 'user/showModal',
         payload: {
-          isAdd: false,
           item: data
         }
       });
@@ -27,7 +26,6 @@ const UserPage = ({user, dispatch}) => {
       dispatch({
         type: 'user/showModal',
         payload: {
-          isAdd: true,
           item: {}
         }
       });
@@ -43,16 +41,15 @@ const UserPage = ({user, dispatch}) => {
       });
     },
     formItems: [
-      {label: '姓名', fieldName: 'name.$like', render: <Input placeholder="用户姓名"/>},
-      {label: '账号', fieldName: 'account.$like', render: <Input placeholder="用户账号"/>},
-      {label: '手机号', fieldName: 'mobile.$like', render: <Input placeholder="用户手机号"/>},
+      { label: '姓名', fieldName: 'name.$like', render: <Input placeholder="用户姓名" /> },
+      { label: '账号', fieldName: 'account.$like', render: <Input placeholder="用户账号" /> },
+      { label: '手机号', fieldName: 'mobile.$like', render: <Input placeholder="用户手机号" /> },
     ]
   };
 
   //用户modal的属性
   const userModalProps = {
     item,
-    isAdd,
     visible,
     onOk(data) {
       dispatch({

@@ -13,7 +13,6 @@ export default {
     queryFilter: {},
     item: {},
     visible: false,
-    isAdd: false,
   },
 
   effects: {

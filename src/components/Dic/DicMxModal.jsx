@@ -14,7 +14,7 @@ const formItemLayout = {
     span: 14
   }
 };
-const DicMxModal = ({ form, visible, isAdd, item = {}, onOk, onCancel, dicMxList }) => {
+const DicMxModal = ({ form, visible, item = {}, onOk, onCancel, dicMxList }) => {
   const { getFieldDecorator, validateFields, getFieldsValue, } = form;
 
   const handleOk = () => {
@@ -29,7 +29,7 @@ const DicMxModal = ({ form, visible, isAdd, item = {}, onOk, onCancel, dicMxList
 
   const modalOpts = {
     maskClosable: false,
-    title: `${isAdd ? '新增' : '修改'}数据字典`,
+    title: `${!item.id ? '新增' : '修改'}数据字典`,
     visible,
     onOk: handleOk,
     onCancel,
@@ -43,10 +43,10 @@ const DicMxModal = ({ form, visible, isAdd, item = {}, onOk, onCancel, dicMxList
    * @param source
    */
   const isExist = (rule, value, callback, source) => {
-    if (!value) {
+    if (!value || value === item.code) {
       callback();
     } else {
-      if (!isAdd) {
+      if (item.id) {
         source.id = item.id;
       }
       //查询当前用户
@@ -63,7 +63,7 @@ const DicMxModal = ({ form, visible, isAdd, item = {}, onOk, onCancel, dicMxList
   });
 
   const loop = (data, parentId) => data.map((n) => {
-    const disable = !isAdd && n.id == item.id;
+    const disable = n.id == item.id;
     if (n.children && n.children.length > 0) {
       return (
         <TreeNode value={n.id} key={n.id} title={n.name} disabled={disable}>
