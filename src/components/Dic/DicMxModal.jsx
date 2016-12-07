@@ -49,7 +49,9 @@ const DicMxModal = ({ form, visible, item = {}, onOk, onCancel, dicMxList }) => 
       if (item.id) {
         source.id = item.id;
       }
-      //查询当前用户
+      //编码只判断类别内是否重复
+      source.dictionaryId = item.dictionaryId;
+      //校验重复
       isDicMxCodeExists(source).then(result => {
         result ? callback([new Error('抱歉，该编码已被占用。')]) : callback();
       }).catch((error) => {
@@ -57,7 +59,7 @@ const DicMxModal = ({ form, visible, item = {}, onOk, onCancel, dicMxList }) => 
       });
     }
   };
-
+  //转成树形结构
   const treeList = convertToTree(dicMxList).filter((n) => {
     return !n.pid;
   });

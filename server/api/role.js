@@ -32,7 +32,7 @@ router.post('/', async(req, res) => {
     }
     return res.success(result);
   } catch (error) {
-    return res.error(error);
+    return res.error(error.message);
   }
 });
 
@@ -46,7 +46,7 @@ router.delete('/:id', async(req, res) => {
     const result = await db.Role.destroy({ where: { id: id } });
     return res.success(result);
   } catch (error) {
-    return res.error(error);
+    return res.error(error.message);
   }
 });
 

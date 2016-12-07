@@ -49,7 +49,7 @@ const DicModal = ({ form, visible, item = {}, onOk, onCancel }) => {
       if (item.id) {
         source.id = item.id;
       }
-      //查询当前用户
+      //校验重复
       isDicCodeExists(source).then(result => {
         result ? callback([new Error('抱歉，该编码已被占用。')]) : callback();
       }).catch((error) => {

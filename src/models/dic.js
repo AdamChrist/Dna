@@ -35,9 +35,12 @@ export default {
     },
     *delDic ({ payload }, { call, put }){
       yield call(dicService.delDic, payload);
-
+      //查询
       yield put({ type: 'queryDic' });
+      //清空类别选择
       yield put({ type: 'selectDic', payload: { dicSelectKey: '' } });
+      //清空数据字典列表
+      yield put({ type: 'resetDicMx' });
     },
     *queryDicMx({ payload }, { call, put }){
       yield put({ type: 'selectDic', payload: { dicSelectKey: payload } });
@@ -88,6 +91,9 @@ export default {
     hideDicMxModal(state) {
       return { ...state, dicMxModal: { ...state.dicMxModal, visible: false } };
     },
+    resetDicMx(state){
+      return { ...state, dicMxList: [] };
+    }
   },
 
   subscriptions: {

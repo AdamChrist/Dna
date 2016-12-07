@@ -47,6 +47,7 @@ const DicPage = ({ dic, dispatch }) => {
 
   const dicListProps = {
     dicMxList,
+    dicSelectKey,
     onDelete(id) {
       dispatch({
         type: 'dic/delDicMx',

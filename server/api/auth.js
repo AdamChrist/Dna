@@ -66,7 +66,7 @@ router.post('/login', async function (req, res, next) {
         return res.success(user);
       }
     } catch (error) {
-      return res.error(error);
+      return res.error(error.message);
     }
     return res.error('账户名或密码错误!');
   }
@@ -144,7 +144,7 @@ router.post('/logout', async(req, res) => {
 //     }
 //   }
 //   catch (error) {
-//     res.error(error);
+//     res.error(error.message);
 //   }
 //
 // })

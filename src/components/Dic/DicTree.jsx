@@ -16,11 +16,11 @@ const DicTree = ({ dicList, dicSelectKey, onAdd, onDelete, onEdit, onSelect }) =
   const disabled = dicSelectKey === '';
 
   return (
-    <Card title="数据字典">
+    <Card title="字典类别">
       <Row type="flex" justify="center" className='ant-table-title'>
         <Button type="primary" onClick={() => onAdd()}>新增</Button>
         <Button onClick={() => onEdit(dicSelectKey)} disabled={disabled}>编辑</Button>
-        <Popconfirm title={'确认删除数据字典?'} placement="rightTop" onConfirm={() => onDelete(dicSelectKey)}>
+        <Popconfirm title={'确认删除字典类别?数据字典会一起删除!'} placement="rightTop" onConfirm={() => onDelete(dicSelectKey)}>
           <Button disabled={disabled}>删除</Button>
         </Popconfirm>
       </Row>

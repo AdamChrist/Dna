@@ -34,7 +34,7 @@ router.post('/', async(req, res) => {
     }
     return res.success(result);
   } catch (error) {
-    return res.error(error);
+    return res.error(error.message);
   }
 });
 
@@ -48,7 +48,7 @@ router.delete('/:id', async(req, res) => {
     const result = await db.Dictionary.destroy({ where: { id: id } });
     return res.success(result);
   } catch (error) {
-    return res.error(error);
+    return res.error(error.message);
   }
 });
 
@@ -68,7 +68,7 @@ router.post('/mx', async(req, res) => {
     }
     return res.success(result);
   } catch (error) {
-    return res.error(error);
+    return res.error(error.message);
   }
 });
 
@@ -82,7 +82,7 @@ router.delete('/mx/:id', async(req, res) => {
     const result = await db.DictionaryMx.destroy({ where: { id: id } });
     return res.success(result);
   } catch (error) {
-    return res.error(error);
+    return res.error(error.message);
   }
 });
 
@@ -96,7 +96,7 @@ router.get('/:id/mx', async(req, res) => {
     const result = await db.DictionaryMx.findAndCountAll({ where: { dictionaryId: id } });
     return res.success(result);
   } catch (error) {
-    res.error(error);
+    res.error(error.message);
   }
 });
 
@@ -113,8 +113,7 @@ router.post('/exist', async(req, res) => {
     }
     return res.success(false);
 
-  } catch
-    (error) {
+  } catch (error) {
     return res.error(error.message);
   }
 });

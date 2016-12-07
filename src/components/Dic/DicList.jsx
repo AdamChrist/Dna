@@ -1,9 +1,23 @@
 import React from 'react';
-import {Table, Button, Popconfirm, Card} from 'antd';
+import {Table, Button, Popconfirm, Card, notification} from 'antd';
 
 import {convertToTree} from '../../utils/converter';
 
-const DicList = ({ onAdd, onDelete, onEdit, dicMxList }) => {
+const DicList = ({ onAdd, onDelete, onEdit, dicMxList, dicSelectKey }) => {
+
+  const handleDel = (id) => {
+    const children = dicMxList.filter(n => {
+      return n.pid == id
+    });
+    if (children.length > 0) {
+      notification.error({
+        message: '错误',
+        description: '存在子节点,请先删除子节点!',
+      });
+      return;
+    }
+    onDelete(id);
+  };
 
   const columns = [
     {
@@ -24,12 +38,15 @@ const DicList = ({ onAdd, onDelete, onEdit, dicMxList }) => {
       render: (text, record) =>
         <Button.Group>
           <Button size="small" type="primary" onClick={() => onEdit(record)}>编辑</Button>
-          <Popconfirm placement="top" title={'确认删除?'} onConfirm={() => onDelete(record.id)}>
+          <Popconfirm placement="top" title={'确认删除?'} onConfirm={() => handleDel(record.id)}>
             <Button type="default" size="small">删除</Button>
           </Popconfirm>
         </Button.Group>
     }];
 
+  //按钮是否可以用
+  const disabled = dicSelectKey === '';
+  //为树形 table 添加 key 的字段 ,并把线性结构转为树形结构
   const treeList = convertToTree(dicMxList.map(n => Object.assign({ key: n.id }, n))).filter((n) => {
     return !n.pid;
   });
@@ -42,8 +59,7 @@ const DicList = ({ onAdd, onDelete, onEdit, dicMxList }) => {
         title={() =>
           (
             <div >
-              <Button type="primary" onClick={() => onAdd()}>新增</Button>
-              <Button onClick={() => onAdd()}>批量删除</Button>
+              <Button type="primary" disabled={disabled} onClick={() => onAdd()}>新增</Button>
             </div>
           )}
       />
