@@ -1,6 +1,7 @@
 /**
  * Created by haojiachen on 2016/12/7.
  */
+const baseRouter = require('../utils/baseRouter');
 const router = require('express').Router();
 const db = require('../model');
 /**
@@ -50,18 +51,4 @@ router.delete('/:id', async(req, res) => {
   }
 });
 
-router.post('/exist', async(req, res) => {
-  try {
-    let model = req.body;
-    if (!req.isEmpty(model.id)) {
-      model.id = { '$ne': model.id }
-    }
-    const result = await db.Menu.findOne({ where: model });
-    return res.success(result !== null);
-  } catch
-    (error) {
-    return res.error(error.message);
-  }
-});
-
-module.exports = router;
+module.exports = baseRouter(router, 'Menu');

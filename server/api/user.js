@@ -1,6 +1,7 @@
 /**
  * Created by haojiachen on 2016/7/8.
  */
+const baseRouter = require('../utils/baseRouter');
 const router = require('express').Router();
 const db = require('../model');
 const md5 = require('js-md5');
@@ -76,22 +77,4 @@ router.post('/pwd', async(req, res) => {
   }
 });
 
-/**
- * 判断用户名是否在
- */
-router.post('/exist', async(req, res) => {
-  try {
-    let model = req.body;
-    if (!req.isEmpty(model.id)) {
-      model.id = { '$ne': model.id }
-    }
-    const result = await db.User.findOne({ where: model });
-    return res.success(result !== null);
-
-  } catch
-    (error) {
-    return res.error(error.message);
-  }
-});
-
-module.exports = router;
+module.exports = baseRouter(router, 'User');
