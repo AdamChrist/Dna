@@ -13,6 +13,7 @@ export default {
     queryFilter: {},
     item: {},
     visible: false,
+    pwdVisible: false
   },
 
   effects: {
@@ -45,6 +46,12 @@ export default {
     },
     hideModal(state) {
       return { ...state, visible: false };
+    },
+    showPwdModal(state, { payload }) {
+      return { ...state, ...payload, pwdVisible: true };
+    },
+    hidePwdModal(state) {
+      return { ...state, pwdVisible: false };
     },
   },
 

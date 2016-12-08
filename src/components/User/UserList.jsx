@@ -30,7 +30,7 @@ const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource, pagination
       render: (text, record) =>
         <Button.Group>
           <Button size="small" onClick={() => onEdit(record)}>编辑</Button>
-          <Button type="primary" size="small" onClick={() => onChangePwd(record.id)}>重置密码</Button>
+          <Button type="primary" size="small" onClick={() => onChangePwd(record)}>重置密码</Button>
           <Popconfirm placement="top" title={'确认删除?'} onConfirm={() => onDelete(record.id)}>
             <Button type="default" size="small">删除</Button>
           </Popconfirm>

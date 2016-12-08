@@ -1,10 +1,10 @@
 import React, {PropTypes} from 'react';
 import {Input} from 'antd';
 import AdvancedSearchForm from '../../components/Common/AdvancedSearchForm';
-import {UserList, UserModal} from '../../components/User';
+import {UserList, UserModal, ResetPwdModal} from '../../components/User';
 
 const UserPage = ({ user, role, dispatch }) => {
-  const { userList, visible, item } = user;
+  const { userList, visible, item, pwdVisible } = user;
   //用户列表属性
   const userListProps = {
     dataSource: userList,
@@ -27,6 +27,14 @@ const UserPage = ({ user, role, dispatch }) => {
         type: 'user/showModal',
         payload: {
           item: {}
+        }
+      });
+    },
+    onChangePwd(data){
+      dispatch({
+        type: 'user/showPwdModal',
+        payload: {
+          item: data
         }
       });
     }
@@ -65,16 +73,33 @@ const UserPage = ({ user, role, dispatch }) => {
     },
   };
 
+  const pwdModalProps = {
+    item,
+    pwdVisible,
+    onOk(data) {
+      dispatch({ type: 'user/hidePwdModal' });
+      dispatch({ type: 'user/save', payload: data });
+    },
+    onCancel() {
+      dispatch({
+        type: 'user/hidePwdModal'
+      });
+    },
+  };
+
   // 解决 Form.create initialValue 的问题
   // 每次创建一个全新的组件, 而不做diff
   const UserModalGen = () =>
     <UserModal {...userModalProps} />;
+  const PwdModalGen = () =>
+    <ResetPwdModal {...pwdModalProps} />;
 
   return (
     <div>
       <AdvancedSearchForm {...userSearchProps} />
       <UserList {...userListProps} />
       <UserModalGen />
+      <PwdModalGen />
     </div>
   );
 };

@@ -61,7 +61,7 @@ router.post('/login', async function (req, res, next) {
         //保存token
         const token = saveToken(user.id, expireTime);
         //设置cookie
-        res.cookie('token', token, { expires: expireTime, httpOnly: true });
+        res.cookie('token', token, { expires: new Date(expireTime), httpOnly: true });
         //返回token
         return res.success(user);
       }

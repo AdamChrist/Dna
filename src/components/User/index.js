@@ -3,5 +3,6 @@
  */
 import UserList from './UserList';
 import UserModal from './UserModal';
+import ResetPwdModal from './ResetPwdModal';
 
-export {UserList, UserModal};
+export {UserList, UserModal, ResetPwdModal};
