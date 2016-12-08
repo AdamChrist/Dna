@@ -10,12 +10,18 @@ const sequelize = new Sequelize(config.mysql.database, config.mysql.username, co
 const db = {};
 
 const modalNames = [
+  'Sequences',
+  'Dictionary',
+  'DictionaryMx',
   'User',
   'Role',
   'UserRole',
-  'Dictionary',
-  'DictionaryMx',
-  'Sequences'
+  'Permission',
+  'RolePermission',
+  'Operation',
+  'OperationPermission',
+  'Menu',
+  'MenuPermission'
 ];
 
 modalNames.forEach(name => {

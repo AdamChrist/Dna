@@ -15,5 +15,10 @@ module.exports = (sequelize, DataTypes) => sequelize.define('menu', {
   sortNo: DataTypes.INTEGER,
 }, {
   paranoid: true,
-  tableName: 'sys_menu'
+  tableName: 'sys_menu',
+  classMethods: {
+    associate: ({ Menu, Permission, MenuPermission }) => {
+      Menu.belongsToMany(Permission, { through: MenuPermission })
+    }
+  }
 });
