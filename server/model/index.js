@@ -9,30 +9,22 @@ const config = require('../../config/env');
 const sequelize = new Sequelize(config.mysql.database, config.mysql.username, config.mysql.password, { host: config.mysql.host, dialect: 'mysql' });
 const db = {};
 
-const modalNames = [
-  'Sequences',
-  'Dictionary',
-  'DictionaryMx',
-  'User',
-  'Role',
-  'UserRole',
-  'Permission',
-  'RolePermission',
-  'Operation',
-  'OperationPermission',
-  'Menu',
-  'MenuPermission'
-];
-
-modalNames.forEach(name => {
-  db[name] = require(`./${name}`)(sequelize, Sequelize);
-});
-// db.User = require('./User')(sequelize, Sequelize);
-// db.Role = require('./Role')(sequelize, Sequelize);
-// db.UserRoleRe = require('./UserRoleRe')(sequelize, Sequelize);
-// db.Dictionary = require('./Dictionary')(sequelize, Sequelize);
-// db.DictionaryMx = require('./DictionaryMx')(sequelize, Sequelize);
-// db.Sequences = require('./Sequences')(sequelize, Sequelize);
+/**
+ * 注册model,方便IDE感知
+ */
+//sys
+db.Dictionary = sequelize.import('./Dictionary');
+db.DictionaryMx = sequelize.import('./DictionaryMx');
+db.Sequences = sequelize.import('./Sequences');
+db.User = sequelize.import('./User');
+db.Role = sequelize.import('./Role');
+db.UserRole = sequelize.import('./UserRole');
+db.Permission = sequelize.import('./Permission');
+db.RolePermission = sequelize.import('./RolePermission');
+db.Menu = sequelize.import('./Menu');
+db.MenuPermission = sequelize.import('./MenuPermission');
+db.Operation = sequelize.import('./Operation');
+db.OperationPermission = sequelize.import('./OperationPermission');
 
 Object.keys(db).forEach((modelName) => {
   if ('associate' in db[modelName]) {
@@ -44,6 +36,25 @@ db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
 module.exports = db;
+
+// const modalNames = [
+//   'Sequences',
+//   'Dictionary',
+//   'DictionaryMx',
+//   'User',
+//   'Role',
+//   'UserRole',
+//   'Permission',
+//   'RolePermission',
+//   'Operation',
+//   'OperationPermission',
+//   'Menu',
+//   'MenuPermission'
+// ];
+//
+// modalNames.forEach(name => {
+//   db[name] = require(`./${name}`)(sequelize, Sequelize);
+// });
 
 // const fs = require("fs");
 // fs.readdirSync(__dirname)
