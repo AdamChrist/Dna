@@ -3,7 +3,7 @@ import {Input} from 'antd';
 import AdvancedSearchForm from '../../components/Common/AdvancedSearchForm';
 import {UserList, UserModal} from '../../components/User';
 
-const UserPage = ({ user, dispatch }) => {
+const UserPage = ({ user, role, dispatch }) => {
   const { userList, visible, item } = user;
   //用户列表属性
   const userListProps = {
@@ -49,6 +49,7 @@ const UserPage = ({ user, dispatch }) => {
 
   //用户modal的属性
   const userModalProps = {
+    roleList: role.roleList,
     item,
     visible,
     onOk(data) {

@@ -56,8 +56,6 @@ module.exports = db;
 //   });
 
 
-
-
 // db.TeacherRecord.findOne({ include: { model: db.Teacher } }).then(result=>console.log(JSON.stringify(result)));
 
 //
@@ -86,25 +84,4 @@ module.exports = db;
  users: users
  });
  });
-
- module.exports = function (sequelize, DataTypes) {
- var User = sequelize.define("User", {
- username: { type: DataTypes.STRING, unique: true },
- taskName: {
- type: DataTypes.VIRTUAL,
- get: function () {
- console.log('virtual', this.dataValues.Task.title)
- return this.dataValues.Task.title;
- },
- }
- }, {
- paranoid: true,
- classMethods: {
- associate: function (models) {
- User.belongsTo(models.Task)
- }
- }
- });
-
- return User;
- };*/
+ */

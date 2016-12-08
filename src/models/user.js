@@ -52,10 +52,8 @@ export default {
     setup({ dispatch, history }) {
       history.listen(location => {
         if (location.pathname === '/app/user') {
-          dispatch({
-            type: 'query',
-            payload: location.query
-          });
+          dispatch({ type: 'query', payload: location.query });
+          dispatch({ type: 'role/query' });
         }
       });
     },

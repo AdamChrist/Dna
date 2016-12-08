@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => sequelize.define('user', {
   tableName: 'sys_user',
   classMethods: {
     associate: ({ User, Role, UserRole }) => {
-      User.belongsToMany(Role, { through: UserRole });
+      User.belongsToMany(Role, { through: { model: UserRole, unique: false }, constraints: false });
     }
   }
 });

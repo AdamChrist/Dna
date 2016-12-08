@@ -27,23 +27,20 @@ router.post('/', async(req, res) => {
   try {
     const model = req.body;
     if (req.isEmpty(model)) return res.error('缺少参数');
-    let result = {};
+    let user = db.User.build(model);
+
     if (req.isEmpty(model.id)) {
       model.password = DEFAULT_PWD;
-      result = await db.User.create(model);
+      await db.User.create(model);
+    } else {
+      await db.User.update(model, { where: { id: model.id } });
     }
-    else {
-      result = await db.User.update(model,
-        {
-          where: {
-            id: model.id
-          }
-        },
-        {
-          fields: ['account', 'mobile', 'email', 'name']
-        });
-    }
-    return res.success(result);
+
+    //设置user和role的关联关系
+    const userRoles = model.roles || [];
+    await user.setRoles(userRoles);
+
+    return res.success();
   } catch (error) {
     return res.error(error.message);
   }

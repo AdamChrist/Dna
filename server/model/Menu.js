@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => sequelize.define('menu', {
   tableName: 'sys_menu',
   classMethods: {
     associate: ({ Menu, Permission, MenuPermission }) => {
-      Menu.belongsToMany(Permission, { through: MenuPermission })
+      Menu.belongsToMany(Permission, { through: { model: MenuPermission, unique: false }, constraints: false })
     }
   }
 });

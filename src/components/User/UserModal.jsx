@@ -1,8 +1,9 @@
 import React from 'react';
-import {Form, Input, Modal} from 'antd';
+import {Form, Input, Modal, Select} from 'antd';
 import {isUserExists} from '../../services/user';
 
 const FormItem = Form.Item;
+const Option = Select.Option;
 const formItemLayout = {
   labelCol: {
     span: 6
@@ -12,7 +13,7 @@ const formItemLayout = {
   }
 };
 
-const UserModal = ({ form, visible, item = {}, onOk, onCancel }) => {
+const UserModal = ({ form, visible, item = {}, onOk, onCancel, roleList }) => {
 
   const { getFieldDecorator, validateFields, getFieldsValue, } = form;
 
@@ -93,6 +94,18 @@ const UserModal = ({ form, visible, item = {}, onOk, onCancel }) => {
             initialValue: item.email
           })(
             <Input type="text" />
+          )}
+        </FormItem>
+        <FormItem label="角色：" {...formItemLayout} >
+          {getFieldDecorator('roles', {
+            initialValue: item.roles ? item.roles.map(n => n.id) : []
+          })(
+            <Select
+              multiple
+              placeholder="请选择"
+            >
+              {roleList.map(n => (<Option key={n.id}>{n.name}</Option>))}
+            </Select>
           )}
         </FormItem>
       </Form>
