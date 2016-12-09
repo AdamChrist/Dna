@@ -28,7 +28,7 @@ const isAdmin = (model) => {
 const saveToken = (id, expireTime) => {
   const token = jwt.sign({
     userId: id,
-    expireTime: expireTime || Date.now() + 1000 * 60 * 60
+    expireTime: expireTime || Date.now() + 1000 * 60 * 60 * 24
   }, config.secret);
   redis.set(id, token, 'EX', 60 * 60 * 24 * 7);
   return token;
@@ -49,19 +49,19 @@ router.post('/login', async function (req, res, next) {
     if (isAdmin(model)) {
       let token = saveToken(ADMIN_ID);
       //设置cookie
-      res.cookie('token', token, { expires: new Date(expireTime), httpOnly: true });
-      return res.success({ userName: '超级管理员' });
+      res.cookie('token', token, {expires: new Date(expireTime), httpOnly: true});
+      return res.success({userName: '超级管理员'});
     }
 
     try {
       //查找用户
-      const user = await db.User.findOne({ where: { account: model.account } });
+      const user = await db.User.findOne({where: {account: model.account}});
 
       if (user && user.password == model.password) {
         //保存token
         const token = saveToken(user.id, expireTime);
         //设置cookie
-        res.cookie('token', token, { expires: new Date(expireTime), httpOnly: true });
+        res.cookie('token', token, {expires: new Date(expireTime), httpOnly: true});
         //返回token
         return res.success(user);
       }

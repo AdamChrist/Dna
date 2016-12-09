@@ -6,7 +6,10 @@
 const Sequelize = require('sequelize');
 const config = require('../../config/env');
 
-const sequelize = new Sequelize(config.mysql.database, config.mysql.username, config.mysql.password, { host: config.mysql.host, dialect: 'mysql' });
+const sequelize = new Sequelize(config.mysql.database, config.mysql.username, config.mysql.password, {
+  host: config.mysql.host,
+  dialect: 'mysql'
+});
 const db = {};
 
 /**
@@ -19,12 +22,10 @@ db.Sequences = sequelize.import('./Sequences');
 db.User = sequelize.import('./User');
 db.Role = sequelize.import('./Role');
 db.UserRole = sequelize.import('./UserRole');
-db.Permission = sequelize.import('./Permission');
-db.RolePermission = sequelize.import('./RolePermission');
 db.Menu = sequelize.import('./Menu');
-db.MenuPermission = sequelize.import('./MenuPermission');
+db.RoleMenu = sequelize.import('./RoleMenu');
 db.Operation = sequelize.import('./Operation');
-db.OperationPermission = sequelize.import('./OperationPermission');
+db.RoleOperation = sequelize.import('./RoleOperation');
 
 Object.keys(db).forEach((modelName) => {
   if ('associate' in db[modelName]) {

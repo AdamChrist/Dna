@@ -18,3 +18,6 @@ export async function del(id) {
 export async function isRoleExists(params) {
   return request.post('api/role/exist', params);
 }
+export async function saveRoleMenu(params) {
+  return request.post('api/role/menu', params);
+}

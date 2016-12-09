@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => sequelize.define('operation', {
   paranoid: true,
   tableName: 'sys_operation',
   classMethods: {
-    associate: ({ Operation, Permission, OperationPermission }) => {
-      Operation.belongsToMany(Permission, { through: { model: OperationPermission, unique: false }, constraints: false });
+    associate: ({Operation, Role, RoleOperation}) => {
+      Operation.belongsToMany(Role, {through: {model: RoleOperation, unique: false}, constraints: false});
     }
   }
 });

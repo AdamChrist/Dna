@@ -1,8 +1,6 @@
 import React from "react";
 import {Table, Button, Popconfirm} from "antd";
 
-import {convertToTree, sortTree} from '../../utils/converter';
-
 const MenuList = ({onAdd, onDelete, onEdit, menuList}) => {
   const columns = [
     {
@@ -43,16 +41,10 @@ const MenuList = ({onAdd, onDelete, onEdit, menuList}) => {
         </Button.Group>
     }];
 
-
-  //为树形 table 添加 key 的字段 ,并把线性结构转为树形结构
-  const treeList = sortTree(convertToTree(menuList.map(n => Object.assign({key: n.id}, n))).filter((n) => {
-    return !n.pid;
-  }));
-
   return (
     <div>
       <Table
-        dataSource={treeList}
+        dataSource={menuList}
         columns={columns}
         defaultExpandAllRows
         title={() =>

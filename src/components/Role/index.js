@@ -3,5 +3,6 @@
  */
 import RoleList from './RoleList';
 import RoleModal from './RoleModal';
+import MenuModal from './MenuModal';
 
-export {RoleList, RoleModal};
+export {RoleList, RoleModal, MenuModal};

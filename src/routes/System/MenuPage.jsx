@@ -1,11 +1,19 @@
 import React from 'react';
 
+import {convertToTree, sortTree} from '../../utils/converter';
 import {MenuList, MenuModal} from '../../components/Menu';
 
 const MenuPage = ({menu, dispatch}) => {
   const {menuList, visible, item}=menu;
+
+
+  //为树形 table 添加 key 的字段 ,并把线性结构转为树形结构
+  const treeList = sortTree(convertToTree(menuList.map(n => Object.assign({key: n.id}, n))).filter((n) => {
+    return !n.pid;
+  }));
+
   const listProps = {
-    menuList,
+    menuList: treeList,
     onDelete(id) {
       dispatch({
         type: 'menu/del',
@@ -31,7 +39,7 @@ const MenuPage = ({menu, dispatch}) => {
   };
 
   const modalProps = {
-    menuList,
+    menuList: treeList,
     item,
     visible,
     onOk(data) {

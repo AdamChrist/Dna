@@ -13,7 +13,7 @@ const DEFAULT_PWD = md5('123');
 router.post('/query', async(req, res) => {
   try {
     const queryFilter = req.queryFilter(req.body);
-    const result = await db.User.findAndCountAll(queryFilter);
+    const result = await db.User.findAndCountAll({...queryFilter, include: [{model: db.Role}]});
     return res.success(result);
   } catch (error) {
     return res.error(error.message);
@@ -33,7 +33,7 @@ router.post('/', async(req, res) => {
       model.password = DEFAULT_PWD;
       await db.User.create(model);
     } else {
-      await db.User.update(model, { where: { id: model.id } });
+      await db.User.update(model, {where: {id: model.id}});
     }
 
     //设置user和role的关联关系
@@ -53,7 +53,7 @@ router.delete('/:id', async(req, res) => {
   try {
     const id = req.params.id;
     if (req.isEmpty(id)) return res.error('参数不能为空');
-    const result = await db.User.destroy({ where: { id: id } });
+    const result = await db.User.destroy({where: {id: id}});
     return res.success(result);
   } catch (error) {
     return res.error(error.message);
@@ -67,7 +67,7 @@ router.post('/pwd', async(req, res) => {
   try {
     const body = req.body;
     if (req.isEmpty(body)) return res.error('重置密码失败，缺少参数！');
-    const result = await db.User.update(body, { where: { id: body.id } }, { fields: ['password'] });
+    const result = await db.User.update(body, {where: {id: body.id}}, {fields: ['password']});
     return res.success(result);
   } catch (error) {
     return res.error(error.message);

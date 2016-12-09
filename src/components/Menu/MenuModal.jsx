@@ -50,11 +50,6 @@ const MenuModal = ({menuList, form, visible, item = {}, onOk, onCancel}) => {
     }
   };
 
-  //转成树形结构
-  const treeList = convertToTree(menuList).filter((n) => {
-    return !n.pid;
-  });
-
   const loop = (data, parentId) => data.map((n) => {
     const disable = n.id == item.id;
     if (n.children && n.children.length > 0) {
@@ -117,7 +112,7 @@ const MenuModal = ({menuList, form, visible, item = {}, onOk, onCancel}) => {
             initialValue: item.pid,
           })(
             <TreeSelect style={{width: '100%'}} placeholder="请选择" allowClear>
-              {loop(treeList)}
+              {loop(menuList)}
             </TreeSelect>
           )}
         </FormItem>
