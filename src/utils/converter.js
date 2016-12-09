@@ -14,7 +14,7 @@ export const convertToTree = (array, pid = 'pid', childrenName = 'children') => 
   for (const i in list) {
     const currentData = list[i];
     // 父节点
-    const parentData = _.find(list, { id: currentData[pid] });
+    const parentData = _.find(list, {id: currentData[pid]});
     // 如果没有父节点.则为跟节点
     if (!parentData) {
       targetData.push(currentData);
@@ -24,4 +24,15 @@ export const convertToTree = (array, pid = 'pid', childrenName = 'children') => 
     parentData[childrenName].push(currentData);
   }
   return targetData;
+};
+
+export const sortTree = (treeList) => {
+  const orderList = _.sortBy(treeList, ['sortNo']);
+  orderList.map(n => {
+    if (n.children && n.children.length) {
+      n.children = sortTree(n.children)
+    }
+    return n;
+  });
+  return orderList;
 };

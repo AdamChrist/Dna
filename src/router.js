@@ -10,6 +10,7 @@ import HomePage from './routes/Common/HomePage';
 import UserPage from './routes/System/UserPage';
 import DicPage from './routes/System/DicPage';
 import RolePage from './routes/System/RolePage';
+import MenuPage from './routes/System/MenuPage';
 
 export default function ({ history }) {
   return (
@@ -22,6 +23,7 @@ export default function ({ history }) {
           <Route path='user' component={UserPage} />
           <Route path='dic' component={DicPage} />
           <Route path='role' component={RolePage} />
+          <Route path='menu' component={MenuPage} />
         </Route>
         <Route path='/login' component={LoginPage} onEnter={autoLogin} />
       </Route>
