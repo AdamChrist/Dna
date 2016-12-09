@@ -30,7 +30,6 @@ const MenuModal = ({menuList, visible, selectedMenus = [], onOk, onCancel, onRow
     selectedRowKeys: selectedMenus,
     onChange (selectedRowKeys) {
       console.log('selectedRowKeys changed: ', selectedRowKeys);
-
       // onRowChange(selectedRowKeys);
     },
     onSelect(record, selected, selectedRows){
@@ -52,6 +51,7 @@ const MenuModal = ({menuList, visible, selectedMenus = [], onOk, onCancel, onRow
         //取消当前节点的子节点
         let filterRows = selectedRows.filter(n => n.pid !== record.id);
         if (!filterRows.some(m => m.pid === record.pid)) {
+          //如果当前节点的父节点没有被选中的,则取消父节点
           selectedRowKeys = filterRows.filter(n => n.id !== record.pid).map(n => n.id);
         } else {
           selectedRowKeys = filterRows.map(n => n.id);

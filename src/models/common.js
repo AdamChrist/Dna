@@ -10,13 +10,13 @@ export default {
   namespace: 'common',
 
   state: {
-    user: {}
+    user: {},
+    menus: []
   },
 
   effects: {
-    * login ({ payload }, { call, put }){
-      const data = yield call(authService.login, payload);
-      yield put({ type: 'loginSuccess', payload: data });
+    * login ({payload}, {call, put}){
+      yield call(authService.login, payload);
       //跳转登录
       yield put(routerRedux.push('/app'));
       notification.success({
@@ -24,11 +24,16 @@ export default {
         description: `欢迎${data.userName ? data.userName : '您使用!'}`
       });
     },
+    * getUserInfo ({payload}, {call, put}){
+      const user = yield call(authService.getUserInfo);
+      console.log(user);
+      yield put({type: 'getUserInfoSuccess', payload: {user}})
+    },
   },
 
   reducers: {
-    loginSuccess(state, { payload }){
-      return { ...state, user: payload }
+    getUserInfoSuccess(state, {payload}){
+      return {...state, ...payload}
     }
   },
 

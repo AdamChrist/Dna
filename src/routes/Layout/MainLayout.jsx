@@ -11,6 +11,11 @@ class MainLayout extends Component {
     }
   }
 
+  componentWillMount() {
+    const {dispatch} = this.props;
+    dispatch({type: 'common/getUserInfo'})
+  }
+
   handleClick = () => {
     this.setState({
       collapse: !this.state.collapse,

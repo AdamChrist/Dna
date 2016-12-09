@@ -125,6 +125,17 @@ router.post('/logout', async(req, res) => {
   res.error('权限已经失效!');
 });
 
+/**
+ * 获取对应的权限菜单
+ */
+router.get('/user', async(req, res) => {
+  if (req.isEmpty(req.user)) return res.error('获取用户信息失败，请先登录！');
+  //查找用户
+  const user = await db.User.findById(req.user.id, {include: [{model: db.Role, include: [db.Menu]}]});
+
+  return res.success(user);
+});
+
 //
 //
 // router.post('/changepwd', async function (req, res) {
