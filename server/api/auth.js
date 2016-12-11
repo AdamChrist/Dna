@@ -50,7 +50,7 @@ router.post('/login', async function (req, res, next) {
       let token = saveToken(ADMIN_ID);
       //设置cookie
       res.cookie('token', token, {expires: new Date(expireTime), httpOnly: true});
-      return res.success({userName: '超级管理员'});
+      return res.success({name: '超级管理员'});
     }
 
     try {
@@ -131,9 +131,28 @@ router.post('/logout', async(req, res) => {
 router.get('/user', async(req, res) => {
   if (req.isEmpty(req.user)) return res.error('获取用户信息失败，请先登录！');
   //查找用户
-  const user = await db.User.findById(req.user.id, {include: [{model: db.Role, include: [db.Menu]}]});
-
-  return res.success(user);
+  const user = await db.User.findById(req.user.id, {include: [{model: db.Role, include: [db.Menu, db.Operation]}]});
+  //用户拥有的菜单
+  const userMenus = [], userOperations = [];
+  console.log(user);
+  if (user.toJSON()) {
+    const roles = user.roles;
+    if (roles && roles.length > 0) {
+      roles.forEach(n => {
+        const menus = n.menus;
+        if (menus && menus.length > 0) {
+          menus.forEach(m => {
+            //过滤重复的菜单
+            if (!userMenus.some(p => p.code === m.code)) {
+              userMenus.push(m);
+            }
+          })
+        }
+      })
+    }
+    return res.success({id: user.id, name: user.name, account: user.account, mobile: user.mobile, menus: userMenus, operations: userOperations});
+  }
+  return res.error('获取用户信息失败!')
 });
 
 //
