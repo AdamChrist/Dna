@@ -1,7 +1,7 @@
 import React from "react";
 import {Table, Button, Popconfirm} from "antd";
 
-const RoleList = ({onAdd, onDelete, onEdit, roleList, onEditRoleMenu}) => {
+const RoleList = ({onAdd, onDelete, onEdit, roleList, onEditRoleMenu, onEditRoleRights}) => {
   const columns = [
     {
       title: '名称',
@@ -20,7 +20,7 @@ const RoleList = ({onAdd, onDelete, onEdit, roleList, onEditRoleMenu}) => {
         <Button.Group>
           <Button size="small" type="primary" onClick={() => onEdit(record)}>编辑</Button>
           <Button size="small" onClick={() => onEditRoleMenu(record)}>设置菜单</Button>
-          <Button size="small">设置权限</Button>
+          <Button size="small" onClick={() => onEditRoleRights(record)}>设置权限</Button>
           <Popconfirm placement="top" title={'确认删除?'} onConfirm={() => onDelete(record.id)}>
             <Button type="default" size="small">删除</Button>
           </Popconfirm>

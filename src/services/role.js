@@ -21,3 +21,6 @@ export async function isRoleExists(params) {
 export async function saveRoleMenu(params) {
   return request.post('api/role/menu', params);
 }
+export async function saveRoleRights(params) {
+  return request.post('api/role/rights', params);
+}

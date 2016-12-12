@@ -1,9 +1,9 @@
 import React from "react";
-import {RoleModal, RoleList, MenuModal} from "../../components/Role";
+import {RoleModal, RoleList, MenuModal, RightsModal} from "../../components/Role";
 
-const RolePage = ({role, dispatch, menu}) => {
+const RolePage = ({role, dispatch, menu, rights}) => {
 
-  const {roleList, visible, item, menuVisible, selectedMenus} = role;
+  const {roleList, visible, item, menuVisible, selectedMenus, rightsVisible, selectedRights} = role;
 
   const roleListProps = {
     roleList,
@@ -19,6 +19,10 @@ const RolePage = ({role, dispatch, menu}) => {
     onEditRoleMenu(item){
       const selectedMenus = item.menus.map(n => n.id);
       dispatch({type: 'role/showMenuModal', payload: {selectedMenus, item}});
+    },
+    onEditRoleRights(item){
+      const selectedRights = item.rights.map(n => n.id);
+      dispatch({type: 'role/showRightsModal', payload: {selectedRights, item}});
     }
   };
 
@@ -48,6 +52,21 @@ const RolePage = ({role, dispatch, menu}) => {
     }
   };
 
+  const rightsModalProps = {
+    selectedRights,
+    rightsList: rights.rightsList,
+    visible: rightsVisible,
+    onOk() {
+      dispatch({type: 'role/saveRoleRights',});
+    },
+    onCancel() {
+      dispatch({type: 'role/hideRightsModal'});
+    },
+    onRowChange(selectedRowKeys){
+      dispatch({type: 'role/selectRights', payload: selectedRowKeys})
+    }
+  };
+
   const RoleModalGen = () =>
     <RoleModal {...roleModalProps} />;
 
@@ -56,6 +75,7 @@ const RolePage = ({role, dispatch, menu}) => {
       <RoleList {...roleListProps} />
       <RoleModalGen />
       <MenuModal {...menuModalProps} />
+      <RightsModal {...rightsModalProps} />
     </div>
   );
 };

@@ -15,6 +15,8 @@ export default {
     item: {},
     menuVisible: false,
     selectedMenus: [],
+    rightsVisible: false,
+    selectedRights: [],
   },
 
   effects: {
@@ -48,6 +50,18 @@ export default {
       const queryFilter = yield select(state => state.role.queryFilter);
       yield put({type: 'query', payload: queryFilter});
     },
+    * saveRoleRights ({payload}, {call, put, select}){
+      yield put({type: 'hideRightsModal'});
+      //选择的rights和当前的角色信息
+      const selectedRights = yield select(state => state.role.selectedRights);
+      const item = yield select(state => state.role.item);
+      item.rights = selectedRights;
+      //保存角色菜单关联
+      yield call(roleService.saveRoleRights, item);
+      //刷新表单
+      const queryFilter = yield select(state => state.role.queryFilter);
+      yield put({type: 'query', payload: queryFilter});
+    },
   },
 
   reducers: {
@@ -68,6 +82,15 @@ export default {
     },
     selectMenu(state, {payload}){
       return {...state, selectedMenus: payload}
+    },
+    showRightsModal(state, {payload}) {
+      return {...state, ...payload, rightsVisible: true};
+    },
+    hideRightsModal(state) {
+      return {...state, rightsVisible: false};
+    },
+    selectRights(state, {payload}){
+      return {...state, selectedRights: payload}
     }
   },
 
@@ -77,6 +100,7 @@ export default {
         if (location.pathname === '/app/role') {
           dispatch({type: 'query', payload: location.query});
           dispatch({type: 'menu/query', payload: location.query});
+          dispatch({type: 'rights/query', payload: location.query});
         }
       })
     }

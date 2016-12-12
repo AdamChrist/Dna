@@ -4,5 +4,6 @@
 import RoleList from './RoleList';
 import RoleModal from './RoleModal';
 import MenuModal from './MenuModal';
+import RightsModal from './RightsModal';
 
-export {RoleList, RoleModal, MenuModal};
+export {RoleList, RoleModal, MenuModal, RightsModal};
