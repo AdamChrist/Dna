@@ -26,11 +26,10 @@ const isAdmin = (model) => {
  * @param expireTime
  * @returns {*}
  */
-const saveToken = async(id, expireTime) => {
-  const userAuth = await getUserAuth(id);
+const saveToken = (id, expireTime) => {
   const token = jwt.sign({
-    user: userAuth,
-    expireTime: expireTime || Date.now() + 1000 * 60 * 60 * 24
+    user: {id},
+    expireTime: expireTime || Date.now() + 1000 * 60 * 60 * 24 * 7
   }, config.secret);
   redis.set(id, token, 'EX', 60 * 60 * 24 * 7);
   return token;
@@ -97,9 +96,9 @@ router.post('/login', async function (req, res, next) {
     if (req.isEmpty(model)) return res.error('账户名或密码不能为空！');
     //过期时间
     expireTime = Date.now() + 1000 * 60 * 60 * 24 * 7;
-    //如果是超级1管理员登录
+    //如果是超级管理员登录
     if (isAdmin(model)) {
-      let token = await saveToken(ADMIN_ID);
+      let token = saveToken(ADMIN_ID);
       //设置cookie
       res.cookie('token', token, {expires: new Date(expireTime), httpOnly: true});
       return res.success({name: ADMIN_NAME});
@@ -111,7 +110,7 @@ router.post('/login', async function (req, res, next) {
 
       if (user && user.password == model.password) {
         //保存token
-        const token = await saveToken(user.id, expireTime);
+        const token = saveToken(user.id);
         //设置cookie
         res.cookie('token', token, {expires: new Date(expireTime), httpOnly: true});
         //返回token
@@ -131,7 +130,6 @@ router.post('/login', async function (req, res, next) {
 router.post('/checkToken', async(req, res, next) => {
   // 获取token
   const token = getToken(req);
-
   if (token) {
     // 验证token是否过期
     const decoded = jwt.verify(token, config.secret);
@@ -140,6 +138,7 @@ router.post('/checkToken', async(req, res, next) => {
     const expireTime = decoded.expireTime;
     // 如果已过期,返回401
     if (Date.now() >= expireTime) {
+      console.log('如果已过期,返回401')
       // 删除 token
       await redis.del(userId);
     } else {
@@ -164,11 +163,11 @@ router.post('/logout', async(req, res) => {
   if (token) {
     const decoded = jwt.verify(token, config.secret);
     if (decoded) {
-      const userId = decoded.userId;
+      const {id} = decoded.user;
       // 验证token是否存在
-      const result = await redis.get(userId);
+      const result = await redis.get(id);
       if (result === token) {
-        redis.del(userId);
+        redis.del(id);
         res.clearCookie('token');
         return res.success('', '成功登出!');
       }
@@ -187,8 +186,11 @@ router.get('/user', async(req, res) => {
 
   //获取用户的权限
   const userAuth = await getUserAuth(userId);
-  if (userAuth)
+  if (userAuth) {
+    //缓存到redis中
+    redis.set(`auth-${userAuth.id}`, JSON.stringify(userAuth), 'EX', 60 * 60 * 24 * 7);
     return res.success(userAuth);
+  }
 
   return res.error('获取用户信息失败!')
 });
