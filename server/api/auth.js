@@ -9,6 +9,7 @@ const redis = require('../utils/redis');
 const ADMIN_ACCOUNT = config.auth.adminAccount;
 const ADMIN_PWD = config.auth.adminPwd;
 const ADMIN_ID = config.auth.adminId;
+const ADMIN_NAME = config.auth.adminName;
 
 /**
  * 是否是管理员
@@ -25,9 +26,10 @@ const isAdmin = (model) => {
  * @param expireTime
  * @returns {*}
  */
-const saveToken = (id, expireTime) => {
+const saveToken = async(id, expireTime) => {
+  const userAuth = await getUserAuth(id);
   const token = jwt.sign({
-    userId: id,
+    user: userAuth,
     expireTime: expireTime || Date.now() + 1000 * 60 * 60 * 24
   }, config.secret);
   redis.set(id, token, 'EX', 60 * 60 * 24 * 7);
@@ -36,6 +38,56 @@ const saveToken = (id, expireTime) => {
 
 const getToken = (req) => req.cookies.token || req.headers['x-auth-token'];
 
+/**
+ * 获取用户权限相关信息
+ * @param userId
+ */
+const getUserAuth = async(userId) => {
+
+  //如果是管理员登录,获取全部权限
+  if (userId === ADMIN_ID) {
+    //序列化
+    const menus = (await db.Menu.findAll()).map(n => n.toJSON());
+    return {
+      id: ADMIN_ID,
+      name: ADMIN_NAME,
+      account: ADMIN_ACCOUNT,
+      mobile: '00000000000',
+      menus: menus,
+      operations: []
+    }
+  } else {
+    //查找用户
+    const user = await db.User.findById(userId, {include: [{model: db.Role, include: [db.Menu, db.Operation]}]});
+    //用户拥有的菜单
+    const userMenus = [], userOperations = [];
+    if (user.toJSON()) {
+      const roles = user.roles;
+      if (roles && roles.length > 0) {
+        roles.forEach(n => {
+          const menus = n.menus;
+          if (menus && menus.length > 0) {
+            menus.forEach(m => {
+              //过滤重复的菜单
+              if (!userMenus.some(p => p.code === m.code)) {
+                userMenus.push(m);
+              }
+            })
+          }
+        })
+      }
+      return {
+        id: user.id,
+        name: user.name,
+        account: user.account,
+        mobile: user.mobile,
+        menus: userMenus,
+        operations: userOperations
+      };
+    }
+  }
+  return null;
+};
 /**
  * 登录
  */
@@ -47,10 +99,10 @@ router.post('/login', async function (req, res, next) {
     expireTime = Date.now() + 1000 * 60 * 60 * 24 * 7;
     //如果是超级1管理员登录
     if (isAdmin(model)) {
-      let token = saveToken(ADMIN_ID);
+      let token = await saveToken(ADMIN_ID);
       //设置cookie
       res.cookie('token', token, {expires: new Date(expireTime), httpOnly: true});
-      return res.success({name: '超级管理员'});
+      return res.success({name: ADMIN_NAME});
     }
 
     try {
@@ -59,7 +111,7 @@ router.post('/login', async function (req, res, next) {
 
       if (user && user.password == model.password) {
         //保存token
-        const token = saveToken(user.id, expireTime);
+        const token = await saveToken(user.id, expireTime);
         //设置cookie
         res.cookie('token', token, {expires: new Date(expireTime), httpOnly: true});
         //返回token
@@ -83,9 +135,9 @@ router.post('/checkToken', async(req, res, next) => {
   if (token) {
     // 验证token是否过期
     const decoded = jwt.verify(token, config.secret);
-    const userId = decoded.userId;
+    const user = decoded.user;
+    const userId = user.id;
     const expireTime = decoded.expireTime;
-
     // 如果已过期,返回401
     if (Date.now() >= expireTime) {
       // 删除 token
@@ -130,28 +182,14 @@ router.post('/logout', async(req, res) => {
  */
 router.get('/user', async(req, res) => {
   if (req.isEmpty(req.user)) return res.error('获取用户信息失败，请先登录！');
-  //查找用户
-  const user = await db.User.findById(req.user.id, {include: [{model: db.Role, include: [db.Menu, db.Operation]}]});
-  //用户拥有的菜单
-  const userMenus = [], userOperations = [];
-  console.log(user);
-  if (user.toJSON()) {
-    const roles = user.roles;
-    if (roles && roles.length > 0) {
-      roles.forEach(n => {
-        const menus = n.menus;
-        if (menus && menus.length > 0) {
-          menus.forEach(m => {
-            //过滤重复的菜单
-            if (!userMenus.some(p => p.code === m.code)) {
-              userMenus.push(m);
-            }
-          })
-        }
-      })
-    }
-    return res.success({id: user.id, name: user.name, account: user.account, mobile: user.mobile, menus: userMenus, operations: userOperations});
-  }
+
+  const userId = req.user.id;
+
+  //获取用户的权限
+  const userAuth = await getUserAuth(userId);
+  if (userAuth)
+    return res.success(userAuth);
+
   return res.error('获取用户信息失败!')
 });
 

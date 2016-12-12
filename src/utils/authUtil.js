@@ -2,6 +2,7 @@
  * Created by haojiachen on 2016/6/13.
  */
 import request from './request';
+import fetchError from './fetchError';
 
 const checkToken = () => {
   //向服务器验证token有效性
@@ -18,6 +19,7 @@ const checkToken = () => {
 const requireAuth = async(next, replace, callback) => {
   const result = await checkToken();
   if (result !== true) {
+    new fetchError(0, '身份信息已过期!').showError();
     replace('/login');
   }
   callback();

@@ -34,7 +34,8 @@ module.exports = {
     if (token) {
       //验证token是否过期
       const decoded = jwt.verify(token, config.secret);
-      const userId = decoded.userId;
+      const user = decoded.user;
+      const userId = user.id;
       const expireTime = decoded.expireTime;
       //如果已过期,返回401
       if (Date.now() >= expireTime) {
@@ -47,7 +48,7 @@ module.exports = {
       try {
         const result = await redis.get(userId);
         if (result === token) {
-          req.user = { id: userId };
+          req.user = user;
           return next();
         }
         else {

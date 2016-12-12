@@ -33,7 +33,8 @@ const all = {
     ],
     adminAccount: 'admin',
     adminPwd: 'abc@123',
-    adminId: '00000000-0000-0000-0000-00000000'
+    adminId: '1111111-0000-0000-0000-99999999',
+    adminName: '超级管理员',
   },
 };
 
