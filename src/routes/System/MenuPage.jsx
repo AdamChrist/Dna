@@ -1,5 +1,4 @@
 import React from 'react';
-
 import {convertToTree, sortTree} from '../../utils/converter';
 import {MenuList, MenuModal} from '../../components/Menu';
 

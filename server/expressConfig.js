@@ -13,7 +13,7 @@ const cookieParser = require('cookie-parser');
 const auth = require('./utils/authFilter');
 const extendExpress = require('./utils/extendExpress');
 
-module.exports = function (app) {
+module.exports = (app) => {
   const options = {
     origin: true,
     credentials: true
@@ -25,6 +25,6 @@ module.exports = function (app) {
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
-  app.use('/',auth.isAuthenticated);//开启权限验证
+  app.use('/', auth.isAuthenticated);//开启权限验证
   app.use(extendExpress);// API数据格式化
 };

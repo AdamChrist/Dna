@@ -1,8 +1,8 @@
 /**
  * Created by haojiachen on 2016/12/12.
  */
-import React from "react";
-import {Table, Button, Popconfirm} from "antd";
+import React from 'react';
+import {Table, Button, Popconfirm} from 'antd';
 
 const RightsList = ({onAdd, onDelete, onEdit, rightsList}) => {
   const columns = [
@@ -22,6 +22,12 @@ const RightsList = ({onAdd, onDelete, onEdit, rightsList}) => {
       title: '请求类型',
       dataIndex: 'method',
       key: 'method',
+      render: (text) => text.toString().toUpperCase()
+    }, {
+      title: '样式',
+      dataIndex: 'type',
+      key: 'type',
+      render: (text) => text === 'hide' ? '隐藏' : '禁用'
     }, {
       title: '操作',
       key: 'id',

@@ -1,6 +1,6 @@
-import React, {Component, PropTypes} from "react";
-import {Icon, Spin, Menu, Dropdown} from "antd";
-import MainMenu from "./MainMenu";
+import React, {Component, PropTypes} from 'react';
+import {Icon, Spin} from 'antd';
+import MainMenu from './MainMenu';
 import UserInfo from './UserInfo';
 
 class MainLayout extends Component {

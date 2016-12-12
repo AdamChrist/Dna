@@ -1,8 +1,8 @@
 /**
  * Created by haojiachen on 2016/12/12.
  */
-import React from "react";
-import {RightsList, RightsModal} from "../../components/Rights";
+import React from 'react';
+import {RightsList, RightsModal} from '../../components/Rights';
 
 const RightsPage = ({rights, dispatch}) => {
   const {rightsList, visible, item} = rights;

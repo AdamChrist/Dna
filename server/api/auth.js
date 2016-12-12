@@ -28,7 +28,7 @@ const isAdmin = (model) => {
  */
 const saveToken = (id, expireTime) => {
   const token = jwt.sign({
-    user: {id},
+    user: { id },
     expireTime: expireTime || Date.now() + 1000 * 60 * 60 * 24 * 7
   }, config.secret);
   redis.set(id, token, 'EX', 60 * 60 * 24 * 7);
@@ -57,7 +57,7 @@ const getUserAuth = async(userId) => {
     }
   } else {
     //查找用户
-    const user = await db.User.findById(userId, {include: [{model: db.Role, include: [db.Menu, db.Rights]}]});
+    const user = await db.User.findById(userId, { include: [{ model: db.Role, include: [db.Menu, db.Rights] }] });
     //用户拥有的菜单
     const userMenus = [], userRights = [];
     if (user.toJSON()) {
@@ -90,7 +90,7 @@ const getUserAuth = async(userId) => {
 /**
  * 登录
  */
-router.post('/login', async function (req, res, next) {
+router.post('/login', async(req, res, next) => {
     let expireTime;
     const model = req.body;
     if (req.isEmpty(model)) return res.error('账户名或密码不能为空！');
@@ -100,19 +100,19 @@ router.post('/login', async function (req, res, next) {
     if (isAdmin(model)) {
       let token = saveToken(ADMIN_ID);
       //设置cookie
-      res.cookie('token', token, {expires: new Date(expireTime), httpOnly: true});
-      return res.success({name: ADMIN_NAME});
+      res.cookie('token', token, { expires: new Date(expireTime), httpOnly: true });
+      return res.success({ name: ADMIN_NAME });
     }
 
     try {
       //查找用户
-      const user = await db.User.findOne({where: {account: model.account}});
+      const user = await db.User.findOne({ where: { account: model.account } });
 
       if (user && user.password == model.password) {
         //保存token
         const token = saveToken(user.id);
         //设置cookie
-        res.cookie('token', token, {expires: new Date(expireTime), httpOnly: true});
+        res.cookie('token', token, { expires: new Date(expireTime), httpOnly: true });
         //返回token
         return res.success(user);
       }
@@ -162,7 +162,7 @@ router.post('/logout', async(req, res) => {
   if (token) {
     const decoded = jwt.verify(token, config.secret);
     if (decoded) {
-      const {id} = decoded.user;
+      const { id } = decoded.user;
       // 验证token是否存在
       const result = await redis.get(id);
       if (result === token) {
@@ -195,8 +195,7 @@ router.get('/user', async(req, res) => {
 });
 
 //
-//
-// router.post('/changepwd', async function (req, res) {
+// router.post('/changePwd', async function (req, res) {
 //   try {
 //     if (req.isEmpty(req.body)) return res.error('修改用户密码失败，缺少参数');
 //     // 根据登录信息，获取用户ID
@@ -216,42 +215,6 @@ router.get('/user', async(req, res) => {
 //     res.error(error.message);
 //   }
 //
-// })
-//
-// router.get('/userInfo', async function (req, res) {
-//   try {
-//     console.log('xxxxx', req.user);
-//     if (req.isEmpty(req.user)) return res.error('获取用户信息失败，请先登录！');
-//     // 获取登录信息
-//     if (req.user.id === ADMIN_ID) return res.success({ account: ADMIN_ACCOUNT })
-//     const result = await db.User.findOne({ where: { id: req.user.id } });
-//     return res.success(result);
-//   } catch (error) {
-//     return res.error(error.message);
-//   }
-// })
-//
-//
-// /**
-//  * @date 13/04/2016
-//  * @author liangwenwei
-//  */
-// router.post('/userInfo', async function (req, res) {
-//   try {
-//     const model = req.body;
-//     const result = await db.User.update(model,
-//       {
-//         where: {
-//           id: model.id
-//         }
-//       },
-//       {
-//         fields: ['account', 'mobile', 'email']
-//       });
-//     return res.success(result);
-//   } catch (error) {
-//     return res.error(error.message);
-//   }
 // })
 
 module.exports = router;

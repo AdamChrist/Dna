@@ -1,5 +1,5 @@
-import React from "react";
-import {Table, Button, Popconfirm} from "antd";
+import React from 'react';
+import {Table, Button, Popconfirm} from 'antd';
 
 const RoleList = ({onAdd, onDelete, onEdit, roleList, onEditRoleMenu, onEditRoleRights}) => {
   const columns = [

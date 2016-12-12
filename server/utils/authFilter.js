@@ -30,21 +30,21 @@ const checkExcludeUrl = (req) => {
 
 /**
  * 解析token
- * @param req
+ * @param token
  */
 const decodedToken = (token) => {
   if (!token) return null;
   const decoded = jwt.verify(token, config.secret);
   const user = decoded.user;
   const expireTime = decoded.expireTime;
-  return {user, expireTime}
+  return { user, expireTime }
 };
 
 module.exports = {
   /**
    * 验证用户是否有权限
    */
-  isAuthenticated: async function (req, res, next) {
+  isAuthenticated: async(req, res, next) => {
     //如果是预请求.直接跳过
     if (checkOptions(req)) return res.send(200);
     //匹配不验证的token请求
@@ -58,7 +58,7 @@ module.exports = {
     //解析token
     const tokenInfo = decodedToken(token);
     if (tokenInfo) {
-      const {user, expireTime} = tokenInfo;
+      const { user, expireTime } = tokenInfo;
       const userId = user.id;
       //如果已过期,返回401
       if (Date.now() >= expireTime) {
@@ -77,7 +77,7 @@ module.exports = {
           const userAuth = JSON.parse(await redis.get(`auth-${userId}`));
           //todo 验证api URL权限
 
-          req.user = {...user, ...userAuth};
+          req.user = { ...user, ...userAuth };
           return next();
         }
         else {

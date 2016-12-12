@@ -18,8 +18,8 @@ module.exports = (sequelize, DataTypes) => sequelize.define('rights', {
   paranoid: true,
   tableName: 'sys_rights',
   classMethods: {
-    associate: ({Rights, Role, RoleRights}) => {
-      Rights.belongsToMany(Role, {through: {model: RoleRights, unique: false}, constraints: false});
+    associate: ({ Rights, Role, RoleRights }) => {
+      Rights.belongsToMany(Role, { through: { model: RoleRights, unique: false }, constraints: false });
     }
   }
 });

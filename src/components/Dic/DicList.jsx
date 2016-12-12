@@ -1,6 +1,5 @@
 import React from 'react';
 import {Table, Button, Popconfirm, Card, notification} from 'antd';
-
 import {convertToTree} from '../../utils/converter';
 
 const DicList = ({ onAdd, onDelete, onEdit, dicMxList, dicSelectKey }) => {

@@ -1,5 +1,5 @@
-import React from "react";
-import {Table, Button, Popconfirm, Icon} from "antd";
+import React from 'react';
+import {Table, Button, Popconfirm, Icon} from 'antd';
 
 const MenuList = ({onAdd, onDelete, onEdit, menuList}) => {
   const columns = [

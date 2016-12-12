@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {Table, Button, Popconfirm} from 'antd';
 
 const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource, paginationPros }) => {

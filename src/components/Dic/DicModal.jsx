@@ -1,6 +1,5 @@
 import React from 'react';
 import {Modal, Form, Input} from 'antd';
-
 import {isDicCodeExists} from '../../services/dic';
 
 const FormItem = Form.Item;

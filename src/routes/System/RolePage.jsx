@@ -1,5 +1,5 @@
-import React from "react";
-import {RoleModal, RoleList, MenuModal, RightsModal} from "../../components/Role";
+import React from 'react';
+import {RoleModal, RoleList, MenuModal, RightsModal} from '../../components/Role';
 
 const RolePage = ({role, dispatch, menu, rights}) => {
 

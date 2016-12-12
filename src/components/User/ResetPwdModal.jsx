@@ -1,5 +1,5 @@
 import React from 'react';
-import {Form, Input, Modal, Select} from 'antd';
+import {Form, Input, Modal} from 'antd';
 import md5 from 'js-md5';
 
 const FormItem = Form.Item;

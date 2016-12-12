@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React from 'react';
 import {connect} from 'dva';
 import MainLayout from '../Layout/MainLayout';
 
@@ -12,8 +12,8 @@ const IndexPage = ({ children, ...props }) => {
 
 IndexPage.propTypes = {};
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return { ...state };
-}
+};
 
 export default connect(mapStateToProps)(IndexPage);

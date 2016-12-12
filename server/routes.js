@@ -3,7 +3,7 @@
  */
 'use strict';
 // 路由
-module.exports = function (app) {
+module.exports = (app) => {
 
   app.use('/api/user', require('./api/user'));
   app.use('/api/role', require('./api/role'));

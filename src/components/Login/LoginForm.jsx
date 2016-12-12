@@ -1,8 +1,8 @@
 import {Form, Input, Button} from 'antd';
-import React, {Component, PropTypes} from 'react';
+import React, {Component} from 'react';
 import {hashHistory} from 'dva/router';
 import {connect} from 'dva';
-import styles from './LoginForm.less'
+import styles from './LoginForm.less';
 import md5 from 'js-md5';
 
 const FormItem = Form.Item;
@@ -59,7 +59,8 @@ LoginForm.propTypes = {};
 LoginForm.defaultProps = {};
 LoginForm = createForm({})(LoginForm);
 
-function mapStateToProps({ common }) {
+const mapStateToProps = ({ common }) => {
   return { common };
-}
+};
+
 export default connect(mapStateToProps)(LoginForm);

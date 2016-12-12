@@ -1,8 +1,8 @@
 /**
  * Created by haojiachen on 2016/12/12.
  */
-import React from "react";
-import {Modal, Table} from "antd";
+import React from 'react';
+import {Modal, Table} from 'antd';
 
 const RightsModal = ({rightsList, visible, selectedRights = [], onOk, onCancel, onRowChange}) => {
   const modalOpts = {

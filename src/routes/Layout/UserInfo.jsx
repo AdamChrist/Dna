@@ -1,7 +1,7 @@
 /**
  * Created by haojiachen on 2016/12/12.
  */
-import React from "react";
+import React from 'react';
 import {Menu, Dropdown, Icon} from 'antd';
 const UserInfo = ({common, dispatch}) => {
   const {user} = common;
@@ -21,7 +21,7 @@ const UserInfo = ({common, dispatch}) => {
   return (
     <Dropdown overlay={menu}>
       <span style={{fontSize: '14px', cursor: 'pointer'}}>
-        <Icon type="solution" style={{fontSize: '24px'}}/>{` ${user.name} `}
+        <Icon type="solution" style={{fontSize: '22px'}}/>{` ${user.name} `}
       </span>
     </Dropdown>
   );

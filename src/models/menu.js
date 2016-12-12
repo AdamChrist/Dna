@@ -1,7 +1,7 @@
 /**
  * Created by haojiachen on 2016/12/9.
  */
-import * as menuService from "../services/menu";
+import * as menuService from '../services/menu';
 export default {
 
   namespace: 'menu',

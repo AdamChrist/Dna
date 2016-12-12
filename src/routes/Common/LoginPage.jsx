@@ -1,7 +1,6 @@
-import React, {Component, PropTypes} from 'react';
+import React from 'react';
 import {connect} from 'dva';
 import styles from './LoginPage.less';
-
 import {LoginForm} from '../../components/Login';
 
 const LoginPage = () => {

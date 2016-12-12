@@ -1,6 +1,5 @@
 import React from 'react';
 import {Modal, Form, Input, TreeSelect, Tree} from 'antd';
-
 import {isDicMxCodeExists} from '../../services/dic';
 import {convertToTree} from '../../utils/converter';
 

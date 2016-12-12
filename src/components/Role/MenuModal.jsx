@@ -1,9 +1,9 @@
 /**
  * Created by haojiachen on 2016/12/9.
  */
-import React from "react";
-import {Modal, Table} from "antd";
-import {convertToTree, sortTree} from "../../utils/converter";
+import React from 'react';
+import {Modal, Table} from 'antd';
+import {convertToTree, sortTree} from '../../utils/converter';
 
 const MenuModal = ({menuList, visible, selectedMenus = [], onOk, onCancel, onRowChange}) => {
 

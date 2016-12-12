@@ -1,6 +1,6 @@
-import React from "react";
-import {Form, Input, Modal} from "antd";
-import {isRoleExists} from "../../services/role";
+import React from 'react';
+import {Form, Input, Modal} from 'antd';
+import {isRoleExists} from '../../services/role';
 
 const FormItem = Form.Item;
 const formItemLayout = {

@@ -32,7 +32,7 @@ const check404 = (res) => {
   return res;
 };
 
-function jsonParse(res) {
+const jsonParse = (res) => {
   if (res.status >= 200 && res.status < 300) {
     return res.json().then(result => {
       if (result) {
@@ -48,7 +48,7 @@ function jsonParse(res) {
   else {
     return Promise.reject(errorMessages(res));
   }
-}
+};
 
 const request = (url, options) => {
   const opts = { ...options };

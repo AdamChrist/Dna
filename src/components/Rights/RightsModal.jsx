@@ -1,9 +1,9 @@
 /**
  * Created by haojiachen on 2016/12/12.
  */
-import React from "react";
-import {Form, Input, Modal, Select} from "antd";
-import {isRightsExists} from "../../services/rights";
+import React from 'react';
+import {Form, Input, Modal, Select} from 'antd';
+import {isRightsExists} from '../../services/rights';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -95,6 +95,16 @@ const RightsModal = ({form, visible, item = {}, onOk, onCancel}) => {
               <Option value="post">POST</Option>
               <Option value="delete">DELETE</Option>
               <Option value="put">PUT</Option>
+            </Select>
+          )}
+        </FormItem>
+        <FormItem label="样式：" hasFeedback {...formItemLayout} >
+          {getFieldDecorator('type', {
+            initialValue: item.type || 'hide'
+          })(
+            <Select size="large">
+              <Option value="hide">隐藏</Option>
+              <Option value="disabled">禁用</Option>
             </Select>
           )}
         </FormItem>

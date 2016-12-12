@@ -1,7 +1,6 @@
 /**
  * Created by haojiachen on 2016/11/30.
  */
-
 import * as userService from '../services/user';
 
 export default {

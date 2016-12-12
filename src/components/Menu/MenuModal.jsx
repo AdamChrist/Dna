@@ -1,6 +1,6 @@
-import React from "react";
-import {Form, Input, Modal, InputNumber, TreeSelect, Tree} from "antd";
-import {isMenuExists} from "../../services/menu";
+import React from 'react';
+import {Form, Input, Modal, InputNumber, TreeSelect, Tree} from 'antd';
+import {isMenuExists} from '../../services/menu';
 
 const FormItem = Form.Item;
 const TreeNode = Tree.TreeNode;
