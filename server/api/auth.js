@@ -159,7 +159,6 @@ router.post('/checkToken', async(req, res, next) => {
 router.post('/logout', async(req, res) => {
   // 获取token
   const token = getToken(req);
-
   if (token) {
     const decoded = jwt.verify(token, config.secret);
     if (decoded) {

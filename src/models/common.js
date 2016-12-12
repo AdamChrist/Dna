@@ -23,6 +23,16 @@ export default {
         description: `欢迎 ${data.name ? data.name : ' 您使用!'}`
       });
     },
+    * logout ({payload}, {call, put}){
+      yield call(authService.logout);
+      //跳转登录
+      yield put(routerRedux.push('/login'));
+      notification.success({
+        message: '成功',
+        description: '已登出,即将跳转到登录页...'
+      });
+
+    },
     * getUserInfo ({payload}, {call, put}){
       const user = yield call(authService.getUserInfo);
       console.log(user);
