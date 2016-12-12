@@ -23,7 +23,7 @@ export default {
         description: `欢迎 ${data.name ? data.name : ' 您使用!'}`
       });
     },
-    * logout ({payload}, {call, put}){
+    * logout ({}, {call, put}){
       yield call(authService.logout);
       //跳转登录
       yield put(routerRedux.push('/login'));

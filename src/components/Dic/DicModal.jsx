@@ -13,23 +13,23 @@ const formItemLayout = {
   }
 };
 
-const DicModal = ({ form, visible, item = {}, onOk, onCancel }) => {
+const DicModal = ({form, visible, item = {}, onOk, onCancel}) => {
 
-  const { getFieldDecorator, validateFields, getFieldsValue, } = form;
+  const {getFieldDecorator, validateFields, getFieldsValue,} = form;
 
   const handleOk = () => {
     validateFields((errors) => {
       if (errors) {
         return;
       }
-      const data = { ...item, ...getFieldsValue() };
+      const data = {...item, ...getFieldsValue()};
       onOk(data);
     });
   };
 
   const modalOpts = {
     maskClosable: false,
-    title: `${item.id ? '新增' : '修改'}数据字典类别`,
+    title: `${!item.id ? '新增' : '修改'}数据字典类别`,
     visible,
     onOk: handleOk,
     onCancel,
@@ -65,21 +65,21 @@ const DicModal = ({ form, visible, item = {}, onOk, onCancel }) => {
           {getFieldDecorator('name', {
             initialValue: item.name,
             rules: [
-              { required: true, message: '不能为空' },
+              {required: true, message: '不能为空'},
             ],
           })(
-            <Input type="text" />
+            <Input type="text"/>
           )}
         </FormItem>
         <FormItem label="编码：" hasFeedback {...formItemLayout} >
           {getFieldDecorator('code', {
             initialValue: item.code,
             rules: [
-              { required: true, message: '不能为空' },
-              { validator: isExist }
+              {required: true, message: '不能为空'},
+              {validator: isExist}
             ],
           })(
-            <Input type="text" />
+            <Input type="text"/>
           )}
         </FormItem>
       </Form>

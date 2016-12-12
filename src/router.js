@@ -11,23 +11,25 @@ import UserPage from './routes/System/UserPage';
 import DicPage from './routes/System/DicPage';
 import RolePage from './routes/System/RolePage';
 import MenuPage from './routes/System/MenuPage';
+import RightsPage from './routes/System/RightsPage';
 
-export default function ({ history }) {
+export default function ({history}) {
   return (
     <Router history={history}>
       <Route path='/'>
-        <IndexRedirect to='login' />
+        <IndexRedirect to='login'/>
         <Route path='app' component={IndexPage} onEnter={requireAuth}>
-          <IndexRedirect to='home' />
-          <Route path='home' component={HomePage} />
-          <Route path='user' component={UserPage} />
-          <Route path='dic' component={DicPage} />
-          <Route path='role' component={RolePage} />
-          <Route path='menu' component={MenuPage} />
+          <IndexRedirect to='home'/>
+          <Route path='home' component={HomePage}/>
+          <Route path='user' component={UserPage}/>
+          <Route path='dic' component={DicPage}/>
+          <Route path='role' component={RolePage}/>
+          <Route path='menu' component={MenuPage}/>
+          <Route path='rights' component={RightsPage}/>
         </Route>
-        <Route path='/login' component={LoginPage} onEnter={autoLogin} />
+        <Route path='/login' component={LoginPage} onEnter={autoLogin}/>
       </Route>
-      <Route path='*' component={NotFound} />
+      <Route path='*' component={NotFound}/>
     </Router>
   );
 };

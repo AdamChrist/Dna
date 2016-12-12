@@ -1,6 +1,6 @@
-import React from 'react';
-import {Form, Input, Modal} from 'antd';
-import {isRoleExists} from '../../services/role';
+import React from "react";
+import {Form, Input, Modal} from "antd";
+import {isRoleExists} from "../../services/role";
 
 const FormItem = Form.Item;
 const formItemLayout = {
@@ -12,34 +12,27 @@ const formItemLayout = {
   }
 };
 
-const RoleModal = ({ form, visible, item = {}, onOk, onCancel }) => {
-  const { getFieldDecorator, validateFields, getFieldsValue, } = form;
+const RoleModal = ({form, visible, item = {}, onOk, onCancel}) => {
+  const {getFieldDecorator, validateFields, getFieldsValue,} = form;
 
   const handleOk = () => {
     validateFields((errors) => {
       if (errors) {
         return;
       }
-      const data = { ...item, ...getFieldsValue() };
+      const data = {...item, ...getFieldsValue()};
       onOk(data);
     });
   };
 
   const modalOpts = {
     maskClosable: false,
-    title: `${!item.id ? '新增' : '修改'}用户`,
+    title: `${!item.id ? '新增' : '修改'}角色`,
     visible,
     onOk: handleOk,
     onCancel,
   };
 
-  /**
-   * 检测用户是否重复
-   * @param rule
-   * @param value
-   * @param callback
-   * @param source
-   */
   const checkAccount = (rule, value, callback, source) => {
     if (!value || value === item.account) {
       callback();
@@ -63,18 +56,18 @@ const RoleModal = ({ form, visible, item = {}, onOk, onCancel }) => {
           {getFieldDecorator('name', {
             initialValue: item.name,
             rules: [
-              { required: true, message: '名称未填写' },
-              { validator: checkAccount }
+              {required: true, message: '名称未填写'},
+              {validator: checkAccount}
             ],
           })(
-            <Input type="text" />
+            <Input type="text"/>
           )}
         </FormItem>
         <FormItem label="备注：" hasFeedback {...formItemLayout} >
           {getFieldDecorator('remark', {
             initialValue: item.remark
           })(
-            <Input type="text" />
+            <Input type="text"/>
           )}
         </FormItem>
       </Form>

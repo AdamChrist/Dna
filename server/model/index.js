@@ -24,8 +24,8 @@ db.Role = sequelize.import('./Role');
 db.UserRole = sequelize.import('./UserRole');
 db.Menu = sequelize.import('./Menu');
 db.RoleMenu = sequelize.import('./RoleMenu');
-db.Operation = sequelize.import('./Operation');
-db.RoleOperation = sequelize.import('./RoleOperation');
+db.Rights = sequelize.import('./Rights');
+db.RoleRights = sequelize.import('./RoleRights');
 
 Object.keys(db).forEach((modelName) => {
   if ('associate' in db[modelName]) {

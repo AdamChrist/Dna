@@ -1,7 +1,7 @@
 /**
  * Created by haojiachen on 2016/12/8.
  */
-module.exports = (sequelize, DataTypes) => sequelize.define('operation', {
+module.exports = (sequelize, DataTypes) => sequelize.define('rights', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV1,
@@ -16,10 +16,10 @@ module.exports = (sequelize, DataTypes) => sequelize.define('operation', {
 
 }, {
   paranoid: true,
-  tableName: 'sys_operation',
+  tableName: 'sys_rights',
   classMethods: {
-    associate: ({Operation, Role, RoleOperation}) => {
-      Operation.belongsToMany(Role, {through: {model: RoleOperation, unique: false}, constraints: false});
+    associate: ({Rights, Role, RoleRights}) => {
+      Rights.belongsToMany(Role, {through: {model: RoleRights, unique: false}, constraints: false});
     }
   }
 });

@@ -53,13 +53,13 @@ const getUserAuth = async(userId) => {
       account: ADMIN_ACCOUNT,
       mobile: '00000000000',
       menus: menus,
-      operations: []
+      rights: []
     }
   } else {
     //查找用户
-    const user = await db.User.findById(userId, {include: [{model: db.Role, include: [db.Menu, db.Operation]}]});
+    const user = await db.User.findById(userId, {include: [{model: db.Role, include: [db.Menu, db.Rights]}]});
     //用户拥有的菜单
-    const userMenus = [], userOperations = [];
+    const userMenus = [], userRights = [];
     if (user.toJSON()) {
       const roles = user.roles;
       if (roles && roles.length > 0) {
@@ -81,7 +81,7 @@ const getUserAuth = async(userId) => {
         account: user.account,
         mobile: user.mobile,
         menus: userMenus,
-        operations: userOperations
+        rights: userRights
       };
     }
   }

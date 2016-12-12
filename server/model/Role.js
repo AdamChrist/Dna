@@ -13,10 +13,10 @@ module.exports = (sequelize, DataTypes) => sequelize.define('role', {
   paranoid: true,
   tableName: 'sys_role',
   classMethods: {
-    associate: ({User, Role, UserRole, Menu, Operation, RoleMenu, RoleOperation}) => {
+    associate: ({User, Role, UserRole, Menu, Rights, RoleMenu, RoleRights}) => {
       Role.belongsToMany(User, {through: {model: UserRole, unique: false}, constraints: false});
       Role.belongsToMany(Menu, {through: {model: RoleMenu, unique: false}, constraints: false});
-      Role.belongsToMany(Operation, {through: {model: RoleOperation, unique: false}, constraints: false});
+      Role.belongsToMany(Rights, {through: {model: RoleRights, unique: false}, constraints: false});
     }
   }
 });

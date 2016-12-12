@@ -10,6 +10,7 @@ module.exports = function (app) {
   app.use('/api/auth', require('./api/auth'));
   app.use('/api/dic', require('./api/dictionary'));
   app.use('/api/menu', require('./api/menu'));
+  app.use('/api/rights', require('./api/rights'));
 
   // 未拦截的请求
   app.use('/*', (req, res, next) => {

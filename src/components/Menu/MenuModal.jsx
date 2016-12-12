@@ -1,7 +1,7 @@
 import React from "react";
 import {Form, Input, Modal, InputNumber, TreeSelect, Tree} from "antd";
 import {isMenuExists} from "../../services/menu";
-import {convertToTree} from '../../utils/converter';
+
 const FormItem = Form.Item;
 const TreeNode = Tree.TreeNode;
 const formItemLayout = {labelCol: {span: 6}, wrapperCol: {span: 14}};
