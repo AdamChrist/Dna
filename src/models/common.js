@@ -29,13 +29,12 @@ export default {
       yield put(routerRedux.push('/login'));
       notification.success({
         message: '成功',
-        description: '已登出,即将跳转到登录页...'
+        description: '成功已登出,欢迎再次使用!'
       });
 
     },
     * getUserInfo ({payload}, {call, put}){
       const user = yield call(authService.getUserInfo);
-      console.log(user);
       yield put({type: 'getUserInfoSuccess', payload: {user}})
     },
   },
@@ -43,7 +42,7 @@ export default {
   reducers: {
     getUserInfoSuccess(state, {payload}){
       return {...state, ...payload}
-    }
+    },
   },
 
   subscriptions: {}

@@ -1,36 +1,38 @@
-import React, {Component} from 'react';
+import React from "react";
+import {Link} from "dva/router";
 import {Menu, Icon} from 'antd';
-import {Link} from 'dva/router';
+import {convertToTree, sortTree} from '../../utils/converter';
 
-class MainMenu extends Component {
-  render() {
-    return (
-      <Menu mode="inline" theme="dark" defaultOpenKeys={['sys']}>
-        <Menu.SubMenu key="sys" title={<span><Icon type="desktop" />系统管理</span>}>
-          <Menu.Item key="user"><Link to="/app/user">用户管理</Link></Menu.Item>
-          <Menu.Item key="role"><Link to="/app/role">角色管理</Link></Menu.Item>
-          <Menu.Item key="menu"><Link to="/app/menu">菜单管理</Link></Menu.Item>
-          <Menu.Item key="auth"><Link to="/app/auth">权限管理</Link></Menu.Item>
-          <Menu.Item key="dic"><Link to="/app/dic">数据字典</Link></Menu.Item>
+const MainMenu = ({common, dispatch, location}) => {
+  const {user} = common;
+  const menus = user.menus || [];
+  //根据router选中对应的菜单
+  const selectedKeys = menus.filter(n => n.url === location.pathname).map(n => n.code);
+  //菜单专成树形结构并排序
+  const treeList = sortTree(convertToTree(menus).filter((n) => {
+    return !n.pid;
+  }));
+  //输出菜单
+  const loop = (data) => data.map((n) => {
+    if (n.children && n.children.length > 0) {
+      return (
+        <Menu.SubMenu key={n.code} title={<span>{n.icon ? <Icon type={n.icon}/> : ''}{n.name}</span>}>
+          {loop(n.children)}
         </Menu.SubMenu>
-        <Menu.SubMenu key="sub2" title={<span><Icon type="laptop" />导航二</span>}>
-          <Menu.Item key="5">选项5</Menu.Item>
-          <Menu.Item key="6">选项6</Menu.Item>
-          <Menu.Item key="7">选项7</Menu.Item>
-          <Menu.Item key="8">选项8</Menu.Item>
-        </Menu.SubMenu>
-        <Menu.SubMenu key="sub3" title={<span><Icon type="notification" />导航三</span>}>
-          <Menu.Item key="9">选项9</Menu.Item>
-          <Menu.Item key="10">选项10</Menu.Item>
-          <Menu.Item key="11">选项11</Menu.Item>
-          <Menu.Item key="12">选项12</Menu.Item>
-        </Menu.SubMenu>
-      </Menu>
-    );
-  }
-}
+      );
+    }
+    return <Menu.Item key={n.code}><Link to={n.url}>{n.icon ? <Icon type={n.icon}/> : ''}{n.name}</Link></Menu.Item>;
+  });
+
+  return (
+    <Menu mode="inline" theme="dark" defaultOpenKeys={['sys']} selectedKeys={selectedKeys}>
+      {loop(treeList)}
+    </Menu>
+  );
+};
 
 MainMenu.propTypes = {};
 MainMenu.defaultProps = {};
 
 export default MainMenu;
+

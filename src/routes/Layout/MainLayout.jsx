@@ -24,7 +24,6 @@ class MainLayout extends Component {
 
   render() {
     const {children, ...childrenPros} = this.props;
-
     return (
       <div className="ant-layout">
         <aside className={this.state.collapse ? "ant-layout-aside ant-layout-aside-collapse" : "ant-layout-sider"}>
@@ -32,7 +31,7 @@ class MainLayout extends Component {
             {/*DNA 后台管理系统*/}
             <div className="ant-layout-logo-img"></div>
           </div>
-          <MainMenu />
+          <MainMenu {...childrenPros} />
         </aside>
         <div className="ant-layout-main">
           <div className="ant-layout-header">

@@ -1,5 +1,5 @@
 import React from "react";
-import {Table, Button, Popconfirm} from "antd";
+import {Table, Button, Popconfirm, Icon} from "antd";
 
 const MenuList = ({onAdd, onDelete, onEdit, menuList}) => {
   const columns = [
@@ -7,31 +7,32 @@ const MenuList = ({onAdd, onDelete, onEdit, menuList}) => {
       title: '名称',
       dataIndex: 'name',
       key: 'name',
-      width:'20%'
+      width: '20%'
     }, {
       title: '编码',
       dataIndex: 'code',
       key: 'code',
-      width:'20%'
+      width: '20%'
     }, {
       title: 'URL',
       dataIndex: 'url',
       key: 'url',
-      width:'20%'
+      width: '20%'
     }, {
       title: '排序号',
       dataIndex: 'sortNo',
       key: 'sortNo',
-      width:'10%'
+      width: '10%'
     }, {
       title: '图标',
       dataIndex: 'icon',
       key: 'icon',
-      width:'10%'
+      width: '10%',
+      render: (text, record) => <Icon type={text}/>
     }, {
       title: '操作',
       key: 'id',
-      width:'20%',
+      width: '20%',
       render: (text, record) =>
         <Button.Group>
           <Button size="small" type="primary" onClick={() => onEdit(record)}>编辑</Button>
