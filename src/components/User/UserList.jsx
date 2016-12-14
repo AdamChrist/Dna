@@ -1,5 +1,7 @@
 import React from 'react';
 import {Table, Button, Popconfirm} from 'antd';
+import RightsContainer from '../Common/RightsContainer';
+
 
 const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource, paginationPros }) => {
 
@@ -45,7 +47,10 @@ const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource, pagination
         title={() =>
           (
             <div >
-              <Button type="primary" onClick={() => onAdd()}>新增</Button>
+              <RightsContainer>
+                <Button type="primary" onClick={() => onAdd()}>新增</Button>
+                <Button type="primary" onClick={() => onAdd()}>新增</Button>
+              </RightsContainer>
             </div>
           )}
       />
