@@ -14,7 +14,7 @@ export default {
   },
 
   effects: {
-    * login ({payload}, {call, put}){
+    * login ({ payload }, { call, put }){
       const data = yield call(authService.login, payload);
       //跳转登录
       yield put(routerRedux.push('/app'));
@@ -23,8 +23,9 @@ export default {
         description: `欢迎 ${data.name ? data.name : ' 您使用!'}`
       });
     },
-    * logout ({}, {call, put}){
+    * logout ({}, { call, put }){
       yield call(authService.logout);
+      yield put({ type: 'logoutSuccess' });
       //跳转登录
       yield put(routerRedux.push('/login'));
       notification.success({
@@ -33,15 +34,18 @@ export default {
       });
 
     },
-    * getUserInfo ({payload}, {call, put}){
+    * getUserInfo ({ payload }, { call, put }){
       const user = yield call(authService.getUserInfo);
-      yield put({type: 'getUserInfoSuccess', payload: {user}})
+      yield put({ type: 'getUserInfoSuccess', payload: { user } })
     },
   },
 
   reducers: {
-    getUserInfoSuccess(state, {payload}){
-      return {...state, ...payload}
+    getUserInfoSuccess(state, { payload }){
+      return { ...state, ...payload }
+    },
+    logoutSuccess(state){
+      return { ...state, user: {} }
     },
   },
 
