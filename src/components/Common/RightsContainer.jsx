@@ -19,7 +19,7 @@ const RightsContainer = ({ common, children }) => {
     const rightsKey = buttonElement.props['data-rightsKey'];
     let button = buttonElement;
     rights.forEach(n => {
-      if (n.code === rightsKey) {
+      if (n.code === rightsKey && !n.hasRights) {
         if (n.type === 'disabled') {
           button = React.cloneElement(React.Children.only(buttonElement), { disabled: true })
         } else {

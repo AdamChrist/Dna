@@ -43,36 +43,52 @@ const getToken = (req) => req.cookies.token || req.headers['x-auth-token'];
  */
 const getUserAuth = async(userId) => {
 
+  const rights = (await db.Rights.findAll()).map(n => n.toJSON());
   //如果是管理员登录,获取全部权限
   if (userId === ADMIN_ID) {
-    //序列化
     const menus = (await db.Menu.findAll()).map(n => n.toJSON());
-    const rights = (await db.Rights.findAll()).map(n => n.toJSON());
     return {
       id: ADMIN_ID,
       name: ADMIN_NAME,
       account: ADMIN_ACCOUNT,
       mobile: '00000000000',
       menus: menus,
-      rights: rights
+      rights: rights.map(n => {
+        return { ...n, hasRights: true };
+      })
     }
   } else {
     //查找用户
     const user = await db.User.findById(userId, { include: [{ model: db.Role, include: [db.Menu, db.Rights] }] });
     //用户拥有的菜单
-    const userMenus = [], userRights = [];
+    let userMenus = [], userRights = [];
     if (user.toJSON()) {
       const roles = user.roles;
       if (roles && roles.length > 0) {
         roles.forEach(n => {
-          const menus = n.menus;
-          if (menus && menus.length > 0) {
-            menus.forEach(m => {
+          const roleMenus = n.menus;
+          const roleRights = n.rights;
+          if (roleMenus && roleMenus.length > 0) {
+            roleMenus.forEach(m => {
               //过滤重复的菜单
               if (!userMenus.some(p => p.code === m.code)) {
                 userMenus.push(m);
               }
             })
+          }
+          if (roleRights && roleRights.length > 0) {
+            userRights = rights.map(n => {
+              if (roleRights.some(p => p.id === n.id)) {
+                return { ...n, hasRights: true }
+              } else {
+                return { ...n, hasRights: false }
+              }
+            })
+          } else {
+            userRights = rights.map(n => {
+                return { ...n, hasRights: false }
+              }
+            );
           }
         })
       }

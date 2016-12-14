@@ -7,7 +7,7 @@ require('babel-polyfill');
 const express = require('express');
 const config = require('./../config/env');
 const errorHandler = require('errorhandler');
-const cacheUtil = require('./utils/cacheUtil');
+// const cacheUtil = require('./utils/cacheUtil');
 
 // 数据库
 const models = require('./model');
@@ -35,7 +35,7 @@ models.sequelize.sync().then(() => {
   // web服务
   app.listen(config.port, () => {
     console.log('Express server listening on %d, in %s mode', config.port, app.get('env'));
-    cacheUtil.syncRights();
+    // cacheUtil.syncRights();
   });
 });
 

@@ -4,7 +4,7 @@
 const baseRouter = require('../utils/baseRouter');
 const router = require('express').Router();
 const db = require('../model');
-const cacheUtil = require('../utils/cacheUtil');
+// const cacheUtil = require('../utils/cacheUtil');
 /**
  * 保存
  */
@@ -19,7 +19,7 @@ router.post('/', async(req, res) => {
     else {
       result = await db.Rights.update(model, { where: { id: model.id } }, { fields: Object.keys(model) });
     }
-    cacheUtil.syncRights();
+    // cacheUtil.syncRights();
     return res.success(result);
   } catch (error) {
     return res.error(error.message);
@@ -34,7 +34,7 @@ router.delete('/:id', async(req, res) => {
     const id = req.params.id;
     if (req.isEmpty(id)) return res.error('参数不能为空');
     const result = await db.Rights.destroy({ where: { id: id } });
-    cacheUtil.syncRights()
+    // cacheUtil.syncRights()
     return res.success(result);
   } catch (error) {
     return res.error(error.message);

@@ -7,8 +7,6 @@ const Redis = require('ioredis');
 const config = require('./../../config/env');
 const client = new Redis(config.redis);
 
-const cacheUtil = require('./cacheUtil');
-
 client.on('error', (err) => {
   console.log('redis error', err)
 });
