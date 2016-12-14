@@ -103,12 +103,11 @@ router.post('/login', async(req, res, next) => {
       res.cookie('token', token, { expires: new Date(expireTime), httpOnly: true });
       return res.success({ name: ADMIN_NAME });
     }
-
     try {
       //查找用户
       const user = await db.User.findOne({ where: { account: model.account } });
 
-      if (user && user.password == model.password) {
+      if (user && user.password === model.password) {
         //保存token
         const token = saveToken(user.id);
         //设置cookie
@@ -130,21 +129,25 @@ router.post('/login', async(req, res, next) => {
 router.post('/checkToken', async(req, res, next) => {
   // 获取token
   const token = getToken(req);
+  console.log(token);
   if (token) {
     // 验证token是否过期
     const decoded = jwt.verify(token, config.secret);
     const user = decoded.user;
-    const userId = user.id;
     const expireTime = decoded.expireTime;
-    // 如果已过期,返回401
-    if (Date.now() >= expireTime) {
-      console.log('如果已过期,返回401')
-      // 删除 token
-      await redis.del(userId);
-    } else {
-      const result = await redis.get(userId);
-      if (result === token) {
-        return res.success(true);
+    console.log(user);
+    if (user && user.id) {
+      const userId = user.id;
+      // 如果已过期,返回401
+      if (Date.now() >= expireTime) {
+        console.log('如果已过期,返回401');
+        // 删除 token
+        await redis.del(userId);
+      } else {
+        const result = await redis.get(userId);
+        if (result === token) {
+          return res.success(true);
+        }
       }
     }
   }
@@ -179,16 +182,21 @@ router.post('/logout', async(req, res) => {
  * 获取对应的权限菜单
  */
 router.get('/user', async(req, res) => {
-  if (req.isEmpty(req.user)) return res.error('获取用户信息失败，请先登录！');
+  // 获取token
+  const token = getToken(req);
+  if (token) {
+    // 验证token是否过期
+    const decoded = jwt.verify(token, config.secret);
+    const user = decoded.user;
+    const userId = user.id;
 
-  const userId = req.user.id;
-
-  //获取用户的权限
-  const userAuth = await getUserAuth(userId);
-  if (userAuth) {
-    //缓存到redis中
-    redis.set(`auth-${userAuth.id}`, JSON.stringify(userAuth), 'EX', 60 * 60 * 24 * 7);
-    return res.success(userAuth);
+    //获取用户的权限
+    const userAuth = await getUserAuth(userId);
+    if (userAuth) {
+      //缓存到redis中
+      redis.set(`auth-${userAuth.id}`, JSON.stringify(userAuth), 'EX', 60 * 60 * 24 * 7);
+      return res.success(userAuth);
+    }
   }
 
   return res.error('获取用户信息失败!')

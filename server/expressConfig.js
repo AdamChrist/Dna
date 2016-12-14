@@ -25,6 +25,6 @@ module.exports = (app) => {
   app.use(bodyParser.json());
   app.use(methodOverride());
   app.use(cookieParser());
-  app.use('/', auth.isAuthenticated);//开启权限验证
   app.use(extendExpress);// API数据格式化
+  app.use('/', auth.isAuthenticated);//开启权限验证
 };

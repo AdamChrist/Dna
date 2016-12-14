@@ -20,11 +20,11 @@ const checkOptions = (req) => {
  * 检查不验证的URL
  * @param req
  */
-const checkExcludeUrl = (req) => {
+const checkExcludeUrl = (path) => {
   const excludeUrls = config.auth.excludeUrl;
   return excludeUrls.some(url => {
     let re = pathToRegexp(url);
-    return re.test(req.path);
+    return re.test(path);
   });
 };
 
@@ -45,14 +45,15 @@ module.exports = {
    * 验证用户是否有权限
    */
   isAuthenticated: async(req, res, next) => {
+    const { path, method } = req;
     //如果是预请求.直接跳过
-    if (checkOptions(req)) return res.send(200);
+    if (checkOptions(method)) return res.send(200);
     //匹配不验证的token请求
-    if (checkExcludeUrl(req)) {
-      console.log(`不验证API权限,URL:${req.path}`);
+    if (checkExcludeUrl(path)) {
+      console.log(`不验证API权限,URL:${path}`);
       return next();
     }
-    console.log(`验证API权限,URL:${req.path}`);
+    console.log(`验证API权限,URL:${path}`);
     //获取token
     const token = req.cookies.token || req.headers['x-auth-token'];
     //解析token
@@ -71,13 +72,32 @@ module.exports = {
       try {
         //验证token
         const userToken = await redis.get(userId);
-        console.log(userToken);
         if (userToken === token) {
+          const rights = JSON.parse(await redis.get('CACHE_RIGHTS'));
           //获取redis缓存的用户权限信息
           const userAuth = JSON.parse(await redis.get(`auth-${userId}`));
-          //todo 验证api URL权限
-
           req.user = { ...user, ...userAuth };
+          if (rights && rights.length > 0) {
+            //判断url是否需要校验权限
+            const isNeedValidate = rights.some(n => {
+              let re = pathToRegexp(n.url);
+              return re.test(path) && method.toString().toUpperCase() === n.method.toString().toUpperCase();
+            });
+            console.log(path, req.method, rights);
+            if (isNeedValidate) {
+              //判断用户是否有权限
+              const hasRights = userAuth.rights.some(n => {
+                let re = pathToRegexp(n.url);
+                return re.test(path) && method.toString().toUpperCase() === n.method.toString().toUpperCase();
+              });
+              if (hasRights) {
+                return next();
+              } else {
+                console.error('无权访问!');
+                return res.error('无权访问!');
+              }
+            }
+          }
           return next();
         }
         else {
