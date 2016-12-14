@@ -47,13 +47,14 @@ const getUserAuth = async(userId) => {
   if (userId === ADMIN_ID) {
     //序列化
     const menus = (await db.Menu.findAll()).map(n => n.toJSON());
+    const rights = (await db.Rights.findAll()).map(n => n.toJSON());
     return {
       id: ADMIN_ID,
       name: ADMIN_NAME,
       account: ADMIN_ACCOUNT,
       mobile: '00000000000',
       menus: menus,
-      rights: []
+      rights: rights
     }
   } else {
     //查找用户

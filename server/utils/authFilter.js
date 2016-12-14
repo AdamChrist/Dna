@@ -83,7 +83,6 @@ module.exports = {
               let re = pathToRegexp(n.url);
               return re.test(path) && method.toString().toUpperCase() === n.method.toString().toUpperCase();
             });
-            console.log(path, req.method, rights);
             if (isNeedValidate) {
               //判断用户是否有权限
               const hasRights = userAuth.rights.some(n => {
