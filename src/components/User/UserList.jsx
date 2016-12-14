@@ -30,13 +30,15 @@ const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource, pagination
       key: 'id',
       width: 200,
       render: (text, record) =>
-        <Button.Group>
-          <Button size="small" onClick={() => onEdit(record)}>编辑</Button>
-          <Button type="primary" size="small" onClick={() => onChangePwd(record)}>重置密码</Button>
-          <Popconfirm placement="top" title={'确认删除?'} onConfirm={() => onDelete(record.id)}>
-            <Button type="default" size="small">删除</Button>
-          </Popconfirm>
-        </Button.Group>
+        <RightsContainer>
+          <Button.Group>
+            <Button size="small" onClick={() => onEdit(record)} data-rightsKey='USER/EDIT'>编辑</Button>
+            <Button type="primary" size="small" onClick={() => onChangePwd(record)} data-rightsKey='USER/PWD'>重置密码</Button>
+            <Popconfirm placement="top" title={'确认删除?'} onConfirm={() => onDelete(record.id)}>
+              <Button type="default" size="small" data-rightsKey='USER/DEL'>删除</Button>
+            </Popconfirm>
+          </Button.Group>
+        </RightsContainer>
     }];
 
   return (
@@ -48,8 +50,7 @@ const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource, pagination
           (
             <div >
               <RightsContainer>
-                <Button type="primary" onClick={() => onAdd()}>新增</Button>
-                <Button type="primary" onClick={() => onAdd()}>新增</Button>
+                <Button type="primary" onClick={() => onAdd()} data-rightsKey='USER/ADD'>新增</Button>
               </RightsContainer>
             </div>
           )}
