@@ -8,7 +8,7 @@ const RightsContainer = ({ common, children }) => {
 
   const { user } =  common;
   const userRights = user.rights || [];
-
+  console.log(userRights);
   /**
    * 根据权限返回对应的button
    * @param rights
@@ -17,13 +17,13 @@ const RightsContainer = ({ common, children }) => {
    */
   const getRightsButton = (rights, buttonElement) => {
     const rightsKey = buttonElement.props['data-rightsKey'];
-    let button = buttonElement;
+    let button = React.cloneElement(buttonElement);
     rights.forEach(n => {
       if (n.code === rightsKey && !n.hasRights) {
         if (n.type === 'disabled') {
           button = React.cloneElement(React.Children.only(buttonElement), { disabled: true })
         } else {
-          button = '';
+          button = <div />;
         }
       }
     });
@@ -51,7 +51,7 @@ const RightsContainer = ({ common, children }) => {
           //如果是气泡确认框并且child是button
           const pButton = child.props.children;
           if (React.isValidElement(pButton) && pButton.type.name === 'Button')
-            element = React.cloneElement(child, { children: getRightsButton(userRights, pButton) });
+            element = React.cloneElement(React.Children.only(child), { children: getRightsButton(userRights, pButton) });
           else {
             element = child;
           }

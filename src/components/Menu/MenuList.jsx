@@ -1,7 +1,8 @@
 import React from 'react';
 import {Table, Button, Popconfirm, Icon} from 'antd';
+import RightsContainer from '../Common/RightsContainer';
 
-const MenuList = ({onAdd, onDelete, onEdit, menuList}) => {
+const MenuList = ({ onAdd, onDelete, onEdit, menuList }) => {
   const columns = [
     {
       title: '名称',
@@ -28,18 +29,20 @@ const MenuList = ({onAdd, onDelete, onEdit, menuList}) => {
       dataIndex: 'icon',
       key: 'icon',
       width: '10%',
-      render: (text, record) => <Icon type={text}/>
+      render: (text, record) => <Icon type={text} />
     }, {
       title: '操作',
       key: 'id',
       width: '20%',
       render: (text, record) =>
-        <Button.Group>
-          <Button size="small" type="primary" onClick={() => onEdit(record)}>编辑</Button>
-          <Popconfirm placement="top" title={'确认删除?'} onConfirm={() => onDelete(record.id)}>
-            <Button type="default" size="small">删除</Button>
-          </Popconfirm>
-        </Button.Group>
+        <RightsContainer>
+          <Button.Group>
+            <Button size="small" type="primary" onClick={() => onEdit(record)} data-rightsKey='MENU/UPDATE'>编辑</Button>
+            <Popconfirm placement="top" title={'确认删除?'} onConfirm={() => onDelete(record.id)}>
+              <Button type="default" size="small" data-rightsKey='MENU/DEL'>删除</Button>
+            </Popconfirm>
+          </Button.Group>
+        </RightsContainer>
     }];
 
   return (
@@ -51,7 +54,9 @@ const MenuList = ({onAdd, onDelete, onEdit, menuList}) => {
         title={() =>
           (
             <div >
-              <Button type="primary" onClick={() => onAdd()}>新增</Button>
+              <RightsContainer>
+                <Button type="primary" onClick={() => onAdd()} data-rightsKey='MENU/CREATE'>新增</Button>
+              </RightsContainer>
             </div>
           )}
       />

@@ -1,5 +1,6 @@
 import React from 'react';
 import {Table, Button, Popconfirm, Card, notification} from 'antd';
+import RightsContainer from '../Common/RightsContainer';
 import {convertToTree} from '../../utils/converter';
 
 const DicList = ({ onAdd, onDelete, onEdit, dicMxList, dicSelectKey }) => {
@@ -35,12 +36,14 @@ const DicList = ({ onAdd, onDelete, onEdit, dicMxList, dicSelectKey }) => {
       key: 'id',
       width: '20%',
       render: (text, record) =>
-        <Button.Group>
-          <Button size="small" type="primary" onClick={() => onEdit(record)}>编辑</Button>
-          <Popconfirm placement="top" title={'确认删除?'} onConfirm={() => handleDel(record.id)}>
-            <Button type="default" size="small">删除</Button>
-          </Popconfirm>
-        </Button.Group>
+        <RightsContainer>
+          <Button.Group>
+            <Button size="small" type="primary" onClick={() => onEdit(record)} data-rightsKey='DICMX/UPDATE'>编辑</Button>
+            <Popconfirm placement="top" title={'确认删除?'} onConfirm={() => handleDel(record.id)}>
+              <Button type="default" size="small" data-rightsKey='DICMX/DEL'>删除</Button>
+            </Popconfirm>
+          </Button.Group>
+        </RightsContainer>
     }];
 
   //按钮是否可以用
@@ -58,7 +61,9 @@ const DicList = ({ onAdd, onDelete, onEdit, dicMxList, dicSelectKey }) => {
         title={() =>
           (
             <div >
-              <Button type="primary" disabled={disabled} onClick={() => onAdd()}>新增</Button>
+              <RightsContainer>
+                <Button type="primary" disabled={disabled} onClick={() => onAdd()} data-rightsKey='DICMX/CREATE'>新增</Button>
+              </RightsContainer>
             </div>
           )}
       />
