@@ -45,13 +45,13 @@ const RightsContainer = ({ common, children }) => {
           element = getRightsButton(userRights, child);
           break;
         case 'ButtonGroup':
-          element = getAllButton(userRights, child.props.children)
+          element = React.cloneElement(child, { children: getAllButton(userRights, child.props.children) });
           break;
         case 'Popconfirm':
           //如果是气泡确认框并且child是button
           const pButton = child.props.children;
           if (React.isValidElement(pButton) && pButton.type.name === 'Button')
-            element = getRightsButton(userRights, pButton);
+            element = React.cloneElement(child, { children: getRightsButton(userRights, pButton) });
           else {
             element = child;
           }

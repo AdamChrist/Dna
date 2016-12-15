@@ -27,19 +27,27 @@ module.exports = (router, moduleName) => {
   });
 
   /**
-   * 保存
+   * 新增
    */
   router.post('/', async(req, res) => {
     try {
       const model = req.body;
       if (req.isEmpty(model)) return res.error('缺少参数');
-      let result = {};
-      if (req.isEmpty(model.id)) {
-        result = await db[moduleName].create(model);
-      }
-      else {
-        result = await db[moduleName].update(model, { where: { id: model.id } }, { fields: Object.keys(model) });
-      }
+      const result = await db[moduleName].create(model);
+      return res.success(result);
+    } catch (error) {
+      return res.error(error.message);
+    }
+  });
+
+  /**
+   * 修改
+   */
+  router.put('/', async(req, res) => {
+    try {
+      const model = req.body;
+      if (req.isEmpty(model)) return res.error('缺少参数');
+      const result = await db[moduleName].update(model, { where: { id: model.id } }, { fields: Object.keys(model) });
       return res.success(result);
     } catch (error) {
       return res.error(error.message);

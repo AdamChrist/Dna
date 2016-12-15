@@ -33,8 +33,8 @@ const RoleModal = ({form, visible, item = {}, onOk, onCancel}) => {
     onCancel,
   };
 
-  const checkAccount = (rule, value, callback, source) => {
-    if (!value || value === item.account) {
+  const checkName = (rule, value, callback, source) => {
+    if (!value || value === item.name) {
       callback();
     } else {
       if (item.id) {
@@ -57,7 +57,7 @@ const RoleModal = ({form, visible, item = {}, onOk, onCancel}) => {
             initialValue: item.name,
             rules: [
               {required: true, message: '名称未填写'},
-              {validator: checkAccount}
+              {validator: checkName}
             ],
           })(
             <Input type="text"/>

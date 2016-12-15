@@ -3,7 +3,7 @@ import {Table, Button, Popconfirm} from 'antd';
 import RightsContainer from '../Common/RightsContainer';
 
 
-const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource, paginationPros }) => {
+const UserList = ({ onAdd, onDelete, onEdit, onChangePwd, dataSource }) => {
 
   const columns = [
     {

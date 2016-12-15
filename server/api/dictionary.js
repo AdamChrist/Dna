@@ -19,19 +19,27 @@ router.post('/query', async(req, res) => {
 });
 
 /**
- * 保存
+ * 新增
  */
 router.post('/', async(req, res) => {
   try {
     const model = req.body;
     if (req.isEmpty(model)) return res.error('缺少参数');
-    let result = {};
-    if (req.isEmpty(model.id)) {
-      result = await db.Dictionary.create(model);
-    }
-    else {
-      result = await db.Dictionary.update(model, { where: { id: model.id } });
-    }
+    const result = await db.Dictionary.create(model);
+    return res.success(result);
+  } catch (error) {
+    return res.error(error.message);
+  }
+});
+
+/**
+ * 修改
+ */
+router.put('/', async(req, res) => {
+  try {
+    const model = req.body;
+    if (req.isEmpty(model)) return res.error('缺少参数');
+    const result = await db.Dictionary.update(model, { where: { id: model.id } });
     return res.success(result);
   } catch (error) {
     return res.error(error.message);
@@ -53,19 +61,24 @@ router.delete('/:id', async(req, res) => {
 });
 
 /**
- * 子表保存
+ * 子表新增
  */
 router.post('/mx', async(req, res) => {
   try {
     const model = req.body;
     if (req.isEmpty(model)) return res.error('缺少参数');
-    let result = {};
-    if (req.isEmpty(model.id)) {
-      result = await db.DictionaryMx.create(model);
-    }
-    else {
-      result = await db.DictionaryMx.update(model, { where: { id: model.id } });
-    }
+    const result = await db.DictionaryMx.create(model);
+    return res.success(result);
+  } catch (error) {
+    return res.error(error.message);
+  }
+});
+
+router.put('/mx', async(req, res) => {
+  try {
+    const model = req.body;
+    if (req.isEmpty(model)) return res.error('缺少参数');
+    const result = await db.DictionaryMx.update(model, { where: { id: model.id } });
     return res.success(result);
   } catch (error) {
     return res.error(error.message);

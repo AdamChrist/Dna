@@ -28,6 +28,8 @@ export default {
       yield put({ type: 'logoutSuccess' });
       //跳转登录
       yield put(routerRedux.push('/login'));
+      //刷新界面,清空redux的缓存
+      window.location.reload();
       notification.success({
         message: '成功',
         description: '成功已登出,欢迎再次使用!'

@@ -23,7 +23,11 @@ export default {
     },
     *save ({ payload }, { call, put, select }){
       yield put({ type: 'hideModal' });
-      yield call(userService.save, payload);
+      if (payload.id) {
+        yield call(userService.update, payload);
+      } else {
+        yield call(userService.create, payload);
+      }
 
       const queryFilter = yield select(state => state.user.queryFilter);
       yield put({ type: 'query', payload: queryFilter });

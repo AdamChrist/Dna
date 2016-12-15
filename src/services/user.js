@@ -7,8 +7,12 @@ export async function query(params) {
   return request.post('api/user/query', params);
 }
 
-export async function save(params) {
+export async function create(params) {
   return request.post('api/user', params);
+}
+
+export async function update(params) {
+  return request.put('api/user', params);
 }
 
 export async function del(id) {

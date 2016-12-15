@@ -7,8 +7,12 @@ export async function queryDic(params) {
   return request.post('api/dic/query', params);
 }
 
-export async function saveDic(params) {
+export async function createDic(params) {
   return request.post('api/dic', params);
+}
+
+export async function updateDic(params) {
+  return request.put('api/dic', params);
 }
 
 export async function delDic(id) {
@@ -23,8 +27,12 @@ export async function queryDicMx(id) {
   return request.get(`api/dic/${id}/mx`);
 }
 
-export async function saveDicMx(params) {
+export async function createDicMx(params) {
   return request.post('api/dic/mx', params);
+}
+
+export async function updateDicMx(params) {
+  return request.put('api/dic/mx', params);
 }
 
 export async function delDicMx(id) {
