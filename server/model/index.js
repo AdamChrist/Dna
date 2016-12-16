@@ -8,7 +8,9 @@ const config = require('../../config/env');
 
 const sequelize = new Sequelize(config.mysql.database, config.mysql.username, config.mysql.password, {
   host: config.mysql.host,
-  dialect: 'mysql'
+  dialect: 'mysql',
+  timezone: '+08:00', //设置时区
+  benchmark: true     //在打印执行的SQL日志时输出执行时间（毫秒）
 });
 const db = {};
 
