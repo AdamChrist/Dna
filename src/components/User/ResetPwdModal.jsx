@@ -21,7 +21,7 @@ const ResetPwdModal = ({ form, item, pwdVisible, onOk, onCancel }) => {
         return;
       }
       const password = md5(getFieldValue('password'));
-      const data = { ...item, password };
+      const data = { id: item.id, password };
       onOk(data);
     });
   };

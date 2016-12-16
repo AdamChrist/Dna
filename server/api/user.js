@@ -76,8 +76,8 @@ router.post('/pwd', async(req, res) => {
   try {
     const body = req.body;
     if (req.isEmpty(body)) return res.error('重置密码失败，缺少参数！');
-    const result = await db.User.update(body, { where: { id: body.id } }, { fields: ['password'] });
-    return res.success(result);
+    await db.User.update(body, { where: { id: body.id } }, { fields: ['password'] });
+    return res.success();
   } catch (error) {
     return res.error(error.message);
   }

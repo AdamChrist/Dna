@@ -78,7 +78,7 @@ const UserPage = ({ user, role, dispatch }) => {
     pwdVisible,
     onOk(data) {
       dispatch({ type: 'user/hidePwdModal' });
-      dispatch({ type: 'user/save', payload: data });
+      dispatch({ type: 'user/resetPwd', payload: data });
     },
     onCancel() {
       dispatch({

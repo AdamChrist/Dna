@@ -19,6 +19,10 @@ export async function del(id) {
   return request.del(`api/user/${id}`);
 }
 
+export async function resetPwd(params) {
+  return request.post('api/user/pwd', params);
+}
+
 /**
  * 用户名是否存在
  * @param params

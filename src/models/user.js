@@ -38,6 +38,12 @@ export default {
       const queryFilter = yield select(state => state.user.queryFilter);
       yield put({ type: 'query', payload: queryFilter });
     },
+    * resetPwd ({ payload }, { call, put, select }){
+      yield call(userService.resetPwd, payload);
+
+      const queryFilter = yield select(state => state.user.queryFilter);
+      yield put({ type: 'query', payload: queryFilter });
+    },
   },
 
   reducers: {
