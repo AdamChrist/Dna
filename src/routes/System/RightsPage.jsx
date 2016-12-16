@@ -2,6 +2,7 @@
  * Created by haojiachen on 2016/12/12.
  */
 import React from 'react';
+import {connect} from 'dva';
 import {RightsList, RightsModal} from '../../components/Rights';
 import AdvancedSearchForm from '../../components/Common/AdvancedSearchForm';
 import {Input, Select} from 'antd';
@@ -80,4 +81,8 @@ const RightsPage = ({ rights, dispatch }) => {
 RightsPage.propTypes = {};
 RightsPage.defaultProps = {};
 
-export default RightsPage;
+const mapStateToProps = ({ rights }) => {
+  return { rights };
+};
+
+export default connect(mapStateToProps)(RightsPage);

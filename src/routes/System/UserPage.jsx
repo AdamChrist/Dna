@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react';
 import {Input} from 'antd';
+import {connect} from 'dva';
 import AdvancedSearchForm from '../../components/Common/AdvancedSearchForm';
 import {UserList, UserModal, ResetPwdModal} from '../../components/User';
 
@@ -107,4 +108,8 @@ UserPage.propTypes = {
   dispatch: PropTypes.func
 };
 
-export default UserPage;
+const mapStateToProps = ({ user, role }) => {
+  return { user, role };
+};
+
+export default connect(mapStateToProps)(UserPage);

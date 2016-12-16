@@ -12,10 +12,8 @@ const formItemLayout = {
   }
 };
 
-const ChangePwdModal = ({ common, dispatch, form }) => {
+const ChangePwdModal = ({ pwdModalVisible, onOk, onCancel, form }) => {
   const { getFieldDecorator, validateFields, getFieldValue } = form;
-
-  const { pwdModalVisible } = common;
 
   const handleOk = () => {
     validateFields((errors) => {
@@ -24,18 +22,8 @@ const ChangePwdModal = ({ common, dispatch, form }) => {
       }
       const password = md5(getFieldValue('password'));
       const oldPassword = md5(getFieldValue('oldPassword'));
-
       const data = { password, oldPassword };
-      dispatch({
-        type: 'common/changePwd',
-        payload: data
-      });
-    });
-  };
-
-  const handleCancel = () => {
-    dispatch({
-      type: 'common/hidePwdModal'
+      onOk(data);
     });
   };
 
@@ -44,7 +32,7 @@ const ChangePwdModal = ({ common, dispatch, form }) => {
     title: '修改密码',
     visible: pwdModalVisible,
     onOk: handleOk,
-    onCancel: handleCancel,
+    onCancel,
   };
 
   const checkPwd = (rule, value, callback) => {

@@ -3,7 +3,7 @@ import {Router, Route, IndexRoute, Link, IndexRedirect} from 'dva/router';
 import {requireAuth, autoLogin} from './utils/authUtil';
 import LoginPage from './routes/Common/LoginPage';
 import NotFound from './routes/Common/NotFound';
-import IndexPage from './routes/Layout/IndexPage';
+import IndexPage from './routes/Common/IndexPage';
 import HomePage from './routes/Common/HomePage';
 import UserPage from './routes/System/UserPage';
 import DicPage from './routes/System/DicPage';

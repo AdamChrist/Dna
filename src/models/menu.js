@@ -20,13 +20,12 @@ export default {
         yield put({ type: 'querySuccess', payload: { menuList: data.rows, queryFilter: payload } });
     },
     *save ({ payload }, { call, put, select }){
-      yield put({ type: 'hideModal' });
       if (payload.id) {
         yield call(menuService.update, payload);
       } else {
         yield call(menuService.create, payload);
       }
-
+      yield put({ type: 'hideModal' });
       const queryFilter = yield select(state => state.menu.queryFilter);
       yield put({ type: 'query', payload: queryFilter });
     },

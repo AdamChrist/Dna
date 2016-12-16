@@ -1,5 +1,6 @@
 import React, {Component, PropTypes} from 'react';
-import {Icon, Spin} from 'antd';
+import {Icon} from 'antd';
+import {connect} from 'dva';
 import MainMenu from './MainMenu';
 import UserInfo from './UserInfo';
 import ChangePwdModal from './ChangePwdModal';
@@ -24,7 +25,38 @@ class MainLayout extends Component {
   };
 
   render() {
-    const { children, ...childrenPros } = this.props;
+    const { children, common, location, dispatch } = this.props;
+
+    const { user, pwdModalVisible } = common;
+
+    const menuProps = { common, location };
+
+    const userInfoProps = {
+      userName: user.name,
+      logout(){
+        dispatch({ type: 'common/logout' });
+      },
+      changePwd(){
+        dispatch({ type: 'common/showPwdModal' });
+      }
+    };
+
+    const pwdModalProps = {
+      pwdModalVisible,
+      onOk(data){
+        dispatch({
+          type: 'common/changePwd',
+          payload: data
+        });
+      },
+      onCancel(){
+        dispatch({
+          type: 'common/hidePwdModal'
+        });
+      }
+    };
+
+    const ModalGen = () => <ChangePwdModal {...pwdModalProps} />;
 
     return (
       <div className="ant-layout">
@@ -33,7 +65,7 @@ class MainLayout extends Component {
             {/*DNA 后台管理系统*/}
             <div className="ant-layout-logo-img"></div>
           </div>
-          <MainMenu {...childrenPros} />
+          <MainMenu {...menuProps} />
         </aside>
         <div className="ant-layout-main">
           <div className="ant-layout-header">
@@ -41,15 +73,13 @@ class MainLayout extends Component {
               <Icon type="bars" />
             </div>
             <div className="ant-layout-info">
-              <UserInfo {...childrenPros} />
-              <ChangePwdModal {...childrenPros} />
+              <UserInfo {...userInfoProps} />
+              <ModalGen />
             </div>
           </div>
           <div className="ant-layout-container">
             <div className="ant-layout-content">
-              <Spin size="large" spinning={childrenPros.loading.global}>
-                {React.cloneElement(React.Children.only(children), childrenPros)}
-              </Spin>
+              {children}
             </div>
           </div>
         </div>
@@ -62,5 +92,8 @@ MainLayout.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-export default MainLayout;
-
+const mapStateToProps = ({ common }) => {
+  return { common };
+};
+//由于使用父组件的属性会导致modal刷新.所以重新连接redux
+export default connect(mapStateToProps)(MainLayout);

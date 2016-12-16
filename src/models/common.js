@@ -42,9 +42,8 @@ export default {
       yield put({ type: 'getUserInfoSuccess', payload: { user } })
     },
     * changePwd ({ payload }, { call, put}){
-      yield put({ type: 'hidePwdModal' });
       yield call(authService.changePwd, payload);
-
+      yield put({ type: 'hidePwdModal' });
       notification.success({
         message: '成功!',
         description: '更改密码成功!'
