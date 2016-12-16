@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import {Icon, Spin} from 'antd';
 import MainMenu from './MainMenu';
 import UserInfo from './UserInfo';
+import ChangePwdModal from './ChangePwdModal';
 
 class MainLayout extends Component {
   constructor(props, context) {
@@ -12,8 +13,8 @@ class MainLayout extends Component {
   }
 
   componentWillMount() {
-    const {dispatch} = this.props;
-    dispatch({type: 'common/getUserInfo'})
+    const { dispatch } = this.props;
+    dispatch({ type: 'common/getUserInfo' })
   }
 
   handleClick = () => {
@@ -23,7 +24,8 @@ class MainLayout extends Component {
   };
 
   render() {
-    const {children, ...childrenPros} = this.props;
+    const { children, ...childrenPros } = this.props;
+
     return (
       <div className="ant-layout">
         <aside className={this.state.collapse ? "ant-layout-aside ant-layout-aside-collapse" : "ant-layout-sider"}>
@@ -36,10 +38,11 @@ class MainLayout extends Component {
         <div className="ant-layout-main">
           <div className="ant-layout-header">
             <div className="ant-layout-action" onClick={this.handleClick}>
-              <Icon type="bars"/>
+              <Icon type="bars" />
             </div>
             <div className="ant-layout-info">
-              <UserInfo {...childrenPros}/>
+              <UserInfo {...childrenPros} />
+              <ChangePwdModal {...childrenPros} />
             </div>
           </div>
           <div className="ant-layout-container">
