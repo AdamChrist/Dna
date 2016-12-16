@@ -83,4 +83,19 @@ router.post('/pwd', async(req, res) => {
   }
 });
 
+router.post('/exist', async(req, res) => {
+  try {
+    let model = req.body;
+    if (!req.isEmpty(model.id)) {
+      model.id = { '$ne': model.id }
+    }
+    //禁止注册admin
+    if (model.account.toString().toLowerCase() === 'admin') return res.success(true);
+    const result = await db.User.findOne({ where: model });
+    return res.success(result !== null);
+  } catch (error) {
+    return res.error(error.message);
+  }
+});
+
 module.exports = baseRouter(router, 'User');
