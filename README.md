@@ -1,10 +1,11 @@
-#dna
+#DNA
 基于dva,node,ant-design 的权限管理框架.
 
 ## 环境准备
 > node v7.2
 > mysql v5.7.13
-### 安装依赖
+
+## 安装
 
 ```bash
 $ npm install
