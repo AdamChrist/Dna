@@ -14,20 +14,24 @@ const sequelize = new Sequelize(config.mysql.database, config.mysql.username, co
 });
 const db = {};
 
+const model = (m) => {
+  return require(m)(sequelize, Sequelize);
+}
+
 /**
  * 注册model,方便IDE感知
  */
-sys
-db.Dictionary = sequelize.import('./Dictionary');
-db.DictionaryMx = sequelize.import('./DictionaryMx');
-db.Sequences = sequelize.import('./Sequences');
-db.User = sequelize.import('./User');
-db.Role = sequelize.import('./Role');
-db.UserRole = sequelize.import('./UserRole');
-db.Menu = sequelize.import('./Menu');
-db.RoleMenu = sequelize.import('./RoleMenu');
-db.Rights = sequelize.import('./Rights');
-db.RoleRights = sequelize.import('./RoleRights');
+// sys
+db.Dictionary = model('./Dictionary');
+db.DictionaryMx = model('./DictionaryMx');
+db.Sequences = model('./Sequences');
+db.User = model('./User');
+db.Role = model('./Role');
+db.UserRole = model('./UserRole');
+db.Menu = model('./Menu');
+db.RoleMenu = model('./RoleMenu');
+db.Rights = model('./Rights');
+db.RoleRights = model('./RoleRights');
 
 Object.keys(db).forEach((modelName) => {
   if ('associate' in db[modelName]) {
@@ -65,7 +69,7 @@ module.exports = db;
 //     return (file.indexOf(".") !== 0) && (file !== "index.js");
 //   })
 //   .forEach(function (file) {
-//     const model = sequelize.import(path.join(__dirname, file));
+//     const model = require(path.join(__dirname, file));
 //     db[model.name] = model;
 //   });
 
