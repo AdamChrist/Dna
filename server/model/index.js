@@ -14,9 +14,7 @@ const sequelize = new Sequelize(config.mysql.database, config.mysql.username, co
 });
 const db = {};
 
-const model = (m) => {
-  return require(m)(sequelize, Sequelize);
-}
+const model = (m) => require(m)(sequelize, Sequelize);
 
 /**
  * 注册model,方便IDE感知
