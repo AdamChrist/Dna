@@ -59,7 +59,7 @@ class AdvancedSearchForm extends Component {
         className="advanced-search-form"
         onSubmit={this.handleSearch}
       >
-        <Row className={expand ? "form-item-show" : "form-item-hide"} type="flex" justify="space-around">
+        <Row className={expand ? "form-item-show" : "form-item-hide"} >
           {
             formItems.map((item, i) => {
               return (

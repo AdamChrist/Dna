@@ -8,7 +8,6 @@ const RightsContainer = ({ common, children }) => {
 
   const { user } =  common;
   const userRights = user.rights || [];
-  console.log(userRights);
   /**
    * 根据权限返回对应的button
    * @param rights

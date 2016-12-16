@@ -41,7 +41,6 @@ const UserPage = ({ user, role, dispatch }) => {
   };
   //用户搜索属性
   const userSearchProps = {
-    user,
     onSearch(values){
       dispatch({
         type: 'user/query',
