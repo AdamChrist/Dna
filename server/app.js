@@ -1,9 +1,7 @@
 // 设置默认环境变量
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 //兼容es6
-if (process.env.NODE_ENV == 'development') {
-  require('babel-register')({ presets: ['es2015', 'stage-0'] });
-}
+require('babel-register')({ presets: ['es2015', 'stage-0'] });
 require('babel-polyfill');
 
 const express = require('express');

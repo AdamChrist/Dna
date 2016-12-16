@@ -47,7 +47,7 @@
   },
   "scripts": {
     "start": "dora --plugins \"proxy?watchDirs=./mock,webpack,webpack-hmr\"",
-    "build": "npm run build:client && npm run build:server",
+    "build": "npm run build:client",
     "build:client": "atool-build",
     "build:server": "webpack  --progress --colors --config webpack.server.config.js",
     "test": "atool-test-mocha ./src/**/*-test.js",
