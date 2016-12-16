@@ -53,9 +53,7 @@ const getUserAuth = async(userId) => {
       account: ADMIN_ACCOUNT,
       mobile: '00000000000',
       menus: menus,
-      rights: rights.map(n => {
-        return { ...n, hasRights: true };
-      })
+      rights: rights.map(n => Object.assign(n, { hasRights: true }))
     }
   } else {
     //查找用户
@@ -85,10 +83,7 @@ const getUserAuth = async(userId) => {
               }
             })
           } else {
-            userRights = rights.map(n => {
-                return { ...n, hasRights: false }
-              }
-            );
+            userRights = rights.map(n => Object.assign(n, { hasRights: true }));
           }
         })
       }
