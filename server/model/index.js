@@ -17,7 +17,7 @@ const db = {};
 /**
  * 注册model,方便IDE感知
  */
-//sys
+sys
 db.Dictionary = sequelize.import('./Dictionary');
 db.DictionaryMx = sequelize.import('./DictionaryMx');
 db.Sequences = sequelize.import('./Sequences');

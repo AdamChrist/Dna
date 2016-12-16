@@ -1,4 +1,5 @@
 const webpack = require('atool-build/lib/webpack');
+const path = require('path');
 
 module.exports = function (webpackConfig, env) {
   webpackConfig.babel.plugins.push('transform-runtime');
@@ -42,6 +43,11 @@ module.exports = function (webpackConfig, env) {
       loader.test = /\.css$/;
     }
   });
+  // 修改输出目录
+  const newOutput = {
+    path: path.join(__dirname, '/dist/public'),
+  }
+  webpackConfig.output = Object.assign({}, webpackConfig.output, newOutput);
 
   return webpackConfig;
 };
