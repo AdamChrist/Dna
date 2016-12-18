@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react';
 import {Icon} from 'antd';
 import {connect} from 'dva';
+import {Link} from 'dva/router';
 import MainMenu from './MainMenu';
 import UserInfo from './UserInfo';
 import ChangePwdModal from './ChangePwdModal';
@@ -63,15 +64,20 @@ class MainLayout extends Component {
         <aside className={this.state.collapse ? "ant-layout-aside ant-layout-aside-collapse" : "ant-layout-sider"}>
           <div className="ant-layout-logo">
             {/*DNA 后台管理系统*/}
-            <div className="ant-layout-logo-img"></div>
+            <Link to='/app'>
+              <div className="ant-layout-logo-img"></div>
+            </Link>
           </div>
           <MainMenu {...menuProps} />
         </aside>
         <div className="ant-layout-main">
           <div className="ant-layout-header">
             <div className="ant-layout-action" onClick={this.handleClick}>
-              <Icon type="bars" />
+              {this.state.collapse ? <Icon type="menu-unfold" /> : <Icon type="menu-fold" />}
             </div>
+            {/*<div className="ant-layout-action">*/}
+              {/*<Link to='/app'><Icon type="home" /></Link>*/}
+            {/*</div>*/}
             <div className="ant-layout-info">
               <UserInfo {...userInfoProps} />
               <ModalGen />
