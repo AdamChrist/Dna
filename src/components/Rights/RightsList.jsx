@@ -23,11 +23,15 @@ const RightsList = ({ onAdd, onDelete, onEdit, rightsList }) => {
       title: '请求类型',
       dataIndex: 'method',
       key: 'method',
+      filters: [{ text: 'POST', value: 'post' }, { text: 'GET', value: 'get' }, { text: 'PUT', value: 'put' }, { text: 'DELETE', value: 'delete' }],
+      onFilter: (value, record) => record.method.indexOf(value) === 0,
       render: (text) => text.toString().toUpperCase()
     }, {
       title: '样式',
       dataIndex: 'type',
       key: 'type',
+      filters: [{ text: '禁用', value: 'disabled' }, { text: '隐藏', value: 'hide' }],
+      onFilter: (value, record) => record.type.indexOf(value) === 0,
       render: (text) => text === 'hide' ? '隐藏' : '禁用'
     }, {
       title: '操作',
