@@ -17,7 +17,9 @@ module.exports = {
   },
   externals: {
     'sequelize': "require('sequelize')",
-    'ioredis': "require('ioredis')"
+    'ioredis': "require('ioredis')",
+    'babel-register': "require('babel-register')",
+    'babel-polyfill': "require('babel-polyfill')"
   },
   // 选择不同的加载器进行处理
   module: {
