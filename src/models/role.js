@@ -25,13 +25,12 @@ export default {
         yield put({ type: 'querySuccess', payload: { roleList: data.rows, queryFilter: payload } });
     },
     *save ({ payload }, { call, put, select }){
-      yield put({ type: 'hideModal' });
       if (payload.id) {
         yield call(roleService.update, payload);
       } else {
         yield call(roleService.create, payload);
       }
-
+      yield put({ type: 'hideModal' });
       const queryFilter = yield select(state => state.role.queryFilter);
       yield put({ type: 'query', payload: queryFilter });
     },
@@ -42,25 +41,25 @@ export default {
       yield put({ type: 'query', payload: queryFilter });
     },
     * saveRoleMenu ({ payload }, { call, put, select }){
-      yield put({ type: 'hideMenuModal' });
       //选择的menus和当前的角色信息
       const selectedMenus = yield select(state => state.role.selectedMenus);
       const item = yield select(state => state.role.item);
       item.menus = selectedMenus;
       //保存角色菜单关联
       yield call(roleService.saveRoleMenu, item);
+      yield put({ type: 'hideMenuModal' });
       //刷新表单
       const queryFilter = yield select(state => state.role.queryFilter);
       yield put({ type: 'query', payload: queryFilter });
     },
     * saveRoleRights ({ payload }, { call, put, select }){
-      yield put({ type: 'hideRightsModal' });
       //选择的rights和当前的角色信息
       const selectedRights = yield select(state => state.role.selectedRights);
       const item = yield select(state => state.role.item);
       item.rights = selectedRights;
       //保存角色菜单关联
       yield call(roleService.saveRoleRights, item);
+      yield put({ type: 'hideRightsModal' });
       //刷新表单
       const queryFilter = yield select(state => state.role.queryFilter);
       yield put({ type: 'query', payload: queryFilter });

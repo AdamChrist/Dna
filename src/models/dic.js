@@ -28,14 +28,13 @@ export default {
         yield put({ type: 'queryDicSuccess', payload: { dicList: data.rows } });
     },
     *saveDic ({ payload }, { call, put }){
-      yield put({ type: 'hideDicModal' });
 
       if(payload.id){
         yield call(dicService.updateDic, payload);
       }else{
         yield call(dicService.createDic, payload);
       }
-
+      yield put({ type: 'hideDicModal' });
       yield put({ type: 'queryDic' });
     },
     *delDic ({ payload }, { call, put }){
@@ -55,13 +54,12 @@ export default {
         yield put({ type: 'queryDicMxSuccess', payload: { dicMxList: data.rows } });
     },
     *saveDicMx ({ payload }, { call, put, select }){
-      yield put({ type: 'hideDicMxModal' });
       if (payload.id) {
         yield call(dicService.updateDicMx, payload);
       } else {
         yield call(dicService.createDicMx, payload)
       }
-
+      yield put({ type: 'hideDicMxModal' });
       const dicSelectKey = yield select(state => state.dic.dicSelectKey);
       yield put({ type: 'queryDicMx', payload: dicSelectKey });
     },

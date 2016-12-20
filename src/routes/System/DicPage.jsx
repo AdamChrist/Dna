@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'dva';
 import {DicTree, DicModal, DicList, DicMxModal} from '../../components/Dic';
 
 const DicPage = ({ dic, dispatch }) => {
@@ -107,4 +108,8 @@ const DicPage = ({ dic, dispatch }) => {
 DicPage.propTypes = {};
 DicPage.defaultProps = {};
 
-export default DicPage;
+const mapStateToProps = ({ dic }) => {
+  return { dic };
+};
+
+export default connect(mapStateToProps)(DicPage);

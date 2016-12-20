@@ -20,7 +20,7 @@ module.exports = (app) => {
   };
   app.use(cors(options));
   app.use(compression());
-  app.use(express.static(path.join(__dirname, '../../dist')));
+  app.use(express.static(path.join(__dirname, '../dist')));
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(bodyParser.json());
   app.use(methodOverride());

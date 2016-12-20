@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'dva';
 import {convertToTree, sortTree} from '../../utils/converter';
 import {MenuList, MenuModal} from '../../components/Menu';
 
@@ -67,5 +68,9 @@ const MenuPage = ({menu, dispatch}) => {
 MenuPage.propTypes = {};
 MenuPage.defaultProps = {};
 
-export default MenuPage;
+const mapStateToProps = ({ menu }) => {
+  return { menu };
+};
+
+export default connect(mapStateToProps)(MenuPage);
 

@@ -214,27 +214,27 @@ router.get('/user', async(req, res) => {
   return res.error('获取用户信息失败!')
 });
 
-//
-// router.post('/changePwd', async function (req, res) {
-//   try {
-//     if (req.isEmpty(req.body)) return res.error('修改用户密码失败，缺少参数');
-//     // 根据登录信息，获取用户ID
-//     let pwd = req.body.pwd;
-//     let newPwd = req.body.newPwd;
-//     // 修改密码
-//     const user = await db.User.findOne({ where: { id: req.user.id, password: pwd } });
-//     if (user) {
-//       user.password = newPwd;
-//       user.save();
-//       res.success(user, '修改密码成功!');
-//     } else {
-//       res.error("旧密码输入错误!")
-//     }
-//   }
-//   catch (error) {
-//     res.error(error.message);
-//   }
-//
-// })
+
+router.post('/pwd', async function (req, res) {
+  try {
+    if (req.isEmpty(req.body) || req.isEmpty(req.user)) return res.error('修改用户密码失败，缺少参数');
+    // 根据登录信息，获取用户ID
+    let pwd = req.body.oldPassword;
+    let newPwd = req.body.password;
+    // 修改密码
+    const user = await db.User.findOne({ where: { id: req.user.id, password: pwd } });
+    if (user) {
+      user.password = newPwd;
+      user.save();
+      res.success(user, '修改密码成功!');
+    } else {
+      res.error("旧密码输入错误!")
+    }
+  }
+  catch (error) {
+    res.error(error.message);
+  }
+
+})
 
 module.exports = router;

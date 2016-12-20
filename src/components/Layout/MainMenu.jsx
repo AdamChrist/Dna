@@ -3,7 +3,7 @@ import {Link} from 'dva/router';
 import {Menu, Icon} from 'antd';
 import {convertToTree, sortTree} from '../../utils/converter';
 
-const MainMenu = ({common, dispatch, location}) => {
+const MainMenu = ({common, location}) => {
   const {user} = common;
   const menus = user.menus || [];
   //根据router选中对应的菜单

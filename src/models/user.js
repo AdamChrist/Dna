@@ -22,13 +22,13 @@ export default {
         yield put({ type: 'querySuccess', payload: { userList: data.rows, queryFilter: payload } });
     },
     *save ({ payload }, { call, put, select }){
-      yield put({ type: 'hideModal' });
+
       if (payload.id) {
         yield call(userService.update, payload);
       } else {
         yield call(userService.create, payload);
       }
-
+      yield put({ type: 'hideModal' });
       const queryFilter = yield select(state => state.user.queryFilter);
       yield put({ type: 'query', payload: queryFilter });
     },

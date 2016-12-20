@@ -11,6 +11,7 @@ export default {
 
   state: {
     user: {},
+    pwdModalVisible: false
   },
 
   effects: {
@@ -40,6 +41,14 @@ export default {
       const user = yield call(authService.getUserInfo);
       yield put({ type: 'getUserInfoSuccess', payload: { user } })
     },
+    * changePwd ({ payload }, { call, put}){
+      yield call(authService.changePwd, payload);
+      yield put({ type: 'hidePwdModal' });
+      notification.success({
+        message: '成功!',
+        description: '更改密码成功!'
+      });
+    },
   },
 
   reducers: {
@@ -48,6 +57,12 @@ export default {
     },
     logoutSuccess(state){
       return { ...state, user: {} }
+    },
+    showPwdModal(state, { payload }) {
+      return { ...state, ...payload, pwdModalVisible: true };
+    },
+    hidePwdModal(state) {
+      return { ...state, pwdModalVisible: false };
     },
   },
 

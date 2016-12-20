@@ -20,14 +20,12 @@ export default {
         yield put({ type: 'querySuccess', payload: { rightsList: data.rows, queryFilter: payload } });
     },
     *save ({ payload }, { call, put, select }){
-      yield put({ type: 'hideModal' });
       if (payload.id) {
         yield call(rightsService.update, payload);
       } else {
         yield call(rightsService.create, payload);
       }
-
-
+      yield put({ type: 'hideModal' });
       const queryFilter = yield select(state => state.rights.queryFilter);
       yield put({ type: 'query', payload: queryFilter });
     },

@@ -12,4 +12,7 @@ export async function logout() {
 export async function getUserInfo(user) {
   return request.get('api/auth/user');
 }
+export async function changePwd(params) {
+  return request.post('api/auth/pwd', params);
+}
 
