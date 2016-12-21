@@ -1,5 +1,5 @@
 #DNA
-基于dva,node,ant-design 的权限管理框架.
+使用NodeJS+Sequelize+Express+AntDesign+Dva开发的权限管理框架.
 
 ## 环境准备
 - node v7.0+
