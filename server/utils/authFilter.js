@@ -73,36 +73,18 @@ module.exports = {
         //验证token
         const userToken = await redis.get(userId);
         if (userToken === token) {
-          // const rights = JSON.parse(await redis.get('CACHE_RIGHTS'));
           //获取redis缓存的用户权限信息
           const userAuth = JSON.parse(await redis.get(`auth-${userId}`));
+          if (!userAuth) return res.error('无权访问!');
+          //设置用户权限到request
           req.user = { ...user, ...userAuth };
-          // if (rights && rights.length > 0) {
-            //判断url是否需要校验权限
-            // const isNeedValidate = rights.some(n => {
-            //   let re = pathToRegexp(n.url);
-            //   return re.test(path) && method.toString().toUpperCase() === n.method.toString().toUpperCase();
-            // })
-            // if (isNeedValidate) {
-            //   //判断用户是否有权限
-            //   const hasRights = userAuth.rights.some(n => {
-            //     let re = pathToRegexp(n.url);
-            //     return re.test(path) && method.toString().toUpperCase() === n.method.toString().toUpperCase() && n.hasRights;
-            //   });
-            //   if (hasRights) {
-            //     return next();
-            //   } else {
-            //     console.error('无权访问!');
-            //     return res.error('无权访问!');
-            //   }
-            // }
-          // }
-
+          //判断当前url是否需要权限验证
           const rightsArray = userAuth.rights.filter(n => {
             let re = pathToRegexp(n.url);
             return re.test(path) && method.toString().toUpperCase() === n.method.toString().toUpperCase()
           });
           if (rightsArray.length > 0) {
+            //判断是否有权限
             if (!rightsArray[0].hasRights) {
               console.error('无权访问!');
               return res.error('无权访问!');
