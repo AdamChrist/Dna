@@ -26,7 +26,13 @@ const isAdmin = (model) => {
  * @param expireTime
  * @returns {*}
  */
-const saveToken = (id, expireTime) => {
+const saveToken = async(id, expireTime) => {
+  //获取用户的权限
+  const userAuth = await getUserAuth(id);
+  if (userAuth) {
+    //缓存到redis中
+    redis.set(`auth-${userAuth.id}`, JSON.stringify(userAuth), 'EX', 60 * 60 * 24 * 7);
+  }
   const token = jwt.sign({
     user: { id },
     expireTime: expireTime || Date.now() + 1000 * 60 * 60 * 24 * 7
@@ -35,7 +41,39 @@ const saveToken = (id, expireTime) => {
   return token;
 };
 
+/**
+ * 获取token
+ * @param req
+ */
 const getToken = (req) => req.cookies.token || req.headers['x-auth-token'];
+
+/**
+ * 验证token
+ * @param token
+ * @returns {Promise.<boolean>}
+ */
+const checkToken = async(token) => {
+  if (token) {
+    //解析token
+    const decoded = jwt.verify(token, config.secret);
+    const user = decoded.user;
+    const expireTime = decoded.expireTime;
+    if (user && user.id) {
+      const userId = user.id;
+      // 验证token是否过期
+      if (Date.now() >= expireTime) {
+        // 删除 token
+        await redis.del(userId);
+      } else {
+        const result = await redis.get(userId);
+        if (result === token) {
+          return true;
+        }
+      }
+    }
+  }
+  return false
+};
 
 /**
  * 获取用户权限相关信息
@@ -110,7 +148,7 @@ router.post('/login', async(req, res, next) => {
     expireTime = Date.now() + 1000 * 60 * 60 * 24 * 7;
     //如果是超级管理员登录
     if (isAdmin(model)) {
-      let token = saveToken(ADMIN_ID);
+      let token = await saveToken(ADMIN_ID);
       //设置cookie
       res.cookie('token', token, { expires: new Date(expireTime), httpOnly: true });
       return res.success({ name: ADMIN_NAME });
@@ -121,7 +159,7 @@ router.post('/login', async(req, res, next) => {
 
       if (user && user.password === model.password) {
         //保存token
-        const token = saveToken(user.id);
+        const token = await saveToken(user.id);
         //设置cookie
         res.cookie('token', token, { expires: new Date(expireTime), httpOnly: true });
         //返回token
@@ -141,30 +179,13 @@ router.post('/login', async(req, res, next) => {
 router.post('/checkToken', async(req, res, next) => {
   // 获取token
   const token = getToken(req);
-  console.log(token);
-  if (token) {
-    // 验证token是否过期
-    const decoded = jwt.verify(token, config.secret);
-    const user = decoded.user;
-    const expireTime = decoded.expireTime;
-    console.log(user);
-    if (user && user.id) {
-      const userId = user.id;
-      // 如果已过期,返回401
-      if (Date.now() >= expireTime) {
-        console.log('如果已过期,返回401');
-        // 删除 token
-        await redis.del(userId);
-      } else {
-        const result = await redis.get(userId);
-        if (result === token) {
-          return res.success(true);
-        }
-      }
-    }
+  const isValidate = await checkToken(token);
+  if (isValidate) {
+    return res.success(true);
+  } else {
+    res.clearCookie('token');
+    return res.success(false);
   }
-  res.clearCookie('token');
-  return res.success(false);
 });
 
 
@@ -197,7 +218,6 @@ router.get('/user', async(req, res) => {
   // 获取token
   const token = getToken(req);
   if (token) {
-    // 验证token是否过期
     const decoded = jwt.verify(token, config.secret);
     const user = decoded.user;
     const userId = user.id;
