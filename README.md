@@ -2,8 +2,9 @@
 基于dva,node,ant-design 的权限管理框架.
 
 ## 环境准备
-> node v7.2
-> mysql v5.7.13
+- node v7.0+
+- mysql v5.7+
+- redis
 
 ## 安装
 
