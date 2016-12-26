@@ -55,21 +55,26 @@ const getToken = (req) => req.cookies.token || req.headers['x-auth-token'];
 const checkToken = async(token) => {
   if (token) {
     //解析token
-    const decoded = jwt.verify(token, config.secret);
-    const user = decoded.user;
-    const expireTime = decoded.expireTime;
-    if (user && user.id) {
-      const userId = user.id;
-      // 验证token是否过期
-      if (Date.now() >= expireTime) {
-        // 删除 token
-        await redis.del(userId);
-      } else {
-        const result = await redis.get(userId);
-        if (result === token) {
-          return true;
+    try {
+      const decoded = jwt.verify(token, config.secret);
+      const user = decoded.user;
+      const expireTime = decoded.expireTime;
+      if (user && user.id) {
+        const userId = user.id;
+        // 验证token是否过期
+        if (Date.now() >= expireTime) {
+          // 删除 token
+          await redis.del(userId);
+        } else {
+          const result = await redis.get(userId);
+          if (result === token) {
+            return true;
+          }
         }
       }
+    } catch (err) {
+      console.error(err.message);
+      return false;
     }
   }
   return false

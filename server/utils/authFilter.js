@@ -34,10 +34,15 @@ const checkExcludeUrl = (path) => {
  */
 const decodedToken = (token) => {
   if (!token) return null;
-  const decoded = jwt.verify(token, config.secret);
-  const user = decoded.user;
-  const expireTime = decoded.expireTime;
-  return { user, expireTime }
+  try {
+    const decoded = jwt.verify(token, config.secret);
+    const user = decoded.user;
+    const expireTime = decoded.expireTime;
+    return { user, expireTime }
+  }
+  catch (err) {
+    return {};
+  }
 };
 
 module.exports = {

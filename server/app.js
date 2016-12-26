@@ -23,7 +23,6 @@ if (config.env === 'development') {
     return res.status(500).send();
   });
 }
-
 // 启动数据库连接
 models.sequelize.sync().then(() => {
   // web服务

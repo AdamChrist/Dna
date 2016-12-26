@@ -36,7 +36,6 @@ const RightsList = ({ onAdd, onDelete, onEdit, rightsList }) => {
     }, {
       title: '操作',
       key: 'id',
-      width: '400px',
       render: (text, record) =>
         <RightsContainer>
           <Button.Group>
