@@ -135,8 +135,7 @@ router.post('/mx/exist', async(req, res) => {
     }
     const result = await db.DictionaryMx.findOne({ where: model });
     return res.success(result !== null);
-  } catch
-    (error) {
+  } catch (error) {
     return res.error(error.message);
   }
 });

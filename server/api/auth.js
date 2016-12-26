@@ -55,26 +55,21 @@ const getToken = (req) => req.cookies.token || req.headers['x-auth-token'];
 const checkToken = async(token) => {
   if (token) {
     //解析token
-    try {
-      const decoded = jwt.verify(token, config.secret);
-      const user = decoded.user;
-      const expireTime = decoded.expireTime;
-      if (user && user.id) {
-        const userId = user.id;
-        // 验证token是否过期
-        if (Date.now() >= expireTime) {
-          // 删除 token
-          await redis.del(userId);
-        } else {
-          const result = await redis.get(userId);
-          if (result === token) {
-            return true;
-          }
+    const decoded = jwt.verify(token, config.secret);
+    const user = decoded.user;
+    const expireTime = decoded.expireTime;
+    if (user && user.id) {
+      const userId = user.id;
+      // 验证token是否过期
+      if (Date.now() >= expireTime) {
+        // 删除 token
+        await redis.del(userId);
+      } else {
+        const result = await redis.get(userId);
+        if (result === token) {
+          return true;
         }
       }
-    } catch (err) {
-      console.error(err.message);
-      return false;
     }
   }
   return false
@@ -146,19 +141,19 @@ const getUserAuth = async(userId) => {
  * 登录
  */
 router.post('/login', async(req, res, next) => {
-    let expireTime;
-    const model = req.body;
-    if (req.isEmpty(model)) return res.error('账户名或密码不能为空！');
-    //过期时间
-    expireTime = Date.now() + 1000 * 60 * 60 * 24 * 7;
-    //如果是超级管理员登录
-    if (isAdmin(model)) {
-      let token = await saveToken(ADMIN_ID);
-      //设置cookie
-      res.cookie('token', token, { expires: new Date(expireTime), httpOnly: true });
-      return res.success({ name: ADMIN_NAME });
-    }
     try {
+      let expireTime;
+      const model = req.body;
+      if (req.isEmpty(model)) return res.error('账户名或密码不能为空！');
+      //过期时间
+      expireTime = Date.now() + 1000 * 60 * 60 * 24 * 7;
+      //如果是超级管理员登录
+      if (isAdmin(model)) {
+        let token = await saveToken(ADMIN_ID);
+        //设置cookie
+        res.cookie('token', token, { expires: new Date(expireTime), httpOnly: true });
+        return res.success({ name: ADMIN_NAME });
+      }
       //查找用户
       const user = await db.User.findOne({ where: { account: model.account } });
 
@@ -170,10 +165,10 @@ router.post('/login', async(req, res, next) => {
         //返回token
         return res.success(user);
       }
+      return res.error('账户名或密码错误!');
     } catch (error) {
       return res.error(error.message);
     }
-    return res.error('账户名或密码错误!');
   }
 );
 
@@ -182,14 +177,19 @@ router.post('/login', async(req, res, next) => {
  * 验证token有效性
  */
 router.post('/checkToken', async(req, res, next) => {
-  // 获取token
-  const token = getToken(req);
-  const isValidate = await checkToken(token);
-  if (isValidate) {
-    return res.success(true);
-  } else {
+  try {
+    // 获取token
+    const token = getToken(req);
+    const isValidate = await checkToken(token);
+    if (isValidate) {
+      return res.success(true);
+    } else {
+      res.clearCookie('token');
+      return res.success(false);
+    }
+  } catch (error) {
     res.clearCookie('token');
-    return res.success(false);
+    res.error(error.message);
   }
 });
 
@@ -198,45 +198,52 @@ router.post('/checkToken', async(req, res, next) => {
  * 登出
  */
 router.post('/logout', async(req, res) => {
-  // 获取token
-  const token = getToken(req);
-  if (token) {
-    const decoded = jwt.verify(token, config.secret);
-    if (decoded) {
-      const { id } = decoded.user;
-      // 验证token是否存在
-      const result = await redis.get(id);
-      if (result === token) {
-        redis.del(id);
-        res.clearCookie('token');
-        return res.success('', '成功登出!');
+  try { // 获取token
+    const token = getToken(req);
+    if (token) {
+      const decoded = jwt.verify(token, config.secret);
+      if (decoded) {
+        const { id } = decoded.user;
+        // 验证token是否存在
+        const result = await redis.get(id);
+        if (result === token) {
+          redis.del(id);
+          res.clearCookie('token');
+          return res.success('', '成功登出!');
+        }
       }
     }
+    res.clearCookie('token');
+    res.error('权限已经失效!');
+  } catch (e) {
+    res.clearCookie('token');
+    res.error('权限已经失效!');
   }
-  res.error('权限已经失效!');
 });
 
 /**
  * 获取对应的权限菜单
  */
 router.get('/user', async(req, res) => {
-  // 获取token
-  const token = getToken(req);
-  if (token) {
-    const decoded = jwt.verify(token, config.secret);
-    const user = decoded.user;
-    const userId = user.id;
+  try { // 获取token
+    const token = getToken(req);
+    if (token) {
+      const decoded = jwt.verify(token, config.secret);
+      const user = decoded.user;
+      const userId = user.id;
 
-    //获取用户的权限
-    const userAuth = await getUserAuth(userId);
-    if (userAuth) {
-      //缓存到redis中
-      redis.set(`auth-${userAuth.id}`, JSON.stringify(userAuth), 'EX', 60 * 60 * 24 * 7);
-      return res.success(userAuth);
+      //获取用户的权限
+      const userAuth = await getUserAuth(userId);
+      if (userAuth) {
+        //缓存到redis中
+        redis.set(`auth-${userAuth.id}`, JSON.stringify(userAuth), 'EX', 60 * 60 * 24 * 7);
+        return res.success(userAuth);
+      }
     }
+    return res.error('获取用户信息失败!')
+  } catch (e) {
+    return res.error('获取用户信息失败!')
   }
-
-  return res.error('获取用户信息失败!')
 });
 
 
@@ -257,9 +264,8 @@ router.post('/pwd', async function (req, res) {
     }
   }
   catch (error) {
-    res.error(error.message);
+    res.error('修改用户密码失败');
   }
-
-})
+});
 
 module.exports = router;

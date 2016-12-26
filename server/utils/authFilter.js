@@ -34,15 +34,10 @@ const checkExcludeUrl = (path) => {
  */
 const decodedToken = (token) => {
   if (!token) return null;
-  try {
-    const decoded = jwt.verify(token, config.secret);
-    const user = decoded.user;
-    const expireTime = decoded.expireTime;
-    return { user, expireTime }
-  }
-  catch (err) {
-    return {};
-  }
+  const decoded = jwt.verify(token, config.secret);
+  const user = decoded.user;
+  const expireTime = decoded.expireTime;
+  return { user, expireTime };
 };
 
 module.exports = {
@@ -50,31 +45,31 @@ module.exports = {
    * 验证用户是否有权限
    */
   isAuthenticated: async(req, res, next) => {
-    const { path, method } = req;
-    //如果是预请求.直接跳过
-    if (checkOptions(method)) return res.send(200);
-    //匹配不验证的token请求
-    if (checkExcludeUrl(path)) {
-      console.log(`不验证API权限,URL:${path}`);
-      return next();
-    }
-    console.log(`验证API权限,URL:${path}`);
-    //获取token
-    const token = req.cookies.token || req.headers['x-auth-token'];
-    //解析token
-    const tokenInfo = decodedToken(token);
-    if (tokenInfo) {
-      const { user, expireTime } = tokenInfo;
-      const userId = user.id;
-      //如果已过期,返回401
-      if (Date.now() >= expireTime) {
-        //redis key 过期
-        await redis.del(userId);
-        console.error('token过期!');
-        res.clearCookie('token');
-        return res.sendStatus(401);
+    try {
+      const { path, method } = req;
+      //如果是预请求.直接跳过
+      if (checkOptions(method)) return res.send(200);
+      //匹配不验证的token请求
+      if (checkExcludeUrl(path)) {
+        console.log(`不验证API权限,URL:${path}`);
+        return next();
       }
-      try {
+      console.log(`验证API权限,URL:${path}`);
+      //获取token
+      const token = req.cookies.token || req.headers['x-auth-token'];
+      //解析token
+      const tokenInfo = decodedToken(token);
+      if (tokenInfo) {
+        const { user, expireTime } = tokenInfo;
+        const userId = user.id;
+        //如果已过期,返回401
+        if (Date.now() >= expireTime) {
+          //redis key 过期
+          await redis.del(userId);
+          console.error('token过期!');
+          res.clearCookie('token');
+          return res.sendStatus(401);
+        }
         //验证token
         const userToken = await redis.get(userId);
         if (userToken === token) {
@@ -102,14 +97,14 @@ module.exports = {
           res.clearCookie('token');
           return res.sendStatus(401);
         }
+      } else {
+        console.error('token为空!');
+        return res.sendStatus(401)
       }
-      catch (err) {
-        console.error(err);
-        return res.sendStatus(500)
-      }
-    } else {
-      console.error('token为空!');
-      return res.sendStatus(401)
+    }
+    catch (err) {
+      console.error(err);
+      return res.sendStatus(500)
     }
   }
 };
